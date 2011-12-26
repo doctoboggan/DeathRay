@@ -1,0 +1,5 @@
+I need to talk to the guy who wrote the perl script
+
+What is decoder address and Target Name? (XLS Sheet 1)
+
+Is it better to pass arguments through functions or to simply save the argument as an instance variable and then have the called function read the instance variable?
