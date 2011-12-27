@@ -1,4 +1,4 @@
-Is it possible to get the FPGA to output only oen file instead of several? This would make a few things easier
+Is it possible to get the FPGA to output only one file instead of several? This would make a few things easier
 
 What is decoder address and Target Name? (XLS Sheet 1):
 Decoder Address (DEC)  Decoder Address ‘abcd’ (BIN)  Target Name
@@ -40,6 +40,7 @@ ToDo:
 -ultimately:
 --Implement FileProcessor for a few different experiments, and then with this knowledge make an 'AbstractFileProcessor' that can be inherited by each of these implementations and future implementations
 --Figure out how to save a plot to an image file
+--Control hardware???
 
 Possible division of labor:
 -someone get other sample data and start reimplementing FileProcessor to interpret it
