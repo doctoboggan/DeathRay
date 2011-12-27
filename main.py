@@ -1,7 +1,7 @@
 #!/usr/bin/python -d
  
 import sys, random, pprint
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, Qt
 from interface import Ui_MainWindow
 import PyQt4.Qwt5 as Qwt
 
@@ -28,6 +28,8 @@ class DeathRay(QtGui.QMainWindow):
     #Set initial sizes
     self.ui.splitter.setSizes([250, 600])
 
+    #jump to this method while developing
+    self.openFiles()
 
   def openFiles(self):
     '''
@@ -56,10 +58,11 @@ class DeathRay(QtGui.QMainWindow):
       pass
 
     self.histogram = HistogramItem()
+    self.histogram.setColor(Qt.Qt.darkGreen)
+
 
     numBins = len(self.ProcessedData.processedData[runIndex]['binCounts'])
     intervals = []
-    inters = []
     binNumber = Qwt.QwtArrayDouble(numBins)
 
     pos = 0.0
@@ -76,7 +79,10 @@ class DeathRay(QtGui.QMainWindow):
     self.histogram.attach(self.ui.qwtPlot)
 
     self.ui.qwtPlot.setAxisScale(Qwt.QwtPlot.yLeft, 0.0, max(binNumber))
-    self.ui.qwtPlot.setAxisScale(Qwt.QwtPlot.xBottom, 0.0, pos)
+    self.ui.qwtPlot.setAxisScale(Qwt.QwtPlot.xBottom, 0.0, pos, 30)
+    self.ui.qwtPlot.setAxisTitle(Qwt.QwtPlot.xBottom, self.ProcessedData.xAxis)
+    self.ui.qwtPlot.setAxisTitle(Qwt.QwtPlot.yLeft, self.ProcessedData.yAxis)
+    self.ui.qwtPlot.setTitle(self.ProcessedData.plotTitle)
     self.ui.qwtPlot.replot()
     self.ui.qwtPlot.show()
 
@@ -99,27 +105,32 @@ class DeathRay(QtGui.QMainWindow):
         childDecoder = QtGui.QTreeWidgetItem(treeItem)
         childDecoder.setText(0, 'Decoder: ' + run['Decoder'])
         treeItem.insertChild(0, childDecoder)
+        childDecoder.setDisabled(True)
       
       if run['AutoMea'] != '':
         childAutoMea = QtGui.QTreeWidgetItem(treeItem)
         childAutoMea.setText(0, 'AutoMea: ' + run['AutoMea'])
         treeItem.insertChild(0, childAutoMea)
+        childAutoMea.setDisabled(True)
       
       if run['dataCount'] != 0:
         childDataCount = QtGui.QTreeWidgetItem(treeItem)
         childDataCount.setText(0, 'Data points: ' + str(run['dataCount']))
         treeItem.insertChild(0, childDataCount)
+        childDataCount.setDisabled(True)
 
       if run['invalidString'] != []:
         childInvalidString = QtGui.QTreeWidgetItem(treeItem)
         childInvalidString.setText(0, 'Invalid lines: ' + str(run['invalidString']))
         treeItem.insertChild(0, childInvalidString)
+        childInvalidString.setDisabled(True)
 
       if run['doublePulse'] != []:
         childDoublePulse = QtGui.QTreeWidgetItem(treeItem)
         childDoublePulse.setText(0, 'Double pulse lines: ' + str(run['doublePulse']))
         treeItem.insertChild(0, childDoublePulse)
-    #self.ui.treeRun.setItemSelected(self.ui.treeRun.itemFromIndex(0))
+        childDoublePulse.setDisabled(True)
+    self.ui.treeRun.setItemSelected(self.ui.treeRun.findItems('All Runs',QtCore.Qt.MatchExactly)[0], True)
 
   def runClicked(self):
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()

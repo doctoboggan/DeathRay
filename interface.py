@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Tue Dec 27 04:43:13 2011
+# Created: Tue Dec 27 07:24:04 2011
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,8 +17,10 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
+        MainWindow.setWindowModality(QtCore.Qt.NonModal)
         MainWindow.resize(900, 655)
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
+        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "DeathRay", None, QtGui.QApplication.UnicodeUTF8))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.centralwidget)
@@ -34,7 +36,7 @@ class Ui_MainWindow(object):
         self.treeRun.setSizePolicy(sizePolicy)
         self.treeRun.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.treeRun.setObjectName(_fromUtf8("treeRun"))
-        self.treeRun.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "Select Run File", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeRun.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "Select run to view plot", None, QtGui.QApplication.UnicodeUTF8))
         self.qwtPlot = Qwt5.QwtPlot(self.splitter)
         self.qwtPlot.setObjectName(_fromUtf8("qwtPlot"))
         self.horizontalLayout.addWidget(self.splitter)

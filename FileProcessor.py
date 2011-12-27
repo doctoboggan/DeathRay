@@ -7,15 +7,20 @@ class FileProcessor:
   '''
   This class takes a list of files to open
 
-  .processedData - returns a list of dicts with the labeled processed data
+  .processedData - returns a list of dicts (one for each file) with the labeled processed data
   .plotType - returns the suggested plot type for the processed data
+
+  This will ultimately be the class that has to be written for each experimental setup
   '''
 
   def __init__(self, filesList):
     #instance variables
     self.filesList = filesList
     self.processedData = [{}]
-    self.plotType = ''
+    self.plotType = 'histogram'
+    self.plotTitle = 'Frequency of detected pulse widths'
+    self.xAxis = 'Pulse Width (picoseconds)'
+    self.yAxis = 'Frequency'
 
     #process the files
     self.processFiles()
@@ -23,28 +28,28 @@ class FileProcessor:
   def processFiles(self):
 
     #initialize the first dictionary to be the total of all the runs
-    self.processedData[0]['filename'] = 'All Runs'
-    self.processedData[0]['Decoder'] = ''
-    self.processedData[0]['AutoMea'] = ''
-    self.processedData[0]['pulsewidthList'] = []
-    self.processedData[0]['dataCount'] = 0
-    self.processedData[0]['doublePulse'] = []
-    self.processedData[0]['invalidString'] = []
+    self.processedData[0] = {'filename': 'All Runs',
+                              'Decoder': '',
+                              'AutoMea': '',
+                       'pulsewidthList': [],
+                            'dataCount': 0,
+                          'doublePulse': [],
+                        'invalidString': []}
 
     for filepath in self.filesList:
       #place a dictionary in the list for each run of the experiment
       self.processedData.append({})
-      self.processedData[-1]['filename'] = os.path.basename(filepath)
-      self.processedData[-1]['pulsewidthList'] = []
-      self.processedData[-1]['doublePulse'] = []
-      self.processedData[-1]['invalidString'] = []
-      self.processedData[-1]['Decoder'] = 'Not specified'
-      self.processedData[-1]['AutoMea'] = 'Not specified'
+      self.processedData[-1] = {'filename': os.path.basename(filepath),
+                                'Decoder': '',
+                                'AutoMea': '',
+                         'pulsewidthList': [],
+                              'dataCount': 0,
+                            'doublePulse': [],
+                          'invalidString': []}
 
       #open the current file and loop over each line
       currentFile = open(filepath)
       lineNumber = 0
-      self.processedData[-1]['dataCount'] = 0
       for line in currentFile:
         fixedLine = line.strip()
         lineNumber += 1

@@ -1,4 +1,4 @@
-I need to talk to the guy who wrote the perl script
+Is it possible to get the FPGA to output only oen file instead of several? This would make a few things easier
 
 What is decoder address and Target Name? (XLS Sheet 1):
 Decoder Address (DEC)  Decoder Address ‘abcd’ (BIN)  Target Name
@@ -34,7 +34,12 @@ AUTOMEAS Percentage of Measurement Circuit Utilized
 Is it better to pass arguments through functions or to simply save the argument as an instance variable and then have the called function read the instance variable?
 
 ToDo:
+-talk to the guy who wrote the perl script
+----what do the differnt names mean?
 -Make updateRunDisplay simply display everything in a given dictionary. Build this dictionary in FileProcessor so as to keep the experiment specific code in 1 file.
+-ultimately:
+--Implement FileProcessor for a few different experiments, and then with this knowledge make an 'AbstractFileProcessor' that can be inherited by each of these implementations and future implementations
+--Figure out how to save a plot to an image file
 
 Possible division of labor:
 -someone get other sample data and start reimplementing FileProcessor to interpret it
