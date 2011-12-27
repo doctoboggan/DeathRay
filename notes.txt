@@ -1,5 +1,7 @@
 Is it possible to get the FPGA to output only one file instead of several? This would make a few things easier
 
+How will the files be updated in a real time situation?
+
 What is decoder address and Target Name? (XLS Sheet 1):
 Decoder Address (DEC)  Decoder Address ‘abcd’ (BIN)  Target Name
 0 0000 DIRECT_INPUT

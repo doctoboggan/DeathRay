@@ -36,7 +36,7 @@ class DeathRay(QtGui.QMainWindow):
     This displays the open file dialog, feeds the selected files to the processor, and
     then plots the results
     '''
-    fname = QtGui.QFileDialog.getOpenFileNames(self, 'Open file(s)',
+    fname = QtGui.QFileDialog.getOpenFileNames(self, 'Select FPGA Output File(s)',
         '/Users/jack/Documents/Senior Year/Senior Design/data/raw')
     self.filesList = [str(x) for x in list(fname)]
     self.ProcessedData = FileProcessor(self.filesList)
@@ -97,6 +97,9 @@ class DeathRay(QtGui.QMainWindow):
     current experiment. This has experiment specific code that should be moved to
     FileProcessor.
     '''
+
+    self.ui.treeRun.clear()
+
     for run in self.ProcessedData.processedData:
       treeItem = QtGui.QTreeWidgetItem(self.ui.treeRun)
       treeItem.setText(0, run['filename'])
