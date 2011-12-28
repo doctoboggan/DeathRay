@@ -1,49 +1,28 @@
-Is it possible to get the FPGA to output only one file instead of several? This would make a few things easier
+General Questions:
+-Is it possible to get the FPGA to output only one file instead of several? This would make a few things easier
+-How will the files be updated in a real time situation?
+-What is decoder address and Target Name? (XLS Sheet 1)?
+-What info from the XLS should be included in the app?
+-Is it better to pass arguments through functions or to simply save the argument as an instance variable and then have the called function read the instance variable?
 
-How will the files be updated in a real time situation?
 
-What is decoder address and Target Name? (XLS Sheet 1):
-Decoder Address (DEC)  Decoder Address ‘abcd’ (BIN)  Target Name
-0 0000 DIRECT_INPUT
-1 0001 inv_1x_avt_fb
-2 0010 inv_1x_rvt
-3 0011 24576_inv_1x_rvt
-4 0100 OR_Tree_rvt
-5 0101 inv_1x_rvt_bt
-6 0110 OR_Tree_bt
-7 0111 nhit_rvt
-8 1000 phit_bt
-9 1001 nhit_bt
-10 1010 inv_1x_to_bt
-11 1011 inv_5x_s_rvt
-12 1100 inv_1x_to
-13 1101 OR_Tree_to
-14 1110 phit_rvt
-15 1111 inv_5x_f_rvt
 
-Valid AUTOMEAS codes range from 0 to 7 and represent the percentage of the on-chip measurement circuit utilized for "digitizing" the transient widths.  Each file should be set for a given setting (1 decoder mode and 1 autopw mode).
 
-AUTOMEAS Percentage of Measurement Circuit Utilized
-0 30%
-1 49%
-2 56%
-3 70%
-4 80%
-5 OVERFLOW
-6 NOT VALID
-7 NOT VALID
-
-Is it better to pass arguments through functions or to simply save the argument as an instance variable and then have the called function read the instance variable?
 
 ToDo:
 -talk to the guy who wrote the perl script
 ----what do the differnt names mean?
--Make updateRunDisplay simply display everything in a given dictionary. Build this dictionary in FileProcessor so as to keep the experiment specific code in 1 file.
+-Make updateRunDisplay simply display everything in a given dictionary. Build this dictionary in FileProcessor so as to keep the experiment specific code in 1 file. --DONE--
 -ultimately:
 --Implement FileProcessor for a few different experiments, and then with this knowledge make an 'AbstractFileProcessor' that can be inherited by each of these implementations and future implementations
 --Figure out how to save a plot to an image file
 --Control hardware???
 
+
+
+
+
 Possible division of labor:
 -someone get other sample data and start reimplementing FileProcessor to interpret it
 -someone work on the interface, fleshing it out and making it look nicer.
+-someone work on documentation

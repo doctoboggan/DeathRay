@@ -94,46 +94,27 @@ class DeathRay(QtGui.QMainWindow):
   def updateRunDisplay(self):
     '''
     This method updates the display widget to show a list of all the runs of the
-    current experiment. This has experiment specific code that should be moved to
-    FileProcessor.
+    current experiment.
+    
+    The data in FileProcessor.displayData is used for the treeWidget
     '''
 
     self.ui.treeRun.clear()
 
-    for run in self.ProcessedData.processedData:
+    print self.ProcessedData.displayData
+    for run in self.ProcessedData.displayData:
       treeItem = QtGui.QTreeWidgetItem(self.ui.treeRun)
-      treeItem.setText(0, run['filename'])
+      treeItem.setText(0, run[0])
 
-      if run['Decoder'] != '':
-        childDecoder = QtGui.QTreeWidgetItem(treeItem)
-        childDecoder.setText(0, 'Decoder: ' + run['Decoder'])
-        treeItem.insertChild(0, childDecoder)
-        childDecoder.setDisabled(True)
+      for subItemIndex in range(len(run)-1):
+        child = QtGui.QTreeWidgetItem(treeItem)
+        child.setText(0, run[subItemIndex+1])
+        treeItem.insertChild(0, child)
+        child.setDisabled(True)
       
-      if run['AutoMea'] != '':
-        childAutoMea = QtGui.QTreeWidgetItem(treeItem)
-        childAutoMea.setText(0, 'AutoMea: ' + run['AutoMea'])
-        treeItem.insertChild(0, childAutoMea)
-        childAutoMea.setDisabled(True)
-      
-      if run['dataCount'] != 0:
-        childDataCount = QtGui.QTreeWidgetItem(treeItem)
-        childDataCount.setText(0, 'Data points: ' + str(run['dataCount']))
-        treeItem.insertChild(0, childDataCount)
-        childDataCount.setDisabled(True)
-
-      if run['invalidString'] != []:
-        childInvalidString = QtGui.QTreeWidgetItem(treeItem)
-        childInvalidString.setText(0, 'Invalid lines: ' + str(run['invalidString']))
-        treeItem.insertChild(0, childInvalidString)
-        childInvalidString.setDisabled(True)
-
-      if run['doublePulse'] != []:
-        childDoublePulse = QtGui.QTreeWidgetItem(treeItem)
-        childDoublePulse.setText(0, 'Double pulse lines: ' + str(run['doublePulse']))
-        treeItem.insertChild(0, childDoublePulse)
-        childDoublePulse.setDisabled(True)
-    self.ui.treeRun.setItemSelected(self.ui.treeRun.findItems('All Runs',QtCore.Qt.MatchExactly)[0], True)
+    #Set 'All Runs' as the selected item
+    allRunsItem = self.ui.treeRun.findItems('All Runs',QtCore.Qt.MatchExactly)[0]
+    self.ui.treeRun.setItemSelected(allRunsItem, True)
 
   def runClicked(self):
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()

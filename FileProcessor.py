@@ -9,6 +9,7 @@ class FileProcessor:
 
   .processedData - returns a list of dicts (one for each file) with the labeled processed data
   .plotType - returns the suggested plot type for the processed data
+  .displayData - list of lists with data formated to be displayed by the treeWidget
 
   This will ultimately be the class that has to be written for each experimental setup
   '''
@@ -22,11 +23,12 @@ class FileProcessor:
     self.xAxis = 'Pulse Width (picoseconds)'
     self.yAxis = 'Frequency'
 
-    #process the files
+    #process the files and then prepare the data for display
     self.processFiles()
+    self.prepareDataForDisplay()
+
 
   def processFiles(self):
-
     #initialize the first dictionary to be the total of all the runs
     self.processedData[0] = {'filename': 'All Runs',
                               'Decoder': '',
@@ -75,7 +77,6 @@ class FileProcessor:
           except ValueError:
             self.processedData[-1]['invalidString'].append(lineNumber)
 
-
     #loop over each run and prepare the bins and counts for a histogram plot
     for i in range(len(self.processedData)):
       try:
@@ -87,5 +88,65 @@ class FileProcessor:
       for pulsewidth in self.processedData[i]['pulsewidthList']:
         self.processedData[i]['binCounts'][int(pulsewidth/30)] += 1
 
+
+  def prepareDataForDisplay(self):
+    '''
+    Prepare a list of lists for display in the treeWidget. Each sublist contains only strings
+    The first string is the run name that will be displayed on the top level
+    All the following strings will be displayed as sub items when the arrow is dropped down
+
+    ex: ['title', 'drop down 1', 'drop down 2', 'drop down 3'] will display as
+
+    >title
+      drop down 1
+      drop down 2
+      drop down 3
+    '''
+
+    self.displayData = []
+    for run in self.processedData:
+      self.displayData.append([])
+      self.displayData[-1].append(run['filename'])
+
+      if run['Decoder'] != '':
+        decoderType = ['DIRECT_INPUT',
+                      'inv_1x_avt_fb',
+                      'inv_1x_rvt',
+                      '24576_inv_1x_rvt',
+                      'OR_Tree_rvt',
+                      'inv_1x_rvt_bt',
+                      'OR_Tree_bt',
+                      'nhit_rvt',
+                      'phit_bt',
+                      'nhit_bt',
+                      'inv_1x_to_bt',
+                      'inv_5x_s_rvt',
+                      'inv_1x_to',
+                      'OR_Tree_to',
+                      'phit_rvt,'
+                      'inv_5x_f_rvt']
+        decNum = run['Decoder']
+        self.displayData[-1].append('Decoder ' + decNum + ': ' + decoderType[int(decNum, 16)])
+      
+      if run['AutoMea'] != '':
+        autoMeaType = ['30%',
+                      '49%',
+                      '56%',
+                      '70%',
+                      '80%',
+                      'OVERFLOW',
+                      'NOT VALID',
+                      'NOT VALID']
+        autoNum = run['AutoMea']
+        self.displayData[-1].append('AutoMea ' + autoNum + ': ' + autoMeaType[int(autoNum)])
+      
+      if run['dataCount'] != 0:
+        self.displayData[-1].append('Data points: ' + str(run['dataCount']))
+
+      if run['invalidString'] != []:
+        self.displayData[-1].append('Invalid lines: ' + str(run['invalidString']))
+
+      if run['doublePulse'] != []:
+        self.displayData[-1].append('Double pulse lines: ' + str(run['doublePulse']))
 
 
