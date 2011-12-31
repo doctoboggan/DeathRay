@@ -8,7 +8,6 @@ class FileProcessor:
   This class takes a list of files to open
 
   .processedData - returns a list of dicts (one for each file) with the labeled processed data
-  .plotType - returns the suggested plot type for the processed data
   .displayData - list of lists with data formated to be displayed by the treeWidget
 
   This will ultimately be the class that has to be written for each experimental setup
@@ -76,17 +75,6 @@ class FileProcessor:
               self.processedData[0]['dataCount'] += 1
           except ValueError:
             self.processedData[-1]['invalidString'].append(lineNumber)
-
-    #loop over each run and prepare the bins and counts for a histogram plot
-    for i in range(len(self.processedData)):
-      try:
-        maxBinValue = max(self.processedData[i]['pulsewidthList'])
-      except ValueError:
-        maxBinValue = 0
-      self.processedData[i]['binValues'] = np.arange(0,maxBinValue+1, 30)
-      self.processedData[i]['binCounts'] = np.zeros(len(np.arange(0,maxBinValue+1, 30)))
-      for pulsewidth in self.processedData[i]['pulsewidthList']:
-        self.processedData[i]['binCounts'][int(pulsewidth/30)] += 1
 
 
   def prepareDataForDisplay(self):

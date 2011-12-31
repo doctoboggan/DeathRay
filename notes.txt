@@ -16,7 +16,7 @@ ToDo:
 -ultimately:
 --Implement FileProcessor for a few different experiments, and then with this knowledge make an 'AbstractFileProcessor' that can be inherited by each of these implementations and future implementations
 --Figure out how to save a plot to an image file
---Control hardware???
+------ QPixmap.grabWidget(p).save('cli-plot-1.png', 'PNG')
 
 
 
@@ -25,4 +25,18 @@ ToDo:
 Possible division of labor:
 -someone get other sample data and start reimplementing FileProcessor to interpret it
 -someone work on the interface, fleshing it out and making it look nicer.
+-someone control hardware (GPIB)
 -someone work on documentation
+-someone becomea qwt expert and them implement a simpler/friendlier interface for future plugin authors
+
+
+
+
+plot types:
+histogram
+line graph
+  spline interpolation
+  linear interpolation
+  steps
+scatter plot
+heat map

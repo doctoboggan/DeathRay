@@ -1,12 +1,15 @@
 #!/usr/bin/python -d
  
 import sys, random, pprint
+
 from PyQt4 import QtCore, QtGui, Qt
 from interface import Ui_MainWindow
 import PyQt4.Qwt5 as Qwt
+import numpy as np
 
 from FileProcessor import FileProcessor
 from Histogram import HistogramItem
+from ImagePlot import ImagePlot, square
 
  
 class DeathRay(QtGui.QMainWindow):
@@ -23,10 +26,18 @@ class DeathRay(QtGui.QMainWindow):
   def initUI(self):
     #Connect the signals and slots
     self.connect(self.ui.actionOpen, QtCore.SIGNAL('triggered()'), self.openFiles)
+    self.connect(self.ui.actionOne_Plot, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(1))
+    self.connect(self.ui.actionTwo_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(2)) 
+    self.connect(self.ui.actionThree_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(3)) 
+    self.connect(self.ui.actionFour_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(4))
     self.connect(self.ui.treeRun, QtCore.SIGNAL('itemSelectionChanged()'), self.runClicked)
 
     #Set initial sizes
     self.ui.splitter.setSizes([250, 600])
+    
+    self.ui.qwtPlot_2.setHidden(True)
+    self.ui.qwtPlot_3.setHidden(True)
+    self.ui.qwtPlot_4.setHidden(True)
 
     #jump to this method while developing
     self.openFiles()
@@ -39,14 +50,19 @@ class DeathRay(QtGui.QMainWindow):
     fname = QtGui.QFileDialog.getOpenFileNames(self, 'Select FPGA Output File(s)',
         '/Users/jack/Documents/Senior Year/Senior Design/data/raw')
     self.filesList = [str(x) for x in list(fname)]
-    self.ProcessedData = FileProcessor(self.filesList)
+    self.Experiment = FileProcessor(self.filesList)
     pp=pprint.PrettyPrinter()
-    pp.pprint(self.ProcessedData.processedData)
+    pp.pprint(self.Experiment.processedData)
     self.updateRunDisplay()
-    self.plotHistogram(0)
+
+    #Plot some stuffs
+    self.plotHistogram(self.ui.qwtPlot_1, 0)
+    self.plotLine(self.ui.qwtPlot_2, 0, 'scatter')
+    self.plotHeatMap(self.ui.qwtPlot_3, 0)
+    self.plotLine(self.ui.qwtPlot_4, 0, 'step')
 
  
-  def plotHistogram(self, runIndex):
+  def plotHistogram(self, plot, runIndex):
     '''
     This method displays a histogram using data from .processedData
     '''
@@ -61,14 +77,25 @@ class DeathRay(QtGui.QMainWindow):
     self.histogram.setColor(Qt.Qt.darkGreen)
 
 
-    numBins = len(self.ProcessedData.processedData[runIndex]['binCounts'])
+    try:
+      maxBinValue = max(self.Experiment.processedData[runIndex]['pulsewidthList'])
+    except ValueError:
+      maxBinValue = 0
+    #Add 1 so maxBinValue is included in the array
+    binValue = np.arange(0,maxBinValue+1, 30)
+    binCounts = np.zeros(len(binValue))
+    for pulsewidth in self.Experiment.processedData[runIndex]['pulsewidthList']:
+      binCounts[int(pulsewidth/30)] += 1
+
+
+    numBins = len(binCounts)
     intervals = []
     binNumber = Qwt.QwtArrayDouble(numBins)
 
     pos = 0.0
     for i in range(numBins):
       width = 30
-      binNumber[i] = self.ProcessedData.processedData[runIndex]['binCounts'][i]
+      binNumber[i] = binCounts[i]
       if pos > 0:
         intervals.append(Qwt.QwtDoubleInterval(pos-15, pos+width-15));
       else:
@@ -76,15 +103,69 @@ class DeathRay(QtGui.QMainWindow):
       pos += width
 
     self.histogram.setData(Qwt.QwtIntervalData(intervals, binNumber))
-    self.histogram.attach(self.ui.qwtPlot)
+    self.histogram.attach(self.ui.qwtPlot_1)
 
-    self.ui.qwtPlot.setAxisScale(Qwt.QwtPlot.yLeft, 0.0, max(binNumber))
-    self.ui.qwtPlot.setAxisScale(Qwt.QwtPlot.xBottom, 0.0, pos, 30)
-    self.ui.qwtPlot.setAxisTitle(Qwt.QwtPlot.xBottom, self.ProcessedData.xAxis)
-    self.ui.qwtPlot.setAxisTitle(Qwt.QwtPlot.yLeft, self.ProcessedData.yAxis)
-    self.ui.qwtPlot.setTitle(self.ProcessedData.plotTitle)
-    self.ui.qwtPlot.replot()
-    self.ui.qwtPlot.show()
+    plot.setAxisScale(Qwt.QwtPlot.yLeft, 0.0, max(binNumber))
+    plot.setAxisScale(Qwt.QwtPlot.xBottom, 0.0, pos, 30)
+    plot.setAxisTitle(Qwt.QwtPlot.xBottom, self.Experiment.xAxis)
+    plot.setAxisTitle(Qwt.QwtPlot.yLeft, self.Experiment.yAxis)
+    plot.setTitle(self.Experiment.plotTitle)
+    plot.replot()
+    plot.show()
+
+  def plotLine(self, plot, runIndex, curveType):
+
+    x = np.arange(0,3,.1)
+    y = x*np.random.rand(30)
+
+    grid = Qwt.QwtPlotGrid()
+    grid.setPen(Qt.QPen(Qt.Qt.gray, 0, Qt.Qt.DotLine))
+    grid.attach(plot)
+
+    curve = Qwt.QwtPlotCurve()
+    curve.setPen(Qt.QPen(Qt.Qt.red))
+    curve.setRenderHint(Qwt.QwtPlotItem.RenderAntialiased)
+    curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Ellipse,
+                                      Qt.QBrush(),
+                                      Qt.QPen(Qt.Qt.black),
+                                      Qt.QSize(5, 5)))
+    if curveType == 'spline':
+      curve.setCurveAttribute(Qwt.QwtPlotCurve.Fitted)
+
+    if curveType == 'step':
+      curve.setStyle(Qwt.QwtPlotCurve.Steps)
+
+    if curveType == 'scatter':
+      curve.setStyle(Qwt.QwtPlotCurve.NoCurve)
+      curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Cross,
+                                      Qt.QBrush(),
+                                      Qt.QPen(Qt.Qt.red),
+                                      Qt.QSize(5, 5)))
+    curve.setData(x,y)
+    curve.attach(plot)
+
+    self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
+                                        Qwt.QwtPlot.yLeft,
+                                        Qwt.QwtPicker.DragSelection,
+                                        Qwt.QwtPicker.AlwaysOff,
+                                        plot.canvas())
+    self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
+    plot.replot()
+
+
+  def plotHeatMap(self, plot, runIndex):
+    plotImage = ImagePlot('Heatmap')
+    plotImage.attach(plot)
+    plotImage.setData(square(512, -2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi))
+    
+    self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
+                                        Qwt.QwtPlot.yLeft,
+                                        Qwt.QwtPicker.DragSelection,
+                                        Qwt.QwtPicker.AlwaysOff,
+                                        plot.canvas())
+    self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
+
+
 
 
   ####################
@@ -101,8 +182,7 @@ class DeathRay(QtGui.QMainWindow):
 
     self.ui.treeRun.clear()
 
-    print self.ProcessedData.displayData
-    for run in self.ProcessedData.displayData:
+    for run in self.Experiment.displayData:
       treeItem = QtGui.QTreeWidgetItem(self.ui.treeRun)
       treeItem.setText(0, run[0])
 
@@ -118,8 +198,13 @@ class DeathRay(QtGui.QMainWindow):
 
   def runClicked(self):
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
-    self.plotHistogram(index)
-      
+    self.plotHistogram(self.ui.qwtPlot_1, index)
+
+  def setPlotNumber(self, number):
+    self.ui.qwtPlot_1.setVisible(number > 0)
+    self.ui.qwtPlot_2.setVisible(number > 1)
+    self.ui.qwtPlot_3.setVisible(number > 2)
+    self.ui.qwtPlot_4.setVisible(number > 3)
 
 
 if __name__ == "__main__":
