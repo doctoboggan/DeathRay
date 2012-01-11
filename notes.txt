@@ -23,11 +23,11 @@ ToDo:
 
 
 Possible division of labor:
--someone get other sample data and start reimplementing FileProcessor to interpret it
--someone work on the interface, fleshing it out and making it look nicer.
--someone control hardware (GPIB)
--someone work on documentation
--someone becomea qwt expert and them implement a simpler/friendlier interface for future plugin authors
+-someone get other sample data and start reimplementing FileProcessor to interpret it (Everyone)
+-someone work on the interface, fleshing it out and making it look nicer. (jack)
+-someone control hardware (GPIB) (Anas)
+-someone work on documentation (Nadiah)
+-someone becomea qwt expert and them implement a simpler/friendlier interface for future plugin authors (jack)
 
 
 
