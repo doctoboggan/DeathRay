@@ -13,8 +13,8 @@ NOTE: Maybe there are some grammer mistakes :)  .
 *notes
 ~~~~~~~~~~~~~~~~~~~~~
 
-&&Note: (10) means a device on the network, which the address of the GBIP equal to 10 (for now)  //I have to find the name of the device and replace the number by the name
-&&Note: (22) means a device on the network, which the address of the GBIP equal to 22 (for now)  //I have to find the name of the device and replace the number by the name
+&&Note: (10) means E3631A DMM 
+&&Note: (22) means 34401A DMM
 
 
 &&START:
