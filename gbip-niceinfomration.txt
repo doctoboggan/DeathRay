@@ -1,6 +1,6 @@
-This file contains useful information about the gbip port. 
+This file contains useful information about the gpib port. 
 
-Note: Some commands may notwork in some devices (depend on how smart are these devices). Any way, I will see if they work or not.
+NOTE: Some commands may notwork in some devices (depend on how smart are these devices). Any way, I will see if they work or not.
 NOTE: Maybe there are some grammer mistakes :)  .
 
 
@@ -46,5 +46,40 @@ NOTE: Maybe there are some grammer mistakes :)  .
 9---> I am not sure what does this value mean?? ( :\ )  :  //I have to find the meaning?
 == meas:volt:dc:rat?
 *works on (22)
+
+$$Note: it is going to be continued 
+
+
+***Connection via TCP in python***
+
+$$Note: The ip address is 129.59.73.80 ---- The port is 80 (it is http. I found that from my firewill mintoring screen)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~the code~~~~~~~~~~~~
+
+ 1 #!/usr/bin/env python
+   2 
+   3 import socket    //to call the TCP library. For that, this library has to be installed in user's computer. So, we have to add this informaion to requirment page (readme)  [NOT DONE]
+   4 
+   5 
+   6 TCP_IP = '129.59.73.80'     //This is the ip for now
+   7 TCP_PORT = 80		// The port number
+   8 BUFFER_SIZE = 16384	//just a dafult 
+   9 MESSAGE="meas:volt:dc?"	//here is going to be the command (this command as an example)			**
+  10 
+  11 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  12 s.connect((TCP_IP, TCP_PORT))
+  13 s.send(MESSAGE)
+  14 data = s.recv(BUFFER_SIZE)
+  15 s.close()
+  16 
+  17 print "the voltage is: ", data	//here to print the result of the comand				**
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+&&Note: This code require testing  [NOT DONE]
+&&Note: There are some ideas, which may be useful to the code: 
+	1) This code should be in separate class. So that, it will be called each time (assume each 0.5 second). Moreover, when it is called, the call will specific the coommand*.  
+	2) We may not need the print the result. We only need to return the result to the caller. 
+
 
 
