@@ -1,0 +1,50 @@
+This file contains useful information about the gbip port. 
+
+Note: Some commands may notwork in some devices (depend on how smart are these devices). Any way, I will see if they work or not.
+NOTE: Maybe there are some grammer mistakes :)  .
+
+
+**** FOR POWER SUPPLY:***
+
+~~~~~~~~~~~~~~~~~~~~~
+--Example:
+#---> the defination of the commands :
+== The command 
+*notes
+~~~~~~~~~~~~~~~~~~~~~
+
+&&Note: (10) means a device on the network, which the address of the GBIP equal to 10 (for now)  //I have to find the name of the device and replace the number by the name
+&&Note: (22) means a device on the network, which the address of the GBIP equal to 22 (for now)  //I have to find the name of the device and replace the number by the name
+
+
+&&START:
+
+1----> to get the value of dc voltage : 
+==  meas:volt:dc?
+*works on all (10,22)
+2----> to get the value of ac voltage : 
+==  meas:volt:ac?
+*works on (22)
+3----> to get the value of dc voltage : (the result is different (I have not find why yet))  //I have to find the different
+== MEASure:VOLTage:DC?
+*works on all (10,22)
+4----> to get the value of ac voltage : (the result is different (I have not find why yet))  //I have to find the different
+== MEASure:VOLTage:AC?
+*works on (22)
+5----> To get the value of dc current : 
+== meas:curr:dc?
+*works on all (10,22)
+6----> To get the value of dc current : (the result is different (I have not find why yet))  //I have to find the different
+== MEASure:CURRent:DC?
+*works on all (10,22)
+7---> To get the value of ac current : 
+== meas:curr:ac?
+*works on (22)
+8---> To get the value of ac current : (the result is different (I have not find why yet))  //I have to find the different
+== MEANsure:CURRent:AC?
+*works on (22)
+9---> I am not sure what does this value mean?? ( :\ )  :  //I have to find the meaning?
+== meas:volt:dc:rat?
+*works on (22)
+
+
