@@ -80,6 +80,7 @@ $$Note: The ip address is 129.59.73.80 ---- The port is 80 (it is http. I found 
 &&Note: There are some ideas, which may be useful to the code: 
 	1) This code should be in separate class. So that, it will be called each time (assume each 0.5 second). Moreover, when it is called, the call will specific the coommand*.  
 	2) We may not need to print the result. We only need to return the result to the caller. 
+	3) We may need to check the result. In other words, some commands may not work with some devices. So, we have to make sure if the command will work or not.
 
 
 
