@@ -33,6 +33,10 @@ Possible division of labor:
 
 
 
+
+
+
+
 plot types:
 histogram
 line graph
@@ -42,6 +46,11 @@ line graph
 scatter plot
 heat map
 These plot types should be sufficent according to daniel.
+
+
+
+
+
 
 
 
@@ -59,3 +68,6 @@ These plot types should be sufficent according to daniel.
 -include a table as a plot
     -some basic statics (avg, max, min, etc) and parameters of the experiment
 IP of gateway: 129.59.93.150
+
+
+we need to implement "measure" for the devices that dont have it.
