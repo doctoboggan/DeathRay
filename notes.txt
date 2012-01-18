@@ -69,5 +69,17 @@ These plot types should be sufficent according to daniel.
     -some basic statics (avg, max, min, etc) and parameters of the experiment
 IP of gateway: 129.59.93.150
 
-
 we need to implement "measure" for the devices that dont have it.
+
+put together a state diagram of how the program operates
+
+
+
+
+
+
+
+1/18 class
+Design day is Thursday, April 19th
+Go to presentation next wednesday 3-4 in the jacobs auditorium instead of class
+Talk to loveless about a special git account at ISDE
