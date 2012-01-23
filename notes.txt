@@ -80,6 +80,24 @@ put together a state diagram of how the program operates
 
 
 1/18 class
-Design day is Thursday, April 19th
+Design day is Thursday, April 19th 2 to 4
 Go to presentation next wednesday 3-4 in the jacobs auditorium instead of class
 Talk to loveless about a special git account at ISDE
+
+
+
+
+
+
+
+
+
+1/23 class
+Weekly project reports due each friday.
+Midterm design review (completed by March 16 - week after spring break)
+  demonstrate real work
+  say what needs to be done
+  make fancy slides
+  do this with loveless
+For next week:
+  list a design problem we are stuck on and bring it to class. Email it to holman
