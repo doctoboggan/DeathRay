@@ -207,6 +207,7 @@ class DeathRay(QtGui.QMainWindow):
     self.ui.tableWidgetData.setHorizontalHeaderLabels(currentTableData[0])
     for c in range(len(currentTableData)-1):
       for r in range(len(currentTableData[c+1])):
+        print c, ',', r
         tableItem = QtGui.QTableWidgetItem(str(currentTableData[c+1][r]))
         tableItem.setTextAlignment(2)
         self.ui.tableWidgetData.setItem(r, c, tableItem)
