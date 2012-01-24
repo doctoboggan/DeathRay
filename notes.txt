@@ -11,13 +11,14 @@ General Questions:
 
 
 ToDo:
--talk to the guy who wrote the perl script
+-talk to the guy who wrote the perl script DONE
 ----what do the differnt names mean? - Nothing, ignore them
 -Make updateRunDisplay simply display everything in a given dictionary. Build this dictionary in FileProcessor so as to keep the experiment specific code in 1 file. --DONE--
 -ultimately:
 --Implement FileProcessor for a few different experiments, and then with this knowledge make an 'AbstractFileProcessor' that can be inherited by each of these implementations and future implementations
 --Figure out how to save a plot to an image file
 ------ QPixmap.grabWidget(p).save('cli-plot-1.png', 'PNG')
+
 
 
 
@@ -59,19 +60,19 @@ These plot types should be sufficent according to daniel.
 
 1/17 meeting
 -be able to sort by decoder type or automeasure value
--if decoder is not specified, it is the same as the previous experiment
--no pulse listed is the smallest pulse detected.
+-if decoder is not specified, it is the same as the previous experiment --DONE-- (Same for automeasure??)
+-no pulse listed is the smallest pulse detected. --DONE-- (set as 15)
 -maybe include error bars (based on standard (counting) error)
 -use flux as an input parameter and then plot count vs fluence 
     -(flux is the rate, fluence is the total number)
     -divide the estimated value by the square root of the counts (number of errors)
--include a table as a plot
+-include a table as a plot --DONE--
     -some basic statics (avg, max, min, etc) and parameters of the experiment
 IP of gateway: 129.59.93.150
 
 we need to implement "measure" for the devices that dont have it.
 
-put together a state diagram of how the program operates
+put together a state diagram of how the program operates --IN PROGRESS (Nadiah)--
 
 
 

@@ -45,7 +45,7 @@
         </property>
        </column>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QwtPlot" name="qwtPlot_1"/>
@@ -53,14 +53,15 @@
         <item row="0" column="1">
          <widget class="QwtPlot" name="qwtPlot_2"/>
         </item>
-        <item row="1" column="0">
-         <widget class="QwtPlot" name="qwtPlot_3"/>
-        </item>
         <item row="1" column="1">
          <widget class="QwtPlot" name="qwtPlot_4"/>
         </item>
+        <item row="1" column="0">
+         <widget class="QwtPlot" name="qwtPlot_3"/>
+        </item>
        </layout>
       </widget>
+      <widget class="QTableWidget" name="tableWidgetData"/>
      </widget>
     </item>
    </layout>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Sat Dec 31 01:37:35 2011
+# Created: Mon Jan 23 22:48:27 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,23 +37,27 @@ class Ui_MainWindow(object):
         self.treeRun.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.treeRun.setObjectName(_fromUtf8("treeRun"))
         self.treeRun.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "Select Run to View Plot", None, QtGui.QApplication.UnicodeUTF8))
-        self.widget = QtGui.QWidget(self.splitter)
-        self.widget.setObjectName(_fromUtf8("widget"))
-        self.gridLayout = QtGui.QGridLayout(self.widget)
+        self.layoutWidget = QtGui.QWidget(self.splitter)
+        self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
+        self.gridLayout = QtGui.QGridLayout(self.layoutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.qwtPlot_1 = Qwt5.QwtPlot(self.widget)
+        self.qwtPlot_1 = Qwt5.QwtPlot(self.layoutWidget)
         self.qwtPlot_1.setObjectName(_fromUtf8("qwtPlot_1"))
         self.gridLayout.addWidget(self.qwtPlot_1, 0, 0, 1, 1)
-        self.qwtPlot_2 = Qwt5.QwtPlot(self.widget)
+        self.qwtPlot_2 = Qwt5.QwtPlot(self.layoutWidget)
         self.qwtPlot_2.setObjectName(_fromUtf8("qwtPlot_2"))
         self.gridLayout.addWidget(self.qwtPlot_2, 0, 1, 1, 1)
-        self.qwtPlot_3 = Qwt5.QwtPlot(self.widget)
-        self.qwtPlot_3.setObjectName(_fromUtf8("qwtPlot_3"))
-        self.gridLayout.addWidget(self.qwtPlot_3, 1, 0, 1, 1)
-        self.qwtPlot_4 = Qwt5.QwtPlot(self.widget)
+        self.qwtPlot_4 = Qwt5.QwtPlot(self.layoutWidget)
         self.qwtPlot_4.setObjectName(_fromUtf8("qwtPlot_4"))
         self.gridLayout.addWidget(self.qwtPlot_4, 1, 1, 1, 1)
+        self.qwtPlot_3 = Qwt5.QwtPlot(self.layoutWidget)
+        self.qwtPlot_3.setObjectName(_fromUtf8("qwtPlot_3"))
+        self.gridLayout.addWidget(self.qwtPlot_3, 1, 0, 1, 1)
+        self.tableWidgetData = QtGui.QTableWidget(self.splitter)
+        self.tableWidgetData.setObjectName(_fromUtf8("tableWidgetData"))
+        self.tableWidgetData.setColumnCount(0)
+        self.tableWidgetData.setRowCount(0)
         self.horizontalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)

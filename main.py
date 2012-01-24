@@ -33,7 +33,7 @@ class DeathRay(QtGui.QMainWindow):
     self.connect(self.ui.treeRun, QtCore.SIGNAL('itemSelectionChanged()'), self.runClicked)
 
     #Set initial sizes
-    self.ui.splitter.setSizes([250, 600])
+    self.ui.splitter.setSizes([250, 600, 0])
     
     self.ui.qwtPlot_2.setHidden(True)
     self.ui.qwtPlot_3.setHidden(True)
@@ -51,8 +51,8 @@ class DeathRay(QtGui.QMainWindow):
         '/Users/jack/Documents/Senior Year/Senior Design/data/raw')
     self.filesList = [str(x) for x in list(fname)]
     self.Experiment = FileProcessor(self.filesList)
-    pp=pprint.PrettyPrinter()
-    pp.pprint(self.Experiment.processedData)
+    #pp=pprint.PrettyPrinter()
+    #pp.pprint(self.Experiment.processedData)
     self.updateRunDisplay()
 
     #Plot some stuffs
@@ -196,9 +196,27 @@ class DeathRay(QtGui.QMainWindow):
     allRunsItem = self.ui.treeRun.findItems('All Runs',QtCore.Qt.MatchExactly)[0]
     self.ui.treeRun.setItemSelected(allRunsItem, True)
 
+  def updateDataTable(self, index):
+    '''
+    This method updates the table widget with the data stored in FileProcessor.tableData
+    '''
+    currentTableData = self.Experiment.tableData[index]
+    self.ui.tableWidgetData.clear()
+    self.ui.tableWidgetData.setRowCount(max(len(x) for x in currentTableData))
+    self.ui.tableWidgetData.setColumnCount(len(currentTableData[0]))
+    self.ui.tableWidgetData.setHorizontalHeaderLabels(currentTableData[0])
+    for c in range(len(currentTableData)-1):
+      for r in range(len(currentTableData[c+1])):
+        tableItem = QtGui.QTableWidgetItem(str(currentTableData[c+1][r]))
+        tableItem.setTextAlignment(2)
+        self.ui.tableWidgetData.setItem(r, c, tableItem)
+    self.ui.tableWidgetData.setSortingEnabled(True)
+
+
   def runClicked(self):
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
     self.plotHistogram(self.ui.qwtPlot_1, index)
+    self.updateDataTable(index)
 
   def setPlotNumber(self, number):
     self.ui.qwtPlot_1.setVisible(number > 0)
