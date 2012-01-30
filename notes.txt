@@ -102,3 +102,12 @@ Midterm design review (completed by March 16 - week after spring break)
   do this with loveless
 For next week:
   list a design problem we are stuck on and bring it to class. Email it to holman
+
+
+
+
+
+
+1/30 class
+Talk about our UI next monday (2/6)
+  be prepared to present the software so far.
