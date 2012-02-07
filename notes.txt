@@ -111,3 +111,31 @@ For next week:
 1/30 class
 Talk about our UI next monday (2/6)
   be prepared to present the software so far.
+
+
+
+
+1/7 meeting
+plot error count vs time
+  be able to key in flux rate
+  first 2 bits are timestamp
+  every 30 bits is one IC
+  every two bits is a unique flip flop
+release device at the bottom of class
+
+supply:
+  set current limit on the supply
+  set voltage
+  be able to specify port
+  read current coming out of power supply
+multimeter:
+  current, voltage (AC/DC)
+oscope:
+  change the trigger event (common: edge, or width)
+    mode: normal vs auto
+      auto: forces a trigger even if one doesnt exist
+      norm: only triggers when it exists (generally used)
+  download each channel (1,2)
+  set timescale and voltage
+
+  
