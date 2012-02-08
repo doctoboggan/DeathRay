@@ -9,5 +9,4 @@ Numpy
 Authors are:
 Nadiah Husseini Zainol Abidin
 Anas Alfuntukh
-Daniel Hasday
 Jack Minardi
