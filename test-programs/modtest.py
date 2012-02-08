@@ -4,6 +4,7 @@
 # Goal: This moduel suppose to be able to return the voltage value from the given devices.
 # Devcies:  1) "hp34401a"  2) "hpe3631a"
 # Modifiers:  None (for now)  <----  Here the name of a developer, who may modify the code in the future, with the date.
+# SCPI command: meas:volt:dc?
 # Result: float
 
 import libgpib
