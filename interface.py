@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Mon Jan 23 22:48:27 2012
+# Created: Mon Jan 30 21:23:53 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(900, 655)
+        MainWindow.resize(1006, 658)
         MainWindow.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "DeathRay", None, QtGui.QApplication.UnicodeUTF8))
         self.centralwidget = QtGui.QWidget(MainWindow)
@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1006, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))

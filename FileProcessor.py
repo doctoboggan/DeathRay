@@ -46,7 +46,7 @@ class FileProcessor:
     for filepath in self.filesList:
       #place a dictionary in the list for each run of the experiment
       self.processedData.append({})
-      self.processedData[-1] = {'filename': os.path.basename(filepath),
+      self.processedData[-1] = {'filename': os.path.basename(filepath).split('.')[0],
                                  'Decoder': '',
                                  'AutoMea': '',
                           'pulsewidthList': [],
@@ -188,7 +188,7 @@ class FileProcessor:
     '''
     for run in self.processedData:
       if run['filename'] == 'All Runs':
-        self.tableData = [[['Run', 'Decoder', 'AutoMeasure', 'Data Count'], [], [], [], []]]
+        self.tableData = [[['Run', 'Decoder', 'AutoMea', 'Count'], [], [], [], []]]
         for run2 in self.processedData:
           if run2['filename'] != 'All Runs':
               self.tableData[0][1].append(run2['filename'])

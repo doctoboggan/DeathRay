@@ -33,7 +33,7 @@ class DeathRay(QtGui.QMainWindow):
     self.connect(self.ui.treeRun, QtCore.SIGNAL('itemSelectionChanged()'), self.runClicked)
 
     #Set initial sizes
-    self.ui.splitter.setSizes([250, 600, 0])
+    self.ui.splitter.setSizes([150, 500, 150])
     
     self.ui.qwtPlot_2.setHidden(True)
     self.ui.qwtPlot_3.setHidden(True)
@@ -211,7 +211,8 @@ class DeathRay(QtGui.QMainWindow):
         tableItem = QtGui.QTableWidgetItem(str(currentTableData[c+1][r]))
         tableItem.setTextAlignment(2)
         self.ui.tableWidgetData.setItem(r, c, tableItem)
-    self.ui.tableWidgetData.setSortingEnabled(True)
+      self.ui.tableWidgetData.resizeColumnToContents(c)
+    #self.ui.tableWidgetData.setSortingEnabled(True)
 
 
   def runClicked(self):
