@@ -26,13 +26,13 @@ class voltageDC:
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
+    self.rightDevice = ['hp34401a', 'hpe3631a']
 
   def check(self):
     """
     To check if the given device will work with Voltage_dc function (avioding cause issues).
     """
-    rightDevice = ['hp34401a', 'hpe3631a']	
-    if self.name_of_device not in rightDevice:
+    if self.name_of_device not in self.rightDevice:
       return False
     else:
       return True
