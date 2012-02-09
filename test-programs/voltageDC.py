@@ -11,17 +11,20 @@ import libgpib
 
 class voltageDC:		
   """
-  This class provides the Voltage value of the given devices (to know the devices, please use 'rightdevice' function.
+  This class provides the Voltage DC value of the given devices (to know the devices, please use 'rightdevice' function.
   """
 
   def __init__(self, IPad, Gpibad, namdev, channel=None): 
     """
     To store the given values from the user. 
     Note:
-      -->IPad is the number of ip-address with quotation mark. 
+      --> IPad is the number of ip-address with quotation mark. 
       --> Gpibad is the number of Gpib address with quotation mark.
-      --> namdev is the name of the device
-    Ex:  -----main('129.59.93.27', 'gpib0,10', 'hp34401a')-----
+      --> namdev is the name of the device.
+      --> channel is a channel number for some devices. If the device do not have channels, the channel number will be ignored. 
+    Ex (for non-channel device) :  -----voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a').get()-----
+    Ex (for channel device) :   -----voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '2').get()-----
+    Also, the defination has the devices list (hard-coded).
     """
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -30,7 +33,7 @@ class voltageDC:
 
   def check(self):
     """
-    To check if the given device will work with Voltage_dc function (avioding cause issues).
+    To check if the given device will work with voltageDC function (avioding cause issues).
     """
     if self.name_of_device not in self.rightDevice:
       return False
@@ -39,7 +42,7 @@ class voltageDC:
 
   def get(self):		
     """
-    The main command, where the voltage value is !!
+    The main SCPI commands, where the voltage value is !!
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , voltfix = m.transaction('meas:volt:dc?')
@@ -49,6 +52,10 @@ class voltageDC:
 #print main('129.59.93.27', 'gpib0,10', 'hp34401a').check()
 #print main('129.59.93.27', 'gpib0,10', 'hp34401a').main()
 #add meas:vpp? <source> for the oscope (dso)
+# Modify the manual. 
+# discuss about the control modules. 
+# compelte an example of channels (or multi-channel)
+# Modify the docstring of the class.
 
 
 
