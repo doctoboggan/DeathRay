@@ -26,7 +26,7 @@ NOTE: Maybe there are some grammer mistakes :)  .
 ==  meas:volt:ac?
 *works on (22)
 
-*****nadia: according to a website, the commands look the different but they are the same. 
+*****nadia>>>according to a website, the commands look the different but they are the same. 
 *****NOTE: Uppercase letters indicate the short-form of the keywords - e.g. MEAS:VOLT:DC? is the short-form of the command.
 *****Lowercase letters indicate the long-form of the keywords, e.g. MEASURE:VOLTAGE:DC?.  
 *****Note, commands can be entered in either upper or lowercase or a mixture of the two (SCPI parsers must be case-insensitive)
@@ -50,11 +50,17 @@ NOTE: Maybe there are some grammer mistakes :)  .
 8---> To get the value of ac current : (the result is different (I have not find why yet))  //I have to find the different
 == MEANsure:CURRent:AC?
 *works on (22)
-9---> I am not sure what does this value mean??//I have to find the meaning? nadia>>'rat' means ratio. (I also dont know)
+9---> I am not sure what does this value mean??//I have to find the meaning? nadia>>'rat' means ratio. 
 == meas:volt:dc:rat?
 *works on (22)
+*****DC-voltage-ratio control is based on a time-domain modulation strategy that avoids the use of inappropriate
+states to achieve the DC-voltage-ratio control. The proposed technique is a feedforward-modulation technique which
+takes into account the actual DC voltage of each H-bridge of the converter, leading to output waveforms with low 
+distortion. In this way, the dc voltage of the floating H-bridge can be controlled while the output voltage has 
+low distortion independently of the desired DC voltage ratio. (whatever this means)********
 
 $$Note: it is going to be continued 
+
 
 
 ***Connection via TCP in python***
