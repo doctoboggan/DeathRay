@@ -24,7 +24,7 @@ class voltageDC:
       --> channel is a channel number for some devices. If the device do not have channels, the channel number will be ignored. 
     Ex (for non-channel device) :  -----voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a').get()-----
     Ex (for channel device) :   -----voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '2').get()-----
-    Also, the defination has the devices list (hard-coded).
+    Also, the definition has the devices list (hard-coded).
     """
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -33,7 +33,7 @@ class voltageDC:
 
   def check(self):
     """
-    To check if the given device will work with voltageDC function (avioding cause issues).
+    To check if the given device will work with voltageDC function (avoiding issues).
     """
     if self.name_of_device not in self.rightDevice:
       return False
