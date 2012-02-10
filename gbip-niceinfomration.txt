@@ -25,7 +25,14 @@ NOTE: Maybe there are some grammer mistakes :)  .
 2----> to get the value of ac voltage : 
 ==  meas:volt:ac?
 *works on (22)
-3----> to get the value of dc voltage : (the result is different (I have not find why yet))  //I have to find the different
+
+*****nadia: according to a website, the commands look the different but they are the same. 
+*****NOTE: Uppercase letters indicate the short-form of the keywords - e.g. MEAS:VOLT:DC? is the short-form of the command.
+*****Lowercase letters indicate the long-form of the keywords, e.g. MEASURE:VOLTAGE:DC?.  
+*****Note, commands can be entered in either upper or lowercase or a mixture of the two (SCPI parsers must be case-insensitive)
+*****-uppercase and lowercase are only used when documenting the commands.
+
+3----> to get the value of dc voltage : (the result is different (I have not find why yet) //I have to find the different
 == MEASure:VOLTage:DC?
 *works on all (10,22)
 4----> to get the value of ac voltage : (the result is different (I have not find why yet))  //I have to find the different
