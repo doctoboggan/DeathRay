@@ -50,7 +50,7 @@ NOTE: Maybe there are some grammer mistakes :)  .
 8---> To get the value of ac current : (the result is different (I have not find why yet))  //I have to find the different
 == MEANsure:CURRent:AC?
 *works on (22)
-9---> I am not sure what does this value mean?? ( :\ )  :  //I have to find the meaning?
+9---> I am not sure what does this value mean??//I have to find the meaning? nadia>>'rat' means ratio. (I also dont know)
 == meas:volt:dc:rat?
 *works on (22)
 
