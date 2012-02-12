@@ -17,7 +17,17 @@ NOTE: Maybe there are some grammer mistakes :)  .
 &&Note: (22) means 34401A DMM
 
 
+&&Note: 
+1) You can set which port are you reading from by writing the name of the port after the command. If you want to read from multiple of them, write comma between them. For ex, if I want to measure the dc voltage of all the ports  (by the way, I have not tested the example because of the server is down now):
+meas:volt:dc? P6V,P25V,N25V
+2) Writing the name of the port after any measurement command will give you the value in that port. 
+3) I am not sure what kind of value which shows up, when you do not specific a port.
+4) To see the posrts details, see the control part.
+
 &&START:
+
+
+------------------Measurement--------------------
 
 1----> to get the value of dc voltage : 
 ==  meas:volt:dc?
@@ -58,8 +68,29 @@ states to achieve the DC-voltage-ratio control. The proposed technique is a feed
 takes into account the actual DC voltage of each H-bridge of the converter, leading to output waveforms with low 
 distortion. In this way, the dc voltage of the floating H-bridge can be controlled while the output voltage has 
 low distortion independently of the desired DC voltage ratio. (whatever this means)********
-
+	
 $$Note: it is going to be continued 
+
+-----------------Control-----------------------
+
+$$ Note: In device, There are three ports (I think) of output. In other words, There are three situations. They are:
+
+1) P6V
+2) P25V
+3) N25V
+
+Each port (situation) has its limitation (take a look at page#72 in the manual of E3631A (the manuals are in the "manual" folder in the DeathRay folder)). To control (adjust) voltage or current, we have to set to one of the ports (situations). Then, We can set the value of voltage/current.
+
+$$ Note: There are two ways of sending request to the device:
+1) configure the ports. Then, we have to "INITiate" the configuration (see the example in Page#75). 
+2) 
+
+1---> To set a voltage value:
+== VOLT:TRIG <value>
+2---> To set a current voltage: 
+== CURR:TRIG <value>
+
+
 
 
 
