@@ -138,4 +138,12 @@ oscope:
   download each channel (1,2)
   set timescale and voltage
 
+
+
+
+Sunday 2/12 meeting:
+what is level
+how to set voltage of channel that is not on display
+time out issues
+
   
