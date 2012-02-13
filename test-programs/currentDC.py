@@ -55,7 +55,7 @@ class currentAC:
     The main SCPI commands, where the DC current value is !!
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
-    z , c , currfix = m.transaction('meas:volt:dc? '+self.channel)
+    z , c , currfix = m.transaction('meas:curr:dc? '+self.channel)
     m.disconnect()  
     return float(currfix)
 
