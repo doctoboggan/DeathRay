@@ -2,7 +2,7 @@
 # Made by: Anas Alfuntukh
 # Date: 06/02/12  (MM/DD/YY)
 # Goal: This moduel suppose to be able to return the DC current value from the given devices.
-# Devcies:  1) "hp34401a" 
+# Devcies:  1) "hp34401a" 2) 2) "hpe3631a"
 # Modifiers:  None (for now)  
 # SCPI command: meas:volt:ac?
 # Result: One float. It is the DC current value.

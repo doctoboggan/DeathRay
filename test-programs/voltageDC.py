@@ -11,7 +11,8 @@ import libgpib
 
 class voltageDC:		
   """
-  This class provides the DC voltage value of the given devices (to know the devices, please use 'rightdevice' function).
+  This class provides the DC voltage value of the given devices (to know the devices, please use
+  'rightdevice' function).
   """
 
   def __init__(self, IPad, Gpibad, namdev, channel=''): 

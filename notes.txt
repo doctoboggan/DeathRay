@@ -124,12 +124,12 @@ plot error count vs time
 release device at the bottom of class
 
 supply:
-  set current limit on the supply
-  set voltage
-  be able to specify port
-  read current coming out of power supply
+  set current limit on the supply  
+  set voltage   (it is not hard. However, we have to know how to specified a certain port to be modified)
+  be able to specify port (for reading, It is DONE. For writing, It is going to be asked)
+  read current coming out of power supply   (if you mean via multimeter, It is DONE. If you mean via the power supply, it is DONE too)
 multimeter:
-  current, voltage (AC/DC)
+  current, voltage (AC/DC)    [DONE] (not yet fully tested)
 oscope:
   change the trigger event (common: edge, or width)
     mode: normal vs auto
