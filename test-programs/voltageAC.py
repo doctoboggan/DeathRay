@@ -1,11 +1,11 @@
-# Name: Voltage Setter
-# Made by: Anas Alfuntukh
-# Date: 06/02/12  (MM/DD/YY)
-# Goal: This moduel suppose to be able to return the voltage value from the given devices.
-# Devcies:  1) "hp34401a"  2) "hpe3631a"
-# Modifiers:  None (for now)  <----  Here the name of a developer, who may modify the code in the future, with the date.
-# SCPI command: meas:volt:dc?
-# Result: float
+# Name: Voltage AC Reader
+# Made by: Jack Minardi
+# Date: 12/02/12  (MM/DD/YY)
+# Goal: This moduel suppose to be able to return the voltage AC (with frequency) value from the given devices.
+# Devcies:  1) "hp34401a" 
+# Modifiers: 
+# SCPI command: meas:volt:ac?
+# Result: two floats 
 
 import libgpib
 
@@ -24,7 +24,7 @@ class voltageAC:
 
   def check(self):
     """
-    To check if the given device will work with voltageDC function (avoiding issues).
+    To check if the given device will work with voltageAC function (avoiding issues).
     """
     if self.name_of_device not in self.rightDevice:
       return False
@@ -36,7 +36,7 @@ class voltageAC:
 
   def get(self):		
     """
-    The main SCPI commands, where the voltage value is !!
+    The main SCPI commands, where the voltage AC value is !!
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , voltfix = m.transaction('meas:volt:ac?')
