@@ -145,5 +145,5 @@ Sunday 2/12 meeting:
 what is level
 how to set voltage of channel that is not on display
 time out issues
-
-  
+ask nick about power supply coupling. 
+which command is better apply or inst coup
