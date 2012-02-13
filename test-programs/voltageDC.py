@@ -1,4 +1,4 @@
-# Name: Voltage reader
+sudo # Name: Voltage reader
 # Made by: Anas Alfuntukh
 # Date: 06/02/12  (MM/DD/YY)
 # Goal: This moduel suppose to be able to return the voltage value from the given devices.

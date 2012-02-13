@@ -1,4 +1,4 @@
-# Name: Voltage AC Reader
+sudo # Name: Voltage AC Reader
 # Made by: Jack Minardi
 # Date: 12/02/12  (MM/DD/YY)
 # Goal: This moduel suppose to be able to return the voltage AC (with frequency) value from the given devices.
