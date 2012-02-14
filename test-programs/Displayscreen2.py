@@ -15,7 +15,7 @@ class Displayscreen:
 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, text_here='text here', timeout=10):  
+  def __init__(self, IPad, Gpibad, namdev, text_here='text here'):  
     """
     The defalult string is "text here".
     """
@@ -24,7 +24,6 @@ class Displayscreen:
     self.gpib_id = Gpibad
     self.name_of_device = namdev
     self.text = text_here
-    self.time_out = timeout
     self.rightDevice = ['hpe3631a']
 
   def check(self):
@@ -48,7 +47,7 @@ class Displayscreen:
     """
     The main SCPI commands, where the text string will be sent !!
     """
-    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'", timeout='+str(self.time_out)+')')       # Here, we can adjust the duration of string displaying 
+    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')       # Here, we can adjust the duration of string displaying 
     print self.text
     m.transaction('disp:text "'+self.text+'"')      ## There is no need to save the rsult because there will be no result (it is going to be time out)
     m.disconnect()
