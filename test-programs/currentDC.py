@@ -9,7 +9,7 @@
 
 import libgpib
 
-class currentAC:		
+class currentDC:		
   """
   This class provides the DC current value of the given devices (to know the devices, please use
   'rightdevice' function.
