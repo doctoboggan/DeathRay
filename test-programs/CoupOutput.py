@@ -42,7 +42,7 @@ class CoupOutput:
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , coupdevice = m.transaction('INST:COUP?')
     m.disconnect()
-    return (string(coupdevice))
+    return coupdevice
 
 
 # INSTrument:COUPle[:TRIGger]?
