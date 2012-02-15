@@ -11,16 +11,16 @@ import libgpib
 
 class SelOutput:		
   """
- This class 
+  This class 
   """
 
-   def __init__(self, IPad, Gpibad, namdev, output): 
+  def __init__(self, IPad, Gpibad, namdev, output): 
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
     self.rightDevice = ['hpe3631a']
-	self.outputSelected = output
+    self.outputSelected = output
 
   def check(self):
     """
