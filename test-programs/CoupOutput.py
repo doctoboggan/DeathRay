@@ -11,12 +11,12 @@ import libgpib
 
 class CoupOutput:		
   """
- This class returns the currently coupled output. Returns “ALL”, “NONE”, or a list. If any output is not coupled, 
- “NONE” is returned. If all of three outputs are coupled, “ALL” is returned. If a list of outputs is coupled,
- the list is returned.
+  This class returns the currently coupled output. Returns 'ALL', 'NONE', or a list. If any output is not coupled, 
+  'NONE' is returned. If all of three outputs are coupled, 'ALL' is returned. If a list of outputs is coupled,
+  the list is returned.
   """
 
-   def __init__(self, IPad, Gpibad, namdev): 
+  def __init__(self, IPad, Gpibad, namdev): 
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -47,6 +47,6 @@ class CoupOutput:
 
 # INSTrument:COUPle[:TRIGger]?
 # This query returns the currently coupled output.
-# Returns “ALL”, “NONE”, or a list. If any output is not coupled, 
-# “NONE” is returned. If all of three outputs are coupled, “ALL” is returned.
+# Returns 'ALL', 'NONE', or a list. If any output is not coupled, 
+# 'NONE' is returned. If all of three outputs are coupled, 'ALL' is returned.
 # If a list of outputs is coupled, the list is returned.
