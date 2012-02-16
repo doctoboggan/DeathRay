@@ -14,7 +14,7 @@ class CvoltageDC:
   This class set DC voltage for given channels of the given device. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, channel='None', Input ): 
+  def __init__(self, IPad, Gpibad, namdev, Input, channel=''): 
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
