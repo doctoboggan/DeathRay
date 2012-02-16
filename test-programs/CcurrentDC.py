@@ -1,17 +1,17 @@
-# Name: Set DC voltage for given channels of given devices.
+# Name: Set DC voltage for given channel of given devices.
 # Made by: Nadiah Zainol Abidin
 # Date: 02/15/12  (MM/DD/YY)
-# Goal: set a DC voltage to a specific channel.
+# Goal: set a DC current to a specific channel.
 # Devices:  1) "hpe3631a"
 # Modifiers:  None 
-# SCPI command: volt:lev:imm:ampl <value>
-# Result: One string. it notifies output has been changed to the new voltage.  
+# SCPI command: curr:lev:imm:ampl  <value>
+# Result: One string. it notifies output has been changed to the new DC current.  
 
 import libgpib
 
-class CvoltageDC:		
+class CcurrentDC:		
   """
-  This class set DC voltage for given channels of the given device. 
+  This class set DC current for given channels of the given device. 
   """
 
   def __init__(self, IPad, Gpibad, namdev, Input, channel=''): 
@@ -48,8 +48,8 @@ class CvoltageDC:
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , x = m.transaction('INST:SEL'+self.outputSelected)
     m.disconnect()
-    z , c , l = m.transaction('volt:lev:imm:ampl '+self.value)
-    return self.outputSelected+' has been selected. And, it has been set to '+ self.value
+    z , c , l = m.transaction('curr:lev:imm:ampl '+self.value)
+    return self.outputSelected+' has been selected. And, its current has been set to '+ self.value
 
 
 #example: "INST:SEL P25V" Select the +25V output
