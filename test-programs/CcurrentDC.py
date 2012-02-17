@@ -29,8 +29,9 @@ class CcurrentDC:
   def check(self):
     """
     To check if the given device will work with CCurrentDC function (to avoid module from crashing).
-    Also, it checks if the specified channel of certain device matchs the data base of the names of channels in that device.
-    For ex: hpe3631a has only these channels: P25V, N25V, and P6V. If the user inputs anything unlike these names, the function will not work. to aviod that, we have a check method for that. 
+    It also checks if the specified channel of certain device matchs the data base of the names of channels in that device.
+    For ex: hpe3631a has only these channels: P25V, N25V, and P6V. If the user inputs anything other than these names, 
+    the function will not work. to avoid that, we have a check method to check the user's input. 
     """
     if self.name_of_device not in self.rightDevice:
       return False
@@ -52,7 +53,8 @@ class CcurrentDC:
     sets the value of the DC current wanted on the channel selected in step 1. 
     This is done using the SCPI command curr:lev:imm:ampl ' followed by the input value 
     feeded in the _init_
-    Note: between each transmation, we have to disconnect the connection to aviod time-out errors. Also, to allow other connection to be established. 
+    Note: between each transaction, we have to disconnect the connection to avoid time-out errors. This also allows other 
+    connections to take place. 
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , x = m.transaction('INST:SEL'+self.outputSelected)
