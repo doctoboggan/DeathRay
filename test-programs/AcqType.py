@@ -47,7 +47,7 @@ class AcqType:
     m.disconnect() 
     return self.setmode+' has been selected.'
 
-
+#so far, sponsor requested to have the osc in normal mode. other modes have not been accounted for. refer details below
 '''''
 page 208
 :ACQuire:TYPE <type>
