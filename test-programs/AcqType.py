@@ -1,4 +1,4 @@
-# Name: Set DC voltage for given channel of given devices.
+# Name: Sets the oscilloscope mode.
 # Made by: Nadiah Zainol Abidin
 # Date: 02/17/12  (MM/DD/YY)
 # Goal: set the mode of the oscilloscope <type> ::= {NORMal | AVERage | HRESolution | PEAK}
@@ -9,7 +9,7 @@
 
 import libgpib
 
-class CcurrentDC:		
+class AcqType:		
   """
   This class sets the DC current for the selected channel of the given device. 
   """
