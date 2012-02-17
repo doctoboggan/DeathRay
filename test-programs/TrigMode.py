@@ -11,7 +11,7 @@
 
 import libgpib
 
-class CcurrentDC:		
+class TrigMode:		
   """
   This class sets the trigger mode of the given device. 
   """
