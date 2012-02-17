@@ -11,7 +11,7 @@ import libgpib
 
 class CcurrentDC:		
   """
-  This class set DC current for given channels of the given device. 
+  This class sets the DC current for the selected channel of the given device. 
   """
 
   def __init__(self, IPad, Gpibad, namdev, Input, channel=''): 
@@ -27,7 +27,7 @@ class CcurrentDC:
   def check(self):
     """
     To check if the given device will work with CvoltageDC function (to avoid module from crashing).
-    Also, it check if the specified channel of certain device matchs the data base of the names of channels in that device        
+    Also, it checks if the specified channel of certain device matchs the data base of the names of channels in that device        
     """
     if self.name_of_device not in self.rightDevice:
       return False
@@ -41,17 +41,24 @@ class CcurrentDC:
 
   def get(self):		
     """
-    The main SCPI command. It is on two steps:
-    First step, locate the right channel in the right device. 
-    Second step: send the the requested DC voltage. 
+    The main SCPI command. It has two steps,
+    First step:
+    select the channel of the device. this is done using the SCPI command 'INST:SEL '
+    followed by the channel <P6V|p6v|P25V|p25v|N25V|n25v> feeded in the _init_
+    Second step: 
+    sets the value of the DC voltage wanted on the channel selected in step 1. 
+    This is done using the SCPI command curr:lev:imm:ampl ' followed by the input value 
+    feeded in the _init_
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , x = m.transaction('INST:SEL'+self.outputSelected)
-    m.disconnect()
+    m.disconnect() #nadia: Are you sure we disconnect here? or after we select the value? 
     z , c , l = m.transaction('curr:lev:imm:ampl '+self.value)
     return self.outputSelected+' has been selected. And, its current has been set to '+ self.value
 
 
-#example: "INST:SEL P25V" Select the +25V output
+# example: "INST:SEL P25V" Select the +25V output
 # I need more examples for docstring for the check function (to be clear for the future developer). 
+# (nadia: not sure how? please explain in class about how you want me to describe it)
+# nadia: I added some docstring for the get function work, does that look okay?
 # comments on how "get" function work (more docs).
