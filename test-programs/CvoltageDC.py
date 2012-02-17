@@ -40,10 +40,15 @@ class CvoltageDC:
 
 
   def get(self):		
-    """
-    The main SCPI command. It is on two steps:
-    First step, locate the right channel in the right device. 
-    Second step: send the the requested DC voltage. 
+     """
+    The main SCPI command. It has two steps,
+    First step:
+    select the channel of the device. this is done using the SCPI command 'INST:SEL '
+    followed by the channel <P6V|p6v|P25V|p25v|N25V|n25v> feeded in the _init_
+    Second step: 
+    sets the value of the DC voltage wanted on the channel selected in step 1. 
+    This is done using the SCPI command volt:lev:imm:ampl ' followed by the input value 
+    feeded in the _init_
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , x = m.transaction('INST:SEL'+self.outputSelected)
