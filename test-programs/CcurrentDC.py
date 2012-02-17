@@ -26,7 +26,7 @@ class CcurrentDC:
 
   def check(self):
     """
-    To check if the given device will work with CvoltageDC function (to avoid module from crashing).
+    To check if the given device will work with CCurrentDC function (to avoid module from crashing).
     Also, it checks if the specified channel of certain device matchs the data base of the names of channels in that device        
     """
     if self.name_of_device not in self.rightDevice:
