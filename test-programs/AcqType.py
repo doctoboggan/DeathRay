@@ -48,23 +48,24 @@ class AcqType:
     return self.setmode+' has been selected.'
 
 #so far, sponsor requested to have the osc in normal mode. other modes have not been accounted for. refer details below
-'''''
-page 208
-:ACQuire:TYPE <type>
-<type> ::= {NORMal | AVERage | HRESolution | PEAK}
-
-• The :ACQuire:TYPE NORMal command sets the oscilloscope in the
-normal mode.
-• The :ACQuire:TYPE AVERage command sets the oscilloscope in the
-averaging mode. You can set the count by sending the :ACQuire:COUNt
-command followed by the number of averages. In this mode, the value
-for averages is an integer from 1 to 65536. The COUNt value determines
-the number of averages that must be acquired.
-Setting the :ACQuire:TYPE to AVERage automatically sets
-:ACQuire:MODE to ETIMe (equivalent time sampling).
-The AVERage type is not available when in segmented memory mode
-(:ACQuire:MODE SEGMented).
-• The :ACQuire:TYPE HRESolution command sets the oscilloscope in the
-high- resolution mode (also known as smoothing). This mode is used to
-reduce noise at slower sweep speeds where the digitizer samples faster
-than needed to fill memory for the displayed time range.
+# ---------------Information: ------------
+# page 208
+# :ACQuire:TYPE <type>
+# <type> ::= {NORMal | AVERage | HRESolution | PEAK}
+#
+# ---> The :ACQuire:TYPE NORMal command sets the oscilloscope in the
+# normal mode.
+# ---> The :ACQuire:TYPE AVERage command sets the oscilloscope in the
+# averaging mode. You can set the count by sending the :ACQuire:COUNt
+# command followed by the number of averages. In this mode, the value
+# for averages is an integer from 1 to 65536. The COUNt value determines
+# the number of averages that must be acquired.
+# Setting the :ACQuire:TYPE to AVERage automatically sets
+# :ACQuire:MODE to ETIMe (equivalent time sampling).
+# The AVERage type is not available when in segmented memory mode
+# (:ACQuire:MODE SEGMented).
+# ---> The :ACQuire:TYPE HRESolution command sets the oscilloscope in the
+# high- resolution mode (also known as smoothing). This mode is used to
+# reduce noise at slower sweep speeds where the digitizer samples faster
+# than needed to fill memory for the displayed time range.
+# -------------------------------------

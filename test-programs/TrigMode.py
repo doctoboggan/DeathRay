@@ -49,16 +49,20 @@ class TrigMode:
     m.disconnect() 
     return self.trigMode+' has been selected.'
 
-''''
-page 485
-:TRIGger:MODE
-(see page 798)
-Command Syntax :TRIGger:MODE <mode>
-<mode> ::= {EDGE | GLITch | PATTern | CAN | DURation | I2S |IIC
-| EBURst | LIN | M1553| SEQuence | SPI | TV | UART
-| USB | FLEXray}
-The :TRIGger:MODE command selects the trigger mode (trigger type).
-Query Syntax :TRIGger:MODE?
-The :TRIGger:MODE? query returns the current trigger mode. If the
-:TIMebase:MODE is ROLL or XY, the query returns "NONE".
+# ------------ Information : -----------
+# page 485
+# :TRIGger:MODE
+# (see page 798)
+# Command Syntax :TRIGger:MODE <mode>
+# <mode> ::= {EDGE | GLITch | PATTern | CAN | DURation | I2S |IIC
+# | EBURst | LIN | M1553| SEQuence | SPI | TV | UART
+# | USB | FLEXray}
+# The :TRIGger:MODE command selects the trigger mode (trigger type).
+# Query Syntax :TRIGger:MODE?
+# The :TRIGger:MODE? query returns the current trigger mode. If the
+# :TIMebase:MODE is ROLL or XY, the query returns "NONE".
+# --------------------------------------
+
+
+
 
