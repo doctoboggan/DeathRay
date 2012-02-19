@@ -2,9 +2,9 @@
 # Made by: Nadiah Zainol Abidin
 # Date: 02/17/12  (MM/DD/YY)
 # Goal: sets the trigger mode of the oscilloscope, 
-# Devices:  1) dso
+# Devices:  1) dso6032a
 # Modifiers:  None 
-# SCPI command: 1) dso: ---> Command Syntax ==> :TRIGger:MODE <mode>
+# SCPI command: 1) dso6032a: ---> Command Syntax ==> :TRIGger:MODE <mode>
 # -------------- <mode>: -----------------
 # <mode> ::= {EDGE | GLITch | PATTern | CAN | DURation | I2S |IIC
 # | EBURst | LIN | M1553| SEQuence | SPI | TV | UART| USB | FLEXray}
@@ -23,7 +23,7 @@ class TrigMode:
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
-    self.rightDevice = ['dso']
+    self.rightDevice = ['dso6032a']
     self.trigMode_for_dso = ['EDGE', 'GLITch', 'PATTern', 'CAN', 'DURation', 'I2S', 'IIC', 'EBURst', 'LIN', 'M1553', 'SEQuence', 'SPI', 'TV', 'UART', 'USB', 'FLEXray', 'GLITCH', 'PATTERN', 'DRATION', 'EBURST', 'SEQUENCE', 'FLEXRAY']      # incluse all "upper case" probabilities. So that, we can check them as "upper case". By the way, this is one line. I am not sure what will happen with the numbers?! (Anas)
     trigmodelower = upper(trigmode)
     self.trigMode = trigmodelower
@@ -35,7 +35,7 @@ class TrigMode:
     """
     if self.name_of_device not in self.rightDevice:
       return False
-    if self.name_of_device is 'dso':
+    if self.name_of_device is 'dso6032a':
       if self.trigMode not in self.trigMode_for_dso:
         return False
 

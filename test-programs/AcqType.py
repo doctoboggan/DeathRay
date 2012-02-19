@@ -2,9 +2,9 @@
 # Made by: Nadiah Zainol Abidin
 # Date: 02/17/12  (MM/DD/YY)
 # Goal: set the mode of the oscilloscope <type> ::= {NORMal | AVERage | HRESolution | PEAK}
-# Devices:  1) dso
+# Devices:  1) dso6032a
 # Modifiers:  None 
-# SCPI command: 1) dso ---> command to choose type ==> ACQuire:TYPE <type>
+# SCPI command: 1) dso6032a ---> command to choose type ==> ACQuire:TYPE <type>
 # ------------ <type> : -------------
 # <type> ::= {NORMAL | AVERAGE | HERSOLUTION | PEAK}
 # -----------------------------------
@@ -22,7 +22,7 @@ class AcqType:
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
-    self.rightDevice = ['dso']
+    self.rightDevice = ['dso6032a']
     self.modetype_for_dso = ['normal', 'NORMAL', 'Normal', 'average', 'AVERAGE', 'Average', 'HRESolution', 'hresolution', 'HRESOLUTION', 'PEAK', 'peak', 'Peak']
     setmodelower = lower(setmode)   # It will conver it to lower case to considre how it will be written (from the user).
     self.setmode = setmodelower
@@ -34,7 +34,7 @@ class AcqType:
     """
     if self.name_of_device not in self.rightDevice:
       return False
-    if self.name_of_device is 'dso':
+    if self.name_of_device is 'dso6032a':
       if self.setmode not in self.modetype_for_dso:
         return False
 
