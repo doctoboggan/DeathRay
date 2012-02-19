@@ -7,6 +7,12 @@
 # SCPI command: 
 # 1) hpe3631a: --> Select channel ==> inst:sel <channnel>
 #              --> Set DC voltage ==> volt:lev:imm:ampl <value>
+# ------------- <channel>: ---------------
+# <channel> ::= {P6V | P25V | N25V}
+# ----------------------------------------
+# -------------- <value>: ----------------
+# Becarefule, values are limited by the channel. Please see table #4-1 on page# 72 of "hpe3631a" manaule (in the manual folder).
+# ----------------------------------------
 # Result: One string. it notifies output has been changed to the new voltage.  
 
 import libgpib
@@ -23,7 +29,8 @@ class CvoltageDC:
     self.name_of_device = namdev
     self.rightDevice = ['hpe3631a']
     self.channels_for_hpe3631a = ['P6V', 'p6v', 'P25V', 'p25v', 'N25V', 'n25v']
-    self.Channel = channel
+    upperchannel = upper(channel)
+    self.Channel = upperchannel
     self.value = Input
 
   def check(self):
@@ -43,7 +50,7 @@ class CvoltageDC:
 
 
   def get(self):		
-     """
+    """
     The main SCPI command. It has two steps,
     First step:
     select the channel of the device. this is done using the SCPI command 'INST:SEL '
@@ -54,8 +61,8 @@ class CvoltageDC:
     feeded in the _init_
     Note: between each transmation, we have to disconnect the connection to aviod time-out errors. Also, to allow other connection to be established. 
     """
-    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
-    z , c , x = m.transaction('INST:SEL'+self.outputSelected)
+    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')
+    z , c , x = m.transaction('INST:SEL '+self.Channel)
     m.disconnect()
     z , c , l = m.transaction('volt:lev:imm:ampl '+self.value)
     m.disconnect()

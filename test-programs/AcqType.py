@@ -4,7 +4,10 @@
 # Goal: set the mode of the oscilloscope <type> ::= {NORMal | AVERage | HRESolution | PEAK}
 # Devices:  1) dso
 # Modifiers:  None 
-# SCPI command: ACQuire:TYPE <type>
+# SCPI command: 1) dso ---> command to choose type ==> ACQuire:TYPE <type>
+# ------------ <type> : -------------
+# <type> ::= {NORMAL | AVERAGE | HERSOLUTION | PEAK}
+# -----------------------------------
 # Result: One string. it notifies the osc is set to the mode requested  
 
 import libgpib
@@ -21,7 +24,8 @@ class AcqType:
     self.name_of_device = namdev
     self.rightDevice = ['dso']
     self.modetype_for_dso = ['normal', 'NORMAL', 'Normal', 'average', 'AVERAGE', 'Average', 'HRESolution', 'hresolution', 'HRESOLUTION', 'PEAK', 'peak', 'Peak']
-    self.setmode = setmode
+    setmodelower = lower(setmode)   # It will conver it to lower case to considre how it will be written (from the user).
+    self.setmode = setmodelower
 
   def check(self):
     """

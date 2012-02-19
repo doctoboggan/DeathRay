@@ -7,6 +7,13 @@
 # SCPI command:
 # 1) hpe3631a: ---> Select channel  ==> inst:sel <channel>
 #              ---> set the DC current  ==>  curr:lev:imm:ampl  <value>
+# -------------- <channel>: --------------
+# <channel> ::= {P6V | P25V | N25V}
+# ----------------------------------------
+# -------------- <value>: ----------------
+# Becarefule, values are limited by the channel. Please see table #4-1 on page# 72 of "hpe3631a" manaule (in the manual folder).
+# Also, note that, the current stay in that value until the time out is over. So, please feed it the right amount of time out duration. 
+#-----------------------------------------
 # Result: One string. it notifies output has been changed to the new DC current.  
 
 import libgpib
@@ -23,7 +30,8 @@ class CcurrentDC:
     self.name_of_device = namdev
     self.rightDevice = ['hpe3631a']
     self.channels_for_hpe3631a = ['P6V', 'p6v', 'P25V', 'p25v', 'N25V', 'n25v']
-    self.Channel = channel
+    upperchannel = upper(channel) # To upper case the input channel (just in case). I do not know what will be the result with the numbers?!
+    self.Channel = upperchannel
     self.value = Input
 
   def check(self):
@@ -56,8 +64,8 @@ class CcurrentDC:
     Note: between each transaction, we have to disconnect the connection to avoid time-out errors. This also allows other 
     connections to take place. 
     """
-    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
-    z , c , x = m.transaction('INST:SEL'+self.outputSelected)
+    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')
+    z , c , x = m.transaction('INST:SEL '+self.Channel)
     m.disconnect() #nadia: Are you sure we disconnect here? or after we select the value? <--- #Anas: Answer: I think we should disconnect twice (after each transmation)
     z , c , l = m.transaction('curr:lev:imm:ampl '+self.value)
     m.disconnect()

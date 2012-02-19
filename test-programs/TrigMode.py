@@ -4,9 +4,11 @@
 # Goal: sets the trigger mode of the oscilloscope, 
 # Devices:  1) dso
 # Modifiers:  None 
-# SCPI command: Command Syntax :TRIGger:MODE <mode>
+# SCPI command: 1) dso: ---> Command Syntax ==> :TRIGger:MODE <mode>
+# -------------- <mode>: -----------------
 # <mode> ::= {EDGE | GLITch | PATTern | CAN | DURation | I2S |IIC
 # | EBURst | LIN | M1553| SEQuence | SPI | TV | UART| USB | FLEXray}
+# ----------------------------------------
 # Result: One string. it notifies the osc is set to the trigger mode requested  
 
 import libgpib
@@ -22,8 +24,9 @@ class TrigMode:
     self.gpib_id = Gpibad
     self.name_of_device = namdev
     self.rightDevice = ['dso']
-    self.trigMode_for_dso = ['EDGE', 'GLITch', 'PATTern', 'CAN', 'DURation', 'I2S', 'IIC', 'EBURst', 'LIN', 'M1553', 'SEQuence', 'SPI', 'TV', 'UART', 'USB', 'FLEXray']
-    self.trigMode = trigmode
+    self.trigMode_for_dso = ['EDGE', 'GLITch', 'PATTern', 'CAN', 'DURation', 'I2S', 'IIC', 'EBURst', 'LIN', 'M1553', 'SEQuence', 'SPI', 'TV', 'UART', 'USB', 'FLEXray', 'GLITCH', 'PATTERN', 'DRATION', 'EBURST', 'SEQUENCE', 'FLEXRAY']      # incluse all "upper case" probabilities. So that, we can check them as "upper case". By the way, this is one line. I am not sure what will happen with the numbers?! (Anas)
+    trigmodelower = upper(trigmode)
+    self.trigMode = trigmodelower
 
   def check(self):
     """
