@@ -30,9 +30,6 @@ class FileProcessor:
 
   def processFiles(self):
 
-    currentDecoder = '' #initiailze variables
-    currentAutoMea = ''
-
     #initialize the first dictionary to be the total of all the runs
     self.processedData[0] = {'filename': 'All Runs',
                               'Decoder': '',

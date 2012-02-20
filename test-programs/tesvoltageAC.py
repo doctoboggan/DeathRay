@@ -62,7 +62,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         voltfix = self.transaction('meas:volt:ac?')
         freqfix = self.transaction('meas:freq?')
         self.disconnect()
-        if voltfix is "" or freqfix is "":  # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors 
+        if voltfix == "" or freqfix == "":  # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors 
           print "empty string"              # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors
           return "time-out occurre"         # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors
         else:
