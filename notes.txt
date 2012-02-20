@@ -147,3 +147,13 @@ how to set voltage of channel that is not on display
 time out issues
 ask nick about power supply coupling. 
 which command is better apply or inst coup
+
+
+20/2/2012 class
+documentation:
+user manual (will work on when modules are completed)
+schematics (none)
+code with comments (check)
+Test procedure:
+- bad user configuration
+- breaking the software/crash
