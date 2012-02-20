@@ -75,8 +75,8 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
 
 # we have some series issues here:
-# 1) the timeout effect the result. If the timeout is too short, the reult will be empty string (which means time-out occurred). So depends on the operation, we have to make dafult time out is at right duration. In this case, timout = 1000 msec is not enough. I changed the dafult timeout to 5000 msec. 
-# 2) In case of timeout occurr (in any situation) the "get" command will return empty string. In that case, we not conver it to number (float) because if we do, it will crash the module. The solution for this complex issue in few steps: 
+# 1) the timeout effect the result. If the timeout is too short, the reult will be empty string (which means time-out occurred). So depends on the operation, we have to make dafult time out is at right duration. In this case, timout = 1000 msec is not enough. I changed the dafult timeout to 2300 msec (after several testing).
+# 2) In case of timeout occurre (in any situation) the "get" command will return empty string. In that case, we can not convert the result (which will be empty string)  to a number (float) because if we do, it will crash the module. The solution for this complex issue in few steps: 
 # A) call the "check" command in the "get" command. So, if it returns true, continue the operation. if it return false, break and send wrong input warning. (will cover 65% of the issue)
 # B) make sure the dafult time-out is right.. Also, make sure the input time-out is reasonable (equal or higher than the dafult). (will cover 15%)
 # C) check the return value of get. If it is an empty string, return a symbol verible (which means time out occure). (will cover 20%) 
