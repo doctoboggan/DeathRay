@@ -136,5 +136,9 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 # I have to know what rise_on_error means? I think I need to ask profossoe Meh...
 # We are taking the third value in the range because it is the voltage value
 # Note: hp34401a has the ability to control channel (it has multiple channels). hp34401a has onlt one channel to read from. 
+# Note:   ---> 'o' means time-out is too short.
+#         ---> 'e' means empty string
+#         ---> 'c' means wrong channel input. 
+#         ---> 'x' wrong name of device. 
 
 
