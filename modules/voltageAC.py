@@ -17,8 +17,11 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, timeout=2500): 
+  def __init__(self, IPad, Gpibad, namdev, timeout=2000): 
     '''
+    Requiremnt: ( IPad, Gpibad, namdev, timeout=2000)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hp34401a', timeout=2000)
+    ________________________________
     /\ To store the given values from the user. 
     /\ Note:
       --> IPad is the number of ip-address with quotation mark. 
@@ -43,13 +46,24 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     """
     To check if the given device will work with voltageAC function (avoiding issues).
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
+    ALso, we take care of time-out minimum duration (to aviod run out of time).
     """
-    if self.name_of_device not in self.rightDevice:
-      return False
+    if self.name_of_device in self.rightDevice:
+
+      if self.timeout >= 2000:      # hardcoded. Also, the number was choosen after several testing.
+
+        return True 
+
+      else:
+        print "The time-out is too short"   # For debug purpose
+        return False, 'o'
+
+    else:
+      print "the device is not in data base"    # For debug purpose
+      return False, 'x'
 
 
-    return True
-  
+
 
 
   def get(self):		
@@ -58,23 +72,34 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     Note: we are taking the third return value because it is the one, which we are looking for.
     Note: we are checking before running the command.  
     """   
+
     if self.check() is True:
-      if self.timeout >= 2500:      # hardcoded. Also, the number was choosen after several testing. 
-        voltfix = self.transaction('meas:volt:ac?')   # The AC voltage command.
-        freqfix = self.transaction('meas:freq?')      # The frequancy command.
-        self.disconnect()
-        print voltfix, freqfix   # <-- for debug purpose.     
-        if voltfix[2] == "" or freqfix[2] == "":   
-          print "empty string"         # <--- for debug purpose.     
-          return False, 'e'         
+
+      print "PASS check test"         # For debug purpose
+
+      if self.name_of_device == 'hp34401a':           # the device was specified to make the program more ropust and easy to expand in the future.
+
+        voltAC = self.transaction('meas:volt:ac?')
+        self.disconnect
+        print "AC voltage is "+voltAC[2]    # For debug reasons.
+
+        if voltAC[2] == '':                 #check if it times out.
+
+          print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'voltageAC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'voltageAC' by hard coded to the right SCPI command in get() command). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+          return False, 'e'               # I have to considre this test here because I need to know the result. 
+
         else:
-          return float(voltfix[2]) , float(freqfix[2])
+
+          return float(voltAC[2])
+
+      
       else: 
-        print "The time-out input is lower than minimum time-out duration" # <--- for debug purpose.
-        return False, 'o'
+        print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands. The user should not get here at all (hopefully)
+        
+
+
     else:
-      print "The input does not match the data base"  # <--- This is for debug.
-      return False, 'x'
+      return self.check()
 
 # we have some series issues here:
 # 1) the timeout effect the result. If the timeout is too short, the reult will be empty string (which means time-out occurred). So depends on the operation, we have to make dafult time out is at right duration. In this case, timout = 1000 msec is not enough. I changed the dafult timeout to 2300 msec (after several testing).

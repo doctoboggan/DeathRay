@@ -52,6 +52,8 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     """
     To check if the given device will work with voltageDC function (avoiding issues). 
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
+    ALso, we take care of time-out minimum duration (to aviod run out of time).
+    Aslo, we rmind the user if the input channel is not required for the given device. 
     """
     if self.name_of_device in self.rightDevice:
 
@@ -88,7 +90,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     """  
     if self.check() is True:
 
-      print "PASS check test"
+      print "PASS check test"         # For debug purpose
 
       if self.name_of_device == 'hpe3631a':
 
@@ -96,7 +98,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         self.disconnect
         print "DC voltage is "+voltDC[2]    # For debug reasons.
 
-        if voltDC[2] == '':
+        if voltDC[2] == '':             #check if it times out.
 
           print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'voltageDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'voltageDC' by hard coded to the right SCPI command in get() command). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
           return False, 'e'               # I have to considre this test here because I need to know the result. 
@@ -111,7 +113,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         self.disconnect
         print "DC voltage is "+voltDC[2]      # For debug reasons.
 
-        if voltDC[2] == '':
+        if voltDC[2] == '':             #check if it times out.
 
           print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'voltageDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'voltageDC' by hard coded to the right SCPI command in get() command). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
           return False, 'e'               # I have to considre this test here because I need to know the result. 
