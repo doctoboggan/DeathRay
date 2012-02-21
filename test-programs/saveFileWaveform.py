@@ -5,7 +5,9 @@
 # Devices:  1) "dso6032a" 
 # Modifiers:  None 
 
-
+#pathname directory not yet worked on. will do it later. SAVEPWD something like that. 
+#right now it only has a name but not a directory. needs a lot of work to do. 
+# did not use Anas's way because not familiar yet
 
 import libgpib
 
