@@ -4,7 +4,8 @@
 # Goal: This moduel suppose to be able to return the AC voltage (with frequency) value from the given devices.
 # Devcies:  1) "hp34401a" 
 # Modifiers: 
-# SCPI command: meas:volt:ac?
+# SCPI command: 1) hp34401a: ---> getting the AC voltage ==> meas:volt:ac? 
+#                            ---> getting the frequancy ==> meas:freq?
 # Result: Two floats. One of them is the AC voltage value. And, the other one is frequency.
 
 import data_acquisition
@@ -16,7 +17,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, timeout=2300): 
+  def __init__(self, IPad, Gpibad, namdev, timeout=2500): 
     '''
     /\ To store the given values from the user. 
     /\ Note:
@@ -24,7 +25,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       --> Gpibad is the number of Gpib address with quotation mark.
       --> namdev is the name of the device.
     
-    /\ Besdies that, you can control the time-out duration. The dafult time-out duration is 1000 msec. To change the time-out to 500msec:
+    /\ Besdies that, you can control the time-out duration. The dafult time-out duration is 2500 msec  (and, it is the minimum time, where command can run) (please, do not lower it than that. It will cause an issue). To change the time-out to 500msec:
     /\ Ex (different time-out): ----- voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', timeout=500).get()
     /\ Becareful with time-out, it will cause crazy issues if the time-out is small (ex: 100msec).
     /\ Note: there is no channel input because "hp34401a" (which is the only device on this module for now) has only one channel to read AC voltage. In the future, if there is another device (which has multiple channel to read AC voltage, you (as developer) should add channel input (see voltageDC.py as an example) 
@@ -33,6 +34,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()
+    self.timeout = timeout
     self.rightDevice = ['hp34401a']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
@@ -53,12 +55,26 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   def get(self):		
     """
     The main SCPI commands, where the AC voltage value is !!
-    Note: we are taking the thid return value because it is the one, which we are looking for.
+    Note: we are taking the third return value because it is the one, which we are looking for.
+    Note: we are checking before running the command.  
     """   
-    voltfix = self.transaction('meas:volt:ac?')
-    freqfix = self.transaction('meas:freq?')
-    self.disconnect()
-    return voltfix[2] , freqfix[2]
+    if self.check() is True:
+      if self.timeout >= 2500:      # hardcoded. Also, the number was choosen after several testing. 
+        voltfix = self.transaction('meas:volt:ac?')   # The AC voltage command.
+        freqfix = self.transaction('meas:freq?')      # The frequancy command.
+        self.disconnect()
+        print voltfix, freqfix   # <-- for debug purpose.     
+        if voltfix[2] == "" or freqfix[2] == "":   
+          print "empty string"         # <--- for debug purpose.     
+          return False, 'e'         
+        else:
+          return float(voltfix[2]) , float(freqfix[2])
+      else: 
+        print "The time-out input is lower than minimum time-out duration" # <--- for debug purpose.
+        return False, 'o'
+    else:
+      print "The input does not match the data base"  # <--- This is for debug.
+      return False, 'x'
 
 # we have some series issues here:
 # 1) the timeout effect the result. If the timeout is too short, the reult will be empty string (which means time-out occurred). So depends on the operation, we have to make dafult time out is at right duration. In this case, timout = 1000 msec is not enough. I changed the dafult timeout to 2300 msec (after several testing).
@@ -67,3 +83,9 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 # B) make sure the dafult time-out is right.. Also, make sure the input time-out is reasonable (equal or higher than the dafult). (will cover 15%)
 # C) check the return value of get. If it is an empty string, return a symbol verible (which means time out occure). (will cover 20%) 
 
+
+# x means is not in the data base. o means time-out is too short.
+# I choose to name it "o" or "x" for a reason. To defind them to the computer. So that, the computer can tell the user via GUI it is time-out or wrong input (for now). 
+# to test the file, run (after import it): tesvoltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp  34401a', timeout=5000).get()
+# Note: yo can play with the name of device or with the time-out value. The program us smart enough to know ifit should run the command or not. Moreover, you do not need to enter time-out value as following: 
+# voltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp34401a').get()
