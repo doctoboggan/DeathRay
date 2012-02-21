@@ -4,7 +4,12 @@
 # Goal: This moduel suppose to be able to return the DC voltage value from the given devices.
 # Devcies:  1) "hp34401a"  2) "hpe3631a"
 # Modifiers:  None (for now)  
-# SCPI command: meas:volt:dc?
+# SCPI command: 1) hpe3631a: ----> get DC voltage Value ===>  meas:volt:dc? <channel>
+# ----------- <channel>" --------------
+# <channel> ::= {p6v | p25v | n25v}
+# Note: The dafult channel is the last active channel.
+# -------------------------------------
+#               2) hp34401a: -----> get DC voltage ===> meas:volt:dc?
 # Result: One float. It is the DC voltage value.
 
 import data_acquisition
@@ -16,8 +21,11 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, channel='', timeout=1000): 
+  def __init__(self, IPad, Gpibad, namdev, channel='', timeout=1500): 
     """
+    Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=1500)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', channel='P25v', timeout=2000)
+    __________________
     To store the given values from the user. 
     Note:
       --> IPad is the number of ip-address with quotation mark. 
@@ -45,14 +53,32 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     To check if the given device will work with voltageDC function (avoiding issues). 
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
     """
-    if self.name_of_device not in self.rightDevice:
-      return False
+    if self.name_of_device in self.rightDevice:
 
-    if self.name_of_device == 'hpe3631a':
-      if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:
-        return False
+      if self.timeout >= 1500:      # hardcoded. Also, the number was choosen after several testing.
 
-    return True
+        if self.name_of_device == 'hpe3631a':
+
+          if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
+            print "choosen channel does not exist !!"     # For debug purpose
+            return False, 'c'
+          else:
+            return True
+
+        else:
+          if self.channel != '':
+            print "The device does not have any channel. So, your input channel will be ignored."     # To remind thr user about his/her mistake of entering channel, where the device does not have. 
+            return True
+          else:
+            return True
+
+      else:
+        print "The time-out is too short"   # For debug purpose
+        return False, 'o'
+
+    else:
+      print "the device is not in data base"    # For debug purpose
+      return False, 'x'
   
 
 
@@ -60,9 +86,47 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     """
     The main SCPI commands, where the DC voltage value is !!
     """  
-    voo = self.transaction('meas:volt:dc? '+self.channel)
-    self.disconnect()
-    return float(voo[2])
+    if self.check() is True:
+
+      print "PASS check test"
+
+      if self.name_of_device == 'hpe3631a':
+
+        voltDC = self.transaction('meas:volt:dc? '+self.channel)
+        self.disconnect
+        print "DC voltage is "+voltDC[2]    # For debug reasons.
+
+        if voltDC[2] == '':
+
+          print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'voltageDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'voltageDC' by hard coded to the right SCPI command in get() command). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+          return False, 'e'               # I have to considre this test here because I need to know the result. 
+
+        else:
+
+          return float(voltDC[2])
+ 
+      elif self.name_of_device == 'hp34401a':
+
+        voltDC = self.transaction('meas:volt:dc?')
+        self.disconnect
+        print "DC voltage is "+voltDC[2]      # For debug reasons.
+
+        if voltDC[2] == '':
+
+          print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'voltageDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'voltageDC' by hard coded to the right SCPI command in get() command). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+          return False, 'e'               # I have to considre this test here because I need to know the result. 
+
+        else:
+
+          return float(voltDC[2])
+      
+      else: 
+        print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands. The user should not get here at all (hopefully)
+        
+
+
+    else:
+      return self.check()
 
 #print voltageDC.voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a').check()
 #print voltageDC.voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a').get()
@@ -71,5 +135,6 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 # Add voltage read from the oscope
 # I have to know what rise_on_error means? I think I need to ask profossoe Meh...
 # We are taking the third value in the range because it is the voltage value
+# Note: hp34401a has the ability to control channel (it has multiple channels). hp34401a has onlt one channel to read from. 
 
 
