@@ -29,7 +29,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       --> namdev is the name of the device.
     
     /\ Besdies that, you can control the time-out duration. The dafult time-out duration is 2500 msec  (and, it is the minimum time, where command can run) (please, do not lower it than that. It will cause an issue). To change the time-out to 500msec:
-    /\ Ex (different time-out): ----- voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', timeout=500).get()
+    /\ Ex (different time-out): ----- voltageAC('129.59.93.27', 'gpib0,10', 'hp34401a', timeout=500).get()
     /\ Becareful with time-out, it will cause crazy issues if the time-out is small (ex: 100msec).
     /\ Note: there is no channel input because "hp34401a" (which is the only device on this module for now) has only one channel to read AC voltage. In the future, if there is another device (which has multiple channel to read AC voltage, you (as developer) should add channel input (see voltageDC.py as an example) 
     '''
