@@ -70,7 +70,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         else:
           if self.channel != '':
             print "The device does not have any channel. So, your input channel will be ignored."     # To remind thr user about his/her mistake of entering channel, where the device does not have. 
-            return True 
+            return True
           else:
             return True
 
@@ -95,9 +95,8 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       if self.name_of_device == 'hpe3631a':
 
         voltDC = self.transaction('meas:volt:dc? '+self.channel)
-        #self.disconnect
+        self.disconnect
         print "DC voltage is "+voltDC[2]    # For debug reasons.
-        return
 
         if voltDC[2] == '':             #check if it times out.
 
@@ -110,13 +109,9 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
  
       elif self.name_of_device == 'hp34401a':
 
-        import time #debug
         voltDC = self.transaction('meas:volt:dc?')
-        #self.disconnect
+        self.disconnect
         print "DC voltage is "+voltDC[2]      # For debug reasons.
-        time.sleep(3)
-        print "done sleeping"
-        return
 
         if voltDC[2] == '':             #check if it times out.
 

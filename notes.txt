@@ -157,3 +157,23 @@ code with comments (check)
 Test procedure:
 - bad user configuration
 - breaking the software/crash
+
+
+
+
+2/23 notes:
+board number and flip-flop number and everything
+very basic: everything, and then flipflop number
+
+plot count/time vs time (very important)
+  should be contsnt vs time, should converge to a value
+plot count vs time
+
+design review 3pm on friday for about an hour.
+  give an overview of the project
+  illustrate all the different components
+  what do we expect to be able to do
+  status updates on each component
+  challenges or hurdles
+    possible solutions
+  want to see API
