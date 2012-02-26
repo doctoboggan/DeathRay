@@ -2,7 +2,7 @@
 # Made by: Anas Alfuntukh
 # Date: 06/02/12  (MM/DD/YY)
 # Goal: This moduel suppose to be able to return the DC current value from the given devices.
-# Devcies:  1) "hp34401a" 2) 2) "hpe3631a"
+# Devcies:  1) "hp34401a" 2) "hpe3631a"
 # Modifiers:  None (for now)  
 # SCPI command: 1) hpe3631a: ----> get DC current Value ===>  meas:curr:dc? <channel>
 # ----------- <channel>" --------------
@@ -33,6 +33,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       --> namdev is the name of the device.
       --> channel is a channel number for some devices. If the device do not have channels,
           the channel number will be ignored. 
+      --> timeout is time duration of the operation. 
     Ex (for non-channel device) :  -----currentDC('129.59.93.27', 'gpib0,10', 'hp34401a').get()-----
     Ex (for channel device) :   -----currentDC('129.59.93.27', 'gpib0,10', 'hp34401a', channel='p25v').get()
     Also, the definition has the devices list (hard-coded).
@@ -53,7 +54,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     To check if the given device will work with currentDC function (avoiding issues).
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
     ALso, we take care of time-out minimum duration (to aviod run out of time).
-    Aslo, we rmind the user if the input channel is not required for the given device. 
+    Also, we rmind the user if the input channel is not required for the given device. 
     """
     if self.name_of_device in self.rightDevice:
 
@@ -101,7 +102,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
         if currDC[2] == '':             #check if it times out.
 
-          print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). Or, The gpib address is not right (Double check it). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+          print "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
           return False, 'e'               # I have to considre this test here because I need to know the result. 
 
         else:
@@ -116,7 +117,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
         if currDC[2] == '':             #check if it times out.
 
-          print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). Or, The gpib address is not right (Double check it). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+          print"For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
           return False, 'e'               # I have to considre this test here because I need to know the result. 
 
         else:
