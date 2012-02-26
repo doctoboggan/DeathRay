@@ -70,7 +70,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         else:
           if self.channel != '':
             print "The device does not have any channel. So, your input channel will be ignored."     # To remind thr user about his/her mistake of entering channel, where the device does not have. 
-            return True
+            return True 
           else:
             return True
 
