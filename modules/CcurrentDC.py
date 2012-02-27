@@ -41,11 +41,11 @@ class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
       --> channel is a channel number for some devices. If the device do not have channels,
           the channel number will be ignored. 
       --> timeout is time duration of the operation. 
-    Ex (for non-channel device) :  -----CcurrentDC('129.59.93.27', 'gpib0,10', 'hp34401a', 3).get()-----
-    Ex (for channel device) :   -----CcurrentDC('129.59.93.27', 'gpib0,10', 'hp34401a', 5, channel='p25v').get()
+    Ex (for non-channel device) :  -----CcurrentDC('129.59.93.27', 'gpib0,10', 'hp34401a', '1').get()-----
+    Ex (for channel device) :   -----CcurrentDC('129.59.93.27', 'gpib0,10', 'hp34401a', '0.5', channel='p25v').get()
     Also, the definition has the devices list (hard-coded).
     Besdies that, you can control the time-out duration. The dafult time-out duration is 2500 msec. To change the time-out to 3000msec:
-    Ex (for channel device with different time-out): ----- CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', 15, channel='p25v', timeout=3000).get()
+    Ex (for channel device with different time-out): ----- CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '1', channel='p25v', timeout=3000).get()
     Becareful with time-out, it will cause crazy issues if the time-out is small (ex: 100msec).
     """
 

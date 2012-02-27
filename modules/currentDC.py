@@ -45,6 +45,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input
     self.channel = channel.lower()          #lower case the input
+    self.timeout = timeout
     self.rightDevice = ['hp34401a', 'hpe3631a']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
