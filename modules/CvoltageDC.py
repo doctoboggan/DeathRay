@@ -154,4 +154,4 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 #         ---> 'x' wrong name of device. 
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # check if input is negative or not for the negative or positive channels.
-# 
+# I think we should include the wrong input according to the table..... mmmm... not rupest enough. 

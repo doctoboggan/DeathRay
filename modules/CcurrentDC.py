@@ -155,4 +155,4 @@ class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 #         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 # CcurrentDC.CcurrentDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
-# I could not test it because there is a bug in the data_acquisition
+# I have to considre when it the input is more than the limit ...!! I do not know. Still, the control modules are not rupest enouph. 
