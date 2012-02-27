@@ -12,6 +12,7 @@
 # ----------------------------------------
 # -------------- <value>: ----------------
 # Becarefule, values are limited by the channel. Please see table #4-1 on page# 72 of "hpe3631a" manaule (in the manual folder).
+# Note: the negative channel only accept negative values. 
 # ----------------------------------------
 # Result: One string. it notifies output has been changed to the new voltage.  
 
@@ -25,9 +26,9 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad, Gpibad, namdev, Input, channel='', timeout = 2000): 
+  def __init__(self, IPad, Gpibad, namdev, Input, channel='', timeout = 500): 
     """
-    Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=2000)
+    Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=500)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='P25v', timeout=3000)
     ____________________________
     To store the given values from the user. 
@@ -69,11 +70,11 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     Also, we rmind the user if the input channel is not required for the given device.  
     """
     if self.name_of_device in self.rightDevice:
-      print "0"
-      if self.timeout >= 2000:      # hardcoded. Also, the number was choosen after several testing.
-        print "1"
+
+      if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
+
         if self.value is int or float:
-          print "2"
+
           if self.name_of_device == 'hpe3631a':
 
             if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
@@ -120,17 +121,20 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
       if self.name_of_device == 'hpe3631a':
 
-        set_channel = self.transaction('INST:SEL '+self.channel)      #First step
-        set_voltageDC = self.transaction('volt:lev:imm:ampl '+self.value)   #second step
-        print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
+        # we can add a new check for making sure the psoitive nad negative values. 
 
-        if set_voltageDC[2] == '':             #check if it times out.
+          set_channel = self.transaction('INST:SEL '+self.channel)      #First step
+          set_voltageDC = self.transaction('volt:lev:imm:ampl '+self.value)   #second step
+          self.disconnect
+          print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
 
-          print "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-          return False, 'e'               # I have to considre this test here because I need to know the result. 
+          if set_voltageDC[2] == '':             #check if it times out.
 
-        else:
-          return self.channel +' has been selected. And, the DC voltage has been set to '+ self.value
+            print "It seems that . it works ....!"               # For debug reasons. 
+            return True               # I have to considre this test here because I need to know the result. 
+
+          else:
+            return self.channel +' has been selected. And, the DC voltage has been set to '+ self.value   # will never work because it will never return any thing except timeout
 
       
       else: 
@@ -149,4 +153,5 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 #         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
-# I could not test it because there is a bug in the data_acquisition
+# check if input is negative or not for the negative or positive channels.
+# 

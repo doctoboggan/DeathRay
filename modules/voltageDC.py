@@ -21,9 +21,9 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, channel='', timeout=1500): 
+  def __init__(self, IPad, Gpibad, namdev, channel='', timeout=300): 
     """
-    Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=1500)
+    Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=300)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', channel='P25v', timeout=2000)
     __________________
     To store the given values from the user. 
@@ -57,7 +57,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 1500:      # hardcoded. Also, the number was choosen after several testing.
+      if self.timeout >= 300:      # hardcoded. Also, the number was choosen after several testing.
 
         if self.name_of_device == 'hpe3631a':
 
@@ -95,7 +95,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       if self.name_of_device == 'hpe3631a':
 
         voltDC = self.transaction('meas:volt:dc? '+self.channel)
-        #self.disconnect
+        self.disconnect                   
         print "DC voltage is "+voltDC[2]    # For debug reasons.
         return
 
@@ -110,17 +110,16 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
  
       elif self.name_of_device == 'hp34401a':
 
-        import time #debug
+        #import time #debug                             [clean]
         voltDC = self.transaction('meas:volt:dc?')
-        #self.disconnect
+        self.disconnect
         print "DC voltage is "+voltDC[2]      # For debug reasons.
-        time.sleep(3)
-        print "done sleeping"
-        return
+        #time.sleep(0.2)            [clean]
+        #print "done sleeping"        [clean]
 
         if voltDC[2] == '':             #check if it times out.
 
-          print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'voltageDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'voltageDC' by hard coded to the right SCPI command in get() command). Or, The gpib address is not right (Double check it).Or,  for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+          print  "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
           return False, 'e'               # I have to considre this test here because I need to know the result. 
 
         else:
@@ -148,5 +147,6 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 #         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 # voltageDC.voltageDC('129.59.93.179', 'gpib0,22', 'hp34401a').get()
+# WE HAVE TO disconnect the transaction or we will not recive any signal back!!
 
 

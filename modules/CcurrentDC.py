@@ -128,14 +128,15 @@ class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
         set_channel = self.transaction('INST:SEL '+self.channel)      #First step
         set_currentDC = self.transaction('curr:lev:imm:ampl '+self.value)   #second step
+        self.disconnect
 
         if set_currentDC[2] == '':             #check if it times out.
 
-          print "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-          return False, 'e'               # I have to considre this test here because I need to know the result. 
+          print "I think it works ...!"               # For debug reasons. 
+          return True               # I have to considre this test here because I need to know the result. 
 
         else:
-          return self.channel +' has been selected. And, the DC current has been set to '+ self.value
+          return self.channel +' has been selected. And, the DC current has been set to '+ self.value   # I will never go to this step because it alway return timeout.
 
       
       else: 
