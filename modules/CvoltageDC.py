@@ -26,10 +26,10 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad, Gpibad, namdev, Input, channel='', timeout = 500): 
+  def __init__(self, IPad, Gpibad, namdev, Input, channel='p25v', timeout = 500): 
     """
-    Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=500)
-    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='P25v', timeout=3000)
+    Requiremnt: ( IPad, Gpibad, namdev, input, channel='p25v', timeout=500)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)
     ____________________________
     To store the given values from the user. 
     Note:
@@ -67,36 +67,85 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     To check if the given device will work with CvoltagetDC function (avoiding issues).
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
     ALso, we take care of time-out minimum duration (to aviod run out of time).
-    Also, we rmind the user if the input channel is not required for the given device.  
+    Also, we remind the user if the input channel is not required for the given device. 
+    Note: Some devices have its own characteristics. For that: 
+    1) hpe3631a: There is voltage limitation in each channel (take a look at table #4-1 on page# 72 of "hpe3631a" manaule)
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
+      if type(self.timeout) is int or float:
 
-        if self.value is int or float:
+        if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if self.name_of_device == 'hpe3631a':
+          if type(self.value) is int or float:
 
-            if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
-              print "choosen channel does not exist !!"     # For debug purpose
-              return False, 'c'
+            if self.name_of_device == 'hpe3631a':
+
+              if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V']: # for channel checking. Wehave to do this with each and every channelly device!! (we can not accept unknow channel any more).
+                print "choosen channel does not exist !!"     # For debug purpose
+                return False, 'c'
+              else:
+                # from here, we are entering characteristics of hpe3631a. [START]
+                if self.channel in ['p6v']:
+
+                  if self.value <= 6 and self.value >= 0:
+
+                    return True
+
+                  else: 
+
+                    print "The imput DC voltage is not right (out of range)"
+                    return False, 'z'
+
+                elif self.channel in ['p25v']:
+
+                  if self.value <= 25 and self.value >= 0:
+
+                    return True
+
+                  else: 
+                    print type(self.value)   #debug
+                    print self.value  #debug
+                    print "The imput DC voltage is not right (out of range)"
+                    return False, 'z'
+
+                elif self.channel in ['n25v']:
+
+                  if self.value <= 0 and self.value >= -25:
+
+                    return True
+
+                  else: 
+
+                    print "The imput DC voltage is not right (out of range)"
+                    return False, 'z'
+
+                else:
+
+                  print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "
+                  return False, 'w'
+
+                # End of characteristics of hpe3631a. [END]
+
             else:
-              return True
+              if self.channel != '':
+                print "The device does not have any channel. So, your input channel will be ignored."     # To remind the user about his/her mistake of entering channel, where the device does not have (for future devices). 
+                return True
+              else:
+                return True
 
           else:
-            if self.channel != '':
-              print "The device does not have any channel. So, your input channel will be ignored."     # To remind the user about his/her mistake of entering channel, where the device does not have (for future devices). 
-              return True
-            else:
-              return True
+            print "The input voltage is not a number !!"  # For debug purpose
+            return False, 'n'
 
         else:
-          print "The input voltage is not a number !!"  # For debug purpose
-          return False, 'n'
+          print "The time-out is too short"   # For debug purpose
+          return False, 'o'
 
-      else:
-        print "The time-out is too short"   # For debug purpose
-        return False, 'o'
+      else: 
+
+        print "timeout input is not acceptable"
+        return False, 'q'
 
     else:
       print "the device is not in data base"    # For debug purpose
@@ -124,8 +173,9 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
         # we can add a new check for making sure the psoitive nad negative values. 
 
           set_channel = self.transaction('INST:SEL '+self.channel)      #First step
-          set_voltageDC = self.transaction('volt:lev:imm:ampl '+self.value)   #second step
-          self.disconnect
+          interger_value = str(self.value)      #convert to string
+          set_voltageDC = self.transaction('volt:lev:imm:ampl '+interger_value)   #second step
+          self.disconnect 
           print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
 
           if set_voltageDC[2] == '':             #check if it times out.
@@ -139,7 +189,7 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
       
       else: 
         print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands (using "elif" command). The user should not get here at all (hopefully).
-        
+        return False, 'w'
 
 
     else:
@@ -152,6 +202,11 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 #         ---> 'n' means input voltage is not number.
 #         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
+#         ---> 'w' wired error (something wrong with code)
+#         ---> 'z' out of range 
+#         ---> 'q' timeout input is not number.
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # check if input is negative or not for the negative or positive channels.
 # I think we should include the wrong input according to the table..... mmmm... not rupest enough. 
+# we have to check the input as suppose to be (integer or float). 
+# we have another douple check in the GUI level (the user input)
