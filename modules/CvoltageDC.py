@@ -88,41 +88,41 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
                 # from here, we are entering characteristics of hpe3631a. [START]
                 if self.channel in ['p6v']:
 
-                  if self.value <= 6 and self.value >= 0:
+                  if self.value <= 6.18 and self.value >= 0:
 
                     return True
 
                   else: 
 
-                    print "The imput DC voltage is not right (out of range)"
+                    print "The imput DC voltage is not right (out of range)"    #debug
                     return False, 'z'
 
                 elif self.channel in ['p25v']:
 
-                  if self.value <= 25 and self.value >= 0:
+                  if self.value <= 25.75 and self.value >= 0:
 
                     return True
 
                   else: 
                     print type(self.value)   #debug
                     print self.value  #debug
-                    print "The imput DC voltage is not right (out of range)"
+                    print "The imput DC voltage is not right (out of range)"    #debug
                     return False, 'z'
 
                 elif self.channel in ['n25v']:
 
-                  if self.value <= 0 and self.value >= -25:
+                  if self.value <= 0 and self.value >= -25.75:
 
                     return True
 
                   else: 
 
-                    print "The imput DC voltage is not right (out of range)"
+                    print "The imput DC voltage is not right (out of range)"    #debug
                     return False, 'z'
 
                 else:
 
-                  print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "
+                  print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "    #debug
                   return False, 'w'
 
                 # End of characteristics of hpe3631a. [END]
@@ -206,7 +206,5 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 #         ---> 'z' out of range 
 #         ---> 'q' timeout input is not number.
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
-# check if input is negative or not for the negative or positive channels.
-# I think we should include the wrong input according to the table..... mmmm... not rupest enough. 
-# we have to check the input as suppose to be (integer or float). 
+# check if input is negative or not for the negative or positive channels. 
 # we have another douple check in the GUI level (the user input)
