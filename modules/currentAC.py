@@ -96,3 +96,4 @@ class currentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 #         ---> 'e' means empty string
 #         ---> 'x' wrong name of device. 
 # currentAC.currentAC('129.59.93.179', 'gpib0,22', 'hp34401a').get()
+# add level of secure input on GUI level.

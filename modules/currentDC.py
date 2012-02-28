@@ -21,10 +21,10 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad, Gpibad, namdev, channel='', timeout=2500): 
+  def __init__(self, IPad, Gpibad, namdev, channel='p25v', timeout=2500): 
     """
-    Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=2500)
-    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', channel='P25v', timeout=3000)
+    Requiremnt: ( IPad, Gpibad, namdev, channel='p25', timeout=2500)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', channel='n25v', timeout=3000)
     __________________
     To store the given values from the user. 
     Note:
@@ -63,7 +63,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
         if self.name_of_device == 'hpe3631a':
 
-          if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
+          if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V']:      # cor channel checking. Wehave to do this with each and every channelly device!!
             print "choosen channel does not exist !!"     # For debug purpose
             return False, 'c'
           else:
@@ -146,7 +146,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 #         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 # currentDC.currentDC('129.59.93.179', 'gpib0,22', 'hp34401a').get()
-
+# add secure level of input on the GUI level
 
 
 

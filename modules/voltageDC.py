@@ -21,10 +21,10 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, channel='', timeout=300): 
+  def __init__(self, IPad, Gpibad, namdev, channel='p25v', timeout=300): 
     """
-    Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=300)
-    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', channel='P25v', timeout=2000)
+    Requiremnt: ( IPad, Gpibad, namdev, channel='p25v', timeout=300)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', channel='n25v', timeout=2000)
     __________________
     To store the given values from the user. 
     Note:
@@ -95,9 +95,8 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       if self.name_of_device == 'hpe3631a':
 
         voltDC = self.transaction('meas:volt:dc? '+self.channel)
-        self.disconnect                   
+        #self.disconnect                   
         print "DC voltage is "+voltDC[2]    # For debug reasons.
-        return
 
         if voltDC[2] == '':             #check if it times out.
 
@@ -112,7 +111,7 @@ class voltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
         #import time #debug                             [clean]
         voltDC = self.transaction('meas:volt:dc?')
-        self.disconnect
+        #self.disconnect
         print "DC voltage is "+voltDC[2]      # For debug reasons.
         #time.sleep(0.2)            [clean]
         #print "done sleeping"        [clean]
