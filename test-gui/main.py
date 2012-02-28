@@ -5,8 +5,7 @@ import sys, random, pprint
 from PyQt4 import QtCore, QtGui, Qt
 from interface import Ui_MainWindow
 
-import currentDC, voltageAC, voltageDC
-
+import modules
 
  
 class DeathRay(QtGui.QMainWindow):
@@ -18,14 +17,22 @@ class DeathRay(QtGui.QMainWindow):
     QtGui.QWidget.__init__(self)
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
-    self.initUI()
     self.updateDeviceList()
+
+    #instance variables
+    self.defaultIP = '129.59.93.179'
+    self.defaultGPIB = 'gpib0,22'
+
+   #Initialize the UI
+    self.initUI()
     
   def initUI(self):
     #Connect the signals and slots
     self.connect(self.ui.listWidgetDevices, QtCore.SIGNAL('itemSelectionChanged()'), self.deviceSelected)
     self.connect(self.ui.pushButtonGet, QtCore.SIGNAL('clicked()'), self.getClicked)
-    pass
+
+    self.ui.lineEditIP.setText(self.defaultIP)
+    self.ui.lineEditGPIB.setText(self.defaultGPIB)
 
 
   def updateDeviceList(self):
@@ -53,12 +60,7 @@ class DeathRay(QtGui.QMainWindow):
     IP = str(self.ui.lineEditIP.text())
     GPIB = str(self.ui.lineEditGPIB.text())
     device = str(self.ui.listWidgetDevices.currentItem().text())
-    if command == 'currentDC':
-      result = str(currentDC.currentDC(IP, GPIB, device).get())
-    if command == 'voltageAC':
-      result = str(voltageDC.voltageDC(IP, GPIB, device).get())
-    if command == 'voltageDC':
-      result = str(voltageDC.voltageDC(IP, GPIB, device).get())
+    result = str(modules.command[str(command)](IP, GPIB, device).get())
 
 
     self.ui.lineEditResult.setText(result)
