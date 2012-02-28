@@ -131,12 +131,13 @@ supply:
 multimeter:
   current, voltage (AC/DC)    [DONE] (not yet fully tested)
 oscope:
-  change the trigger event (common: edge, or width)
+  change the trigger event (common: edge (do first), or width)
     mode: normal vs auto
       auto: forces a trigger even if one doesnt exist
       norm: only triggers when it exists (generally used)
   download each channel (1,2)
-  set timescale and voltage
+  set timescale (axis) and voltage (window)
+  type of input impedence.
 
 
 
@@ -161,6 +162,8 @@ Test procedure:
 
 
 
+
+
 2/23 notes:
 board number and flip-flop number and everything
 very basic: everything, and then flipflop number
@@ -181,4 +184,14 @@ design review 3pm on friday for about an hour.
 
 
 
-Should we organize at device level or command level?
+
+
+
+
+Design Review (Thurs 15)
+  Project overview
+    goals/status
+    percentage through
+    challenges we might be facing/how t overcome
+  anticipated way of completed todo tasks
+  grad students/faculty membors - ISDE team members.
