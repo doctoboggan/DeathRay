@@ -177,3 +177,8 @@ design review 3pm on friday for about an hour.
   challenges or hurdles
     possible solutions
   want to see API
+
+
+
+
+Should we organize at device level or command level?
