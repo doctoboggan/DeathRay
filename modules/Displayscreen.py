@@ -13,7 +13,7 @@
 
 import data_acquisition
 
-class Displayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
+class Displayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class will show a sentence in the user interface panel.
 

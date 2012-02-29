@@ -10,7 +10,7 @@
 
 import data_acquisition
 
-class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
+class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class provides the peak to peak AC voltage and the frequency in a tuple
   like this: (VPP, Freq)

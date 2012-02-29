@@ -14,7 +14,7 @@
 
 import data_acquisition
 
-class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
+class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class provides the DC voltage value of the given devices (to know the devices, please use
   'rightdevice' function).

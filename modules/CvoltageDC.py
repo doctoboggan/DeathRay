@@ -18,7 +18,7 @@
 
 import data_acquisition
 
-class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
+class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class set DC voltage for given channels of the given device. 
   This class provides the DC current value of the given devices (to know the devices, please use
