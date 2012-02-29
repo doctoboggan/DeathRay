@@ -18,7 +18,7 @@
 
 import data_acquisition
 
-class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
   """
   This class set DC voltage for given channels of the given device. 
   This class provides the DC current value of the given devices (to know the devices, please use
@@ -152,7 +152,7 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
       return False, 'x'
 
 
-  def get(self):		
+  def do(self):		
     """
     The main SCPI command. It has two steps,
     First step:
@@ -175,16 +175,17 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
           set_channel = self.transaction('INST:SEL '+self.channel)      #First step
           interger_value = str(self.value)      #convert to string
           set_voltageDC = self.transaction('volt:lev:imm:ampl '+interger_value)   #second step
-          self.disconnect 
+
           print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
 
-          if set_voltageDC[2] == '':             #check if it times out.
+          if set_voltageDC[0] == 0:             #check if it times out.
 
-            print "It seems that . it works ....!"               # For debug reasons. 
-            return True               # I have to considre this test here because I need to know the result. 
+            print "It works !!"               # For debug reasons. 
+            return True                # I have to considre this test here because I need to know the result. 
 
           else:
-            return self.channel +' has been selected. And, the DC voltage has been set to '+ self.value   # will never work because it will never return any thing except timeout
+            print self.identify_vxi_11_error(set_voltageDC[0])      #print the error information.
+            return False, set_voltageDC[0]  # It is going to return the error number. 
 
       
       else: 
@@ -208,3 +209,14 @@ class CvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # check if input is negative or not for the negative or positive channels. 
 # we have another douple check in the GUI level (the user input)
+#--------------------------------------
+# For error number, THe meaning is: 
+#       1:"Syntax error", 3:"Device not accessible",
+# 			4:"Invalid link identifier", 5:"Parameter error", 6:"Channel not established",
+#				8:"Operation not supported", 9:"Out of resources", 11:"Device locked by another link",
+#				12:"No lock held by this link", 15:"IO Timeout", 17:"IO Error",  21:"Invalid Address",
+# 			23:"Abort", 29:"Channel already established" ,
+#				"eof": "Cut off packet received in rpc.recvfrag()",
+#				"sync":"stream sync lost",
+#				"notconnected": "Device not connected"}
+#---------------------------------------

@@ -9,7 +9,7 @@
 
 import data_acquisition
 
-class currentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
   """
   This class provides the peak to peak current and the frequency in a tuple
   like this: (VPP, Freq)
@@ -60,7 +60,7 @@ class currentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       return False, 'x'
 
 
-  def get(self):		
+  def do(self):		
     """
     The main SCPI commands, where the AC current value is !!
     """
@@ -75,14 +75,14 @@ class currentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         self.disconnect
         print "AC current is "+currAC[2]      # For debug reasons.
 
-        if currAC[2] == '':             #check if it times out.
+        if currAC[0] == 0:             #check if it times out.
 
-          print "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-          return False, 'e'               # I have to considre this test here because I need to know the result. 
+          return float(currAC[2])
 
         else:
 
-          return float(currAC[2])
+          print  self.identify_vxi_11_error(currAC[0])      #print the error information.
+          return False, currAC[0]   # return the error number.   
       
       else: 
         print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands (by adding "elif"). The user should not get here at all (hopefully)

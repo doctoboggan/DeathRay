@@ -13,7 +13,7 @@
 
 import data_acquisition
 
-class Displayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class Displayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
   """
   This class will show a sentence in the user interface panel.
 
@@ -75,17 +75,26 @@ class Displayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.g
   
 
 
-  def get(self):		
+  def do(self):		
     """
     The main SCPI commands, where the text string will be sent !!
     """
 
     if self.check() is True:
+
+      print "PASS check test"
       
-      self.transaction('disp:text "'+self.text+'"')
-      self.disconnect
-      print "It should print now. If not, check \n 1- The gpib address (double check). \n 2- I do not know....good luck... :p"
-      return None
+      m = self.transaction('disp:text "'+self.text+'"')
+      
+      if m[0] == 0:             #check if it times out.
+
+          print "Te text has been sent"
+          return True
+
+        else:
+
+          print  self.identify_vxi_11_error(m[0])      #print the error information.
+          return False, m[0]   # return the error number.   
 
     else: 
 

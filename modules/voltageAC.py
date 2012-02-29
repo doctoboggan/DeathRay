@@ -10,7 +10,7 @@
 
 import data_acquisition
 
-class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
   """
   This class provides the peak to peak AC voltage and the frequency in a tuple
   like this: (VPP, Freq)
@@ -66,7 +66,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
 
 
-  def get(self):		
+  def do(self):		
     """
     The main SCPI commands, where the AC voltage value is !!
     Note: we are taking the third return value because it is the one, which we are looking for.
@@ -80,17 +80,16 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       if self.name_of_device == 'hp34401a':           # the device was specified to make the program more ropust and easy to expand in the future.
 
         voltAC = self.transaction('meas:volt:ac?')
-        self.disconnect
         print "AC voltage is "+voltAC[2]    # For debug reasons.
 
-        if voltAC[2] == '':                 #check if it times out.
+        if voltAC[0] == 0:             #check if it times out.
 
-          print "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-          return False, 'e'               # I have to considre this test here because I need to know the result. 
+          return float(voltAC[2])
 
         else:
 
-          return float(voltAC[2])
+          print  self.identify_vxi_11_error(voltAC[0])      #print the error information.
+          return False, voltAC[0]   # return the error number.   
 
       
       else: 

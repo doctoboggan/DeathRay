@@ -18,7 +18,7 @@
 
 import data_acquisition
 
-class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
   """
   This class sets the DC current for the selected channel of the given device. 
   This class provides the DC current value of the given devices (to know the devices, please use
@@ -155,7 +155,7 @@ class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
   
 
 
-  def get(self):		
+  def do(self):		
     """
     The main SCPI command. It has two steps,
     First step:
@@ -176,15 +176,15 @@ class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
         set_channel = self.transaction('INST:SEL '+self.channel)      #First step
         set_currentDC = self.transaction('curr:lev:imm:ampl '+self.value)   #second step
-        self.disconnect
 
-        if set_currentDC[2] == '':             #check if it times out.
+        if set_currentDC[0] == 0:             #check if it times out.
 
-          print "I think it works ...!"               # For debug reasons. 
+          print "It works !!"               # For debug reasons. 
           return True               # I have to considre this test here because I need to know the result. 
 
         else:
-          return self.channel +' has been selected. And, the DC current has been set to '+ self.value   # I will never go to this step because it alway return timeout.
+          print self.identify_vxi_11_error(set_currentDC[0])      #print the error information.
+          return False, set_currentDC[0]   # return the error number.
 
       
       else: 
@@ -207,3 +207,14 @@ class CcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 # CcurrentDC.CcurrentDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # I have to considre when it the input is more than the limit ...!! I do not know. Still, the control modules are not rupest enouph. 
 # we have another douple check in the GUI level (the user input)
+#--------------------------------------
+# For error number, THe meaning is: 
+#       1:"Syntax error", 3:"Device not accessible",
+# 			4:"Invalid link identifier", 5:"Parameter error", 6:"Channel not established",
+#				8:"Operation not supported", 9:"Out of resources", 11:"Device locked by another link",
+#				12:"No lock held by this link", 15:"IO Timeout", 17:"IO Error",  21:"Invalid Address",
+# 			23:"Abort", 29:"Channel already established" ,
+#				"eof": "Cut off packet received in rpc.recvfrag()",
+#				"sync":"stream sync lost",
+#				"notconnected": "Device not connected"}
+#---------------------------------------

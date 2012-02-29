@@ -14,7 +14,7 @@
 
 import data_acquisition
 
-class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class getcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.identify_vxi_11_error):		
   """
   This class provides the DC current value of the given devices (to know the devices, please use
   'rightdevice' function.
@@ -87,7 +87,7 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   
 
 
-  def get(self):		
+  def do(self):		
     """
     The main SCPI commands, where the DC current value is !!
     """
@@ -98,32 +98,32 @@ class currentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
       if self.name_of_device == 'hpe3631a':
 
         currDC = self.transaction('meas:curr:dc? '+self.channel)
-        self.disconnect
+
         print "DC current is "+currDC[2]    # For debug reasons.
 
-        if currDC[2] == '':             #check if it times out.
+        if currDC[0] == 0:             #check if it times out.
 
-          print "For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-          return False, 'e'               # I have to considre this test here because I need to know the result. 
+          return float(currDC[2])
 
         else:
 
-          return float(currDC[2])
+          print  self.identify_vxi_11_error(currDC[0])      #print the error information.
+          return False, currDC[0]   # return the error number.   
+
  
       elif self.name_of_device == 'hp34401a':
 
         currDC = self.transaction('meas:curr:dc?')
-        self.disconnect
         print "DC current is "+currDC[2]      # For debug reasons.
 
-        if currDC[2] == '':             #check if it times out.
+         if currDC[0] == 0:             #check if it times out.
 
-          print"For some reasons, it times out. Maybe: \n 1- The gpib address is not right (Double check it). \n 2- The hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). \n 3- The hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). \n 4- For other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-          return False, 'e'               # I have to considre this test here because I need to know the result. 
+          return float(currDC[2])
 
         else:
 
-          return float(currDC[2])
+          print  self.identify_vxi_11_error(currDC[0])      #print the error information.
+          return False, currDC[0]   # return the error number.   
       
       else: 
         print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands. The user should not get here at all (hopefully)
