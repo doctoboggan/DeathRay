@@ -116,7 +116,7 @@ class getcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
         currDC = self.transaction('meas:curr:dc?')
         print "DC current is "+currDC[2]      # For debug reasons.
 
-         if currDC[0] == 0:             #check if it times out.
+        if currDC[0] == 0:             #check if it times out.
 
           return float(currDC[2])
 
