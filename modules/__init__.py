@@ -1,3 +1,9 @@
-from voltageDC import voltageDC
-from voltageAC import voltageAC
-from currentDC import currentDC
+import getvoltageDC 
+import getvoltageAC 
+import getcurrentDC
+import setcurrentDC
+import getdevice
+import Displayscreen
+import getIDN
+import setvoltageDC
+import getcurrentAC
