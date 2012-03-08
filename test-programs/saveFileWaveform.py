@@ -5,13 +5,12 @@
 # Devices:  1) "dso6032a" 
 # Modifiers:  None 
 
-#pathname directory not yet worked on. will do it later. SAVEPWD something like that. 
 #right now it only has a name but not a directory. needs a lot of work to do. 
 # did not use Anas's way because not familiar yet
 
 import libgpib
 
-class saveFileWaveform:		
+class saveFileWaveform:  	
   """
   The :SAVE:FILename command specifies the source for any SAVE
   operations.
@@ -30,7 +29,7 @@ class saveFileWaveform:
   saves in the directory requested by the user. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, FileName, pointsInFile): 
+  def __init__(self, IPad, Gpibad, namdev, FileName, pointsInFile, pathName): 
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -38,6 +37,7 @@ class saveFileWaveform:
     self.rightDevice = ['dso6032a']
     self.baseName = FileName
     self.lengthOfFile = pointsInFile
+    self.pathName = pathName
 
 #note: how to check if file name already exists?
 
@@ -55,16 +55,18 @@ class saveFileWaveform:
 
   def get(self):		
     """
-    The main SCPI command. It has two steps,
-    First step:
+    The main SCPI command. It has ____ steps,
+    
     Note: between each transaction, we have to disconnect the connection to aviod time-out errors. Also, to allow other connection to be established. 
     """
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')
-    z , c , x = m.transaction('SAVE:FIL '+self.baseName)
+    z , c , a = m.transaction('SAVE:FIL '+self.baseName) #SAVE:FILename <base_name>
     m.disconnect()
-    z , c , y = m.transaction('SAVE:WAV[:STAR] ['+self.FileName+']') #SAVE:WAV[:STARt] [<file_name>]
+    z , c , d = m.transaction('SAVE:PWD'+self.pathName+']') #SAVE:PWD <path_name> 
     m.disconnect()
-    z , c , y = m.transaction('SAVE:WAV:LENG'+self.lengthOfFile+']') #SAVE:WAVeform:LENGth <length>  
+    z , c , b = m.transaction('SAVE:WAV[:STAR] ['+self.FileName+']') #SAVE:WAV[:STARt] [<file_name>]
+    m.disconnect()
+    z , c , e = m.transaction('SAVE:WAV:LENG'+self.lengthOfFile+']') #SAVE:WAVeform:LENGth <length>  
     m.disconnect()
     
     return 'Waveform is saved in file'+self.baseName+'and the length is'+self.lengthOfFile
@@ -111,3 +113,8 @@ The :SAVE:IMAGe[:STARt] command saves an image.
 <length> ::= 100 to max. length; an integer in NR1 format
 The :SAVE:WAVeform:LENGth command sets the waveform data length
 (that is, the number of points saved).
+
+:SAVE:PWD <path_name>
+<path_name> ::= quoted ASCII string
+The :SAVE:PWD command sets the present working directory for save
+operations.
