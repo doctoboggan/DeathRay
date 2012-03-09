@@ -16,12 +16,12 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, timeout=2300): 
+  def __init__(self, IPad, Gpibad, namdev, timeout=2500): 
     '''
     /\ To store the given values from the user. 
     /\ Note:
       --> IPad is the number of ip-address with quotation mark. 
-      --> Gpibad is the number of Gpib address with quotation mark.
+      --> Gpibad is the number of Gpib address with quotation mark.0
       --> namdev is the name of the device.
     
     /\ Besdies that, you can control the time-out duration. The dafult time-out duration is 2300 msec (and, it is the minimum time, where command can run) (please, do not lower it than that. It will cause an issue) . To change the time-out to 500msec:
@@ -58,15 +58,16 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     """    
 
     if self.check() is True:
-      if self.timeout >= 2300:      # hardcoded. Also, the number was choosen after several testing. 
+      if self.timeout >= 2500:      # hardcoded. Also, the number was choosen after several testing. 
         voltfix = self.transaction('meas:volt:ac?')
         freqfix = self.transaction('meas:freq?')
         self.disconnect()
-        if voltfix == "" or freqfix == "":  # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors 
-          print "empty string"              # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors
-          return "time-out occurre"         # did not work as I thought. However, the code works fine. It smarts enough to know the time out limit errors and database errors
+        print voltfix, freqfix        
+        if voltfix[2] == "" or freqfix[2] == "":   
+          print "empty string"              
+          return False, 'e'         
         else:
-          return voltfix[2] , freqfix[2]
+          return float(voltfix[2]) , float(freqfix[2])
       else:
         return False, 'o'
     else:
@@ -83,7 +84,7 @@ class voltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
 # x means is not in the data base. o means time-out is too short.
 # I choose to name it "o" or "x" for a reason. To defind them to the computer. So that, the computer can tell the user via GUI it is time-out or wrong input (for now). 
-# to test the file, run (after import it): tesvoltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp34401a', timeout=5000).get()
+# to test the file, run (after import it): tesvoltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp  34401a', timeout=5000).get()
 # Note: yo can play with the name of device or with the time-out value. The program us smart enough to know ifit should run the command or not. Moreover, you do not need to enter time-out value as following: 
 # tesvoltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp34401a').get()
 

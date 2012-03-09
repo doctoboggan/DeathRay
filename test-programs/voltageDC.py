@@ -57,6 +57,11 @@ class voltageDC:
     m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')   
     z , c , voltfix = m.transaction('meas:volt:dc? '+self.channel)
     m.disconnect() 
+    print "voltage is "+voltfix
+    print "reason is "
+    print c
+    print "error is "
+    print z
     return float(voltfix)
 
 #print main('129.59.93.27', 'gpib0,10', 'hp34401a').check()

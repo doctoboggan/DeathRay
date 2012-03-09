@@ -10,6 +10,8 @@ class list():
     self.lise = []
     self.lisee = []
     self.finallist = []
+    self.tolist = []
+    self.rightDevice = ['']
 
   def scan(self):
 
@@ -39,12 +41,18 @@ class list():
     for count in range(len(self.lis)):
 
         if self.lisee[count] == '.py':
-          self.finallist.append(ncount)
-          self.finallist[ncount] = self.lise[count]
-          print ncount    #debug
-          print count     #debug
-          print self.finallist[ncount]   #debug
-          ncount = ncount + 1
+
+          if self.lise[count] == '__init__':    # to make sure that, it does not read its self.
+
+            pass
+
+          else:
+            self.finallist.append(ncount)
+            self.finallist[ncount] = self.lise[count]
+            print ncount    #debug
+            print count     #debug
+            print self.finallist[ncount]   #debug
+            ncount = ncount + 1
 
         else:
           print "refused are here:"   #debug
@@ -52,13 +60,44 @@ class list():
           print "next"    #debug
           pass
 
-  def get(self):
+  def get(self):        # this is the oneto run (do not worry about the others)
 
     self.clee()
     print self.finallist
     return self.finallist
         
 
+  def together(self):
+
+    self.sep()
+    ncount = 0
+    for count in range(len(self.lis)):
+
+        if self.lisee[count] == '.py':
+          self.tolist.append(ncount)
+          self.tolist[ncount] = self.lise[count] + self.lisee[count]
+          print ncount    #debug
+          print count     #debug
+          ncount = ncount + 1
+
+        else:
+          print "refused are here:"   #debug
+          print count    #debug 
+          print "next"    #debug
+
+    return  self.tolist
+
+#  def impor(self):
+
+#    self.together()
+#    count = 0
+#    for count in range(len(self.tolist)):
+
+#      print count
+#      print self.tolist[count]
+#      print "------------------------------------"
+#      g = self.finallist[count]
+#      from self.direct import g
 
 
 # fullname , extensions = os.path.splitext(fulllname)

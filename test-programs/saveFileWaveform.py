@@ -5,12 +5,13 @@
 # Devices:  1) "dso6032a" 
 # Modifiers:  None 
 
+#pathname directory not yet worked on. will do it later. SAVEPWD something like that. 
 #right now it only has a name but not a directory. needs a lot of work to do. 
 # did not use Anas's way because not familiar yet
 
 import libgpib
 
-class saveFileWaveform:  	
+class saveFileWaveform:		
   """
   The :SAVE:FILename command specifies the source for any SAVE
   operations.
@@ -39,7 +40,7 @@ class saveFileWaveform:
     self.lengthOfFile = pointsInFile
     self.pathName = pathName
 
-#note: how to check if file name already exists?
+##########################################note: how to check if file name already exists?
 
 
   def check(self):

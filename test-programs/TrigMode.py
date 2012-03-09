@@ -19,14 +19,14 @@ class TrigMode:
   """
 
   def __init__(self, IPad, Gpibad, namdev, trigmode): 
-
+  print "please enter the correct case for the trigmode as shown in the following statement:\nEDGE, GLITch, PATTern, CAN, DURation, I2S, IIC, EBURst, LIN, M1553, SEQuence, SPI, TV, UART, USB, FLEXray, GLITCH, PATTERN, DRATION, EBURST, SEQUENCE, FLEXRAY"
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
     self.rightDevice = ['dso6032a']
-    self.trigMode_for_dso = ['EDGE', 'GLITch', 'PATTern', 'CAN', 'DURation', 'I2S', 'IIC', 'EBURst', 'LIN', 'M1553', 'SEQuence', 'SPI', 'TV', 'UART', 'USB', 'FLEXray', 'GLITCH', 'PATTERN', 'DRATION', 'EBURST', 'SEQUENCE', 'FLEXRAY']      # incluse all "upper case" probabilities. So that, we can check them as "upper case". By the way, this is one line. I am not sure what will happen with the numbers?! (Anas)
-    trigmodelower = upper(trigmode)
-    self.trigMode = trigmodelower
+    self.trigMode_for_dso = ['EDGE', 'GLITch', 'PATTern', 'CAN', 'DURation', 'I2S', 'IIC', 'EBURst', 'LIN', 'M1553', 'SEQuence', 'SPI', 'TV', 'UART', 'USB', 'FLEXray', 'GLITCH', 'PATTERN', 'DRATION', 'EBURST', 'SEQUENCE', 'FLEXRAY']      # incluse all "upper case" probabilities. So that, we can check them as "upper case". By the way, this is one line. I am not sure what will happen with the numbers?! (Anas)#I dont know what will happen too :( (Nadiah)
+ 
+    self.trigMode = trigmode
 
   def check(self):
     """
