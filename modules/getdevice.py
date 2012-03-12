@@ -2,7 +2,7 @@
 
 import getIDN
 
-class check():
+class getdevice():
 
   def __init__(self,IPad, numberofdevices = 0):
 

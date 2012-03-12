@@ -4,9 +4,9 @@
 import data_acquisition
 
 
-class name(data_acquisition.vxi_11.vxi_11_connection):
+class getIDN(data_acquisition.vxi_11.vxi_11_connection):
 
-  def __init(self, IPad, Gpibad):
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0"):
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -14,6 +14,7 @@ class name(data_acquisition.vxi_11.vxi_11_connection):
     timeout = 500
     namdev = 'nothing' 
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)
+    self.rightDevice = ['']
 
   def do(self):
 
