@@ -93,19 +93,6 @@ fixed at ONEMeg (1 MΩ).
       return False, 'x'
 
 
-  
-  def check(self):
-    """
-        
-    """
-    if self.name_of_device not in self.rightDevice:
-      return False
-    if self.channel not in self.typeChannel:
-      return False
-    if self.impedance is not in self.typeImpedance:
-      return False
-    
-    return True
 
 
 
