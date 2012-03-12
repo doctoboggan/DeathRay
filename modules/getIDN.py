@@ -11,7 +11,7 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
     self.ip_id = IPad
     self.gpib_id = Gpibad
     rise_on_error = 0
-    timeout = 500
+    timeout = 100
     namdev = 'nothing' 
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)
     self.rightDevice = ['']

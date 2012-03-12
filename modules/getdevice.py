@@ -26,7 +26,7 @@ class getdevice():
           g = "gpib0,0%d" % (x)
           print g
           #gp = '"' + g + '"'
-          k = getIDN.name(self.ip_ad,g)
+          k = getIDN.getIDN(self.ip_ad,g)
           a, b, self.group[x] = k.transaction('*IDN?')
           print "it is here"
           print self.group[x]
@@ -100,7 +100,7 @@ class getdevice():
     return  self.gg, self.gb
 
 
-#getdevice.check('129.59.93.179',25).fix()
+#getdevice.getdevice('129.59.93.179',25).fix()
 # It returns the the name of avalible devices and their gpib address.
 
 
