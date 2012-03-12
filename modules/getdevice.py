@@ -1,18 +1,42 @@
-# Here, the file should scan for Gpi ports. 
+# Name: Device checker.
+# Made by: Anas Alfuntukh
+# Date: 3/4/12
+# Goal: Check all devices in the network and bring their names and their Gpin adresses.
+# Device: all gpib devices. 
+# Modifiers:  None (for now) 
+# Dependancy: 1) QT GUI
+# Result: a list of names of all avalible devices in the network and another list of their Gpib addressses.
+ 
 
-import getIDN
+import getIDN   # This method is going to be used later.
 
 class getdevice():
 
-  def __init__(self,IPad, numberofdevices = 0):
+  '''
+  --> THis class is for scanning Gpib network for devices. 
+  --> It requires "getIDN" module.
+  --> This is kind of module.
+  '''
+
+  def __init__(self,IPad, numberofdevices = 30):
+
+    '''
+    Requirement: (ip address, number of devices)
+    Ex: getIDN.getIDN('129.59.93.179', 30)
+    ____________________
+    --> IPad is the number of ip-address with quotation mark.
+    --> number of devices means the number of ports, which will be scanned. 
+    --> Makes some lists global to be used in other files.
+    --> The rightDevice list has to be there. It responsibles for flexibility of this file. Because this module is not related to devices directly, The list is going to be empty.
+    '''
 
     self.ip_ad = IPad
-    self.gpib_id = 'gpib0,00'
+    # self.gpib_id = 'gpib0,00' # it is useless
     self.numd = numberofdevices
     self.group = []
     self.gg = []
     self.gb = []
-    #data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=self.gpib_id,raise_on_err=0,timeout=500,device_name='nothing')
+    #data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=self.gpib_id,raise_on_err=0,timeout=500,device_name='nothing') # is not needed any more.
     self.rightDevice = ['']
 
   def write(self):
@@ -105,7 +129,7 @@ class getdevice():
 
 
 
-# It is kind of slow for now.
+# It is kind of slow for now. To speed it up, I have to modify "getIDN" module (read end comments in that file).
 #    print 'We\'re on time %d' % (x)
 
 
