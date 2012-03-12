@@ -94,21 +94,41 @@ fixed at ONEMeg (1 MΩ).
 
 
 
+  def get(self):  	
+    """
+    The main SCPI command
+    """
+    if self.check() is True:
+
+      print "PASS check test"         # For debug purpose
+
+      if self.name_of_device == 'dso6032a':
+
+        SelImp= self.transaction('CHAN'+self.channel+':IMP'+self.impedance)
+        self.disconnect
+       #print "you have selected "+currDC[2]    # For debug reasons.
+
+        #if currDC[2] == '':             #check if it times out.
+
+        #  print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). Or, The gpib address is not right (Double check it). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
+         # return False, 'e'               # I have to considre this test here because I need to know the result. 
+
+        #else:
+
+         # return float(currDC[2])
+
+      else: 
+        print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands. The user should not get here at all (hopefully)
+        
 
 
-  def get(self):		
-    """
-    The main SCPI command. It has ____ steps,
-    
-    Note: between each transaction, we have to disconnect the connection to aviod time-out errors. Also, to allow other connection to be established. 
-    """
-    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')
-    z , c , a = m.transaction('CHAN'+self.channel+':IMP'+self.impedance) 
-    m.disconnect()
-    z , c , impquer = m.transaction('CHAN'+self.channel+':IMP?') 
-    m.disconnect()
-    
-    return ('the input impedance in channel '+self.channel+'is '+impquer)
+    else:
+      return self.check()
+
+
+
+
+ 
     
 
 
