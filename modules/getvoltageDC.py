@@ -3,7 +3,8 @@
 # Date: 06/02/12  (MM/DD/YY)
 # Goal: This moduel suppose to be able to return the DC voltage value from the given devices.
 # Devcies:  1) "hp34401a"  2) "hpe3631a"
-# Modifiers:  None (for now)  
+# Modifiers:  None (for now) 
+# Dependancy: 1) QT GUI 
 # SCPI command: 1) hpe3631a: ----> get DC voltage Value ===>  meas:volt:dc? <channel>
 # ----------- <channel>" --------------
 # <channel> ::= {p6v | p25v | n25v}
