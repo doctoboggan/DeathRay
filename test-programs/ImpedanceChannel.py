@@ -29,7 +29,7 @@ NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope mo
 fixed at ONEMeg (1 MΩ).
   """
 
-  def __init__(self, IPad, Gpibad, namdev, channel, impedance): 
+  def __init__(self, IPad, Gpibad, namdev, timeout=1500, channel, impedance):
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
