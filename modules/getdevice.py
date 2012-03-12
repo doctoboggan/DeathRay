@@ -26,8 +26,8 @@ class getdevice():
           g = "gpib0,0%d" % (x)
           print g
           #gp = '"' + g + '"'
-          k = getIDN.getIDN(self.ip_ad,g)
-          a, b, self.group[x] = k.transaction('*IDN?')
+          self.group[x] = getIDN.getIDN(self.ip_ad,g).do()
+          #a, b, self.group[x] = k.transaction('*IDN?')
           print "it is here"
           print self.group[x]
           print "over"
@@ -38,8 +38,8 @@ class getdevice():
           g = "gpib0,%d" % (x)
           print g
           #gp = '"' + g + '"'
-          k = getIDN.name(self.ip_ad,g)
-          a , b, self.group[x] = k.transaction('*IDN?')
+          self.group[x] = getIDN.getIDN(self.ip_ad,g).do()
+          #a , b, self.group[x] = k.transaction('*IDN?')
           print "it is here"
           print self.group[x]
           print "over"
@@ -105,14 +105,6 @@ class getdevice():
 
 
 
-
-
-
-
-
-
-
-# getdevice.check('129.59.93.179', 25).fix()
 # It is kind of slow for now.
 #    print 'We\'re on time %d' % (x)
 

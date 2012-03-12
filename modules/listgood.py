@@ -6,7 +6,7 @@
 # ------------- Note: ---------
 # --> This is not module as itself. 
 # --> It contains several functions.These functions can be used in other classes.
-# --> Please, If you are going to use this filein other class within *DeathRay* program, please mention that in the dependancy section. 
+# --> Please, If you are going to use this file in other class within *DeathRay* program, please mention that in the dependancy section. 
 # -----------------------------
 # Dependancy: 1) checkinit.py
 # Resullt: depned in each function.

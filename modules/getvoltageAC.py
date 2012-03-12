@@ -112,4 +112,4 @@ class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 # I choose to name it "o" or "x" for a reason. To defind them to the computer. So that, the computer can tell the user via GUI it is time-out or wrong input (for now). 
 # to test the file, run (after import it): tesvoltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp  34401a', timeout=5000).get()
 # Note: yo can play with the name of device or with the time-out value. The program us smart enough to know ifit should run the command or not. Moreover, you do not need to enter time-out value as following: 
-# voltageAC.voltageAC('129.59.93.179', 'gpib0,22', 'hp34401a').get()
+# getvoltageAC.getvoltageAC('129.59.93.179', 'gpib0,22', 'hp34401a').do()
