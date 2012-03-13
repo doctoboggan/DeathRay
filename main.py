@@ -199,7 +199,6 @@ class DeathRay(QtGui.QMainWindow):
         child.setText(0, run[subItemIndex+1])
         treeItem.insertChild(0, child)
         child.setDisabled(True)
-      bp()
       
     #Set 'All Runs' as the selected item
     #allRunsItem = self.ui.treeRun.findItems(self.Experiment.displayData[0],QtCore.Qt.MatchExactly)[0]

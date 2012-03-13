@@ -11,8 +11,8 @@ setup(name='DeathRay',
       description='A GUI program with its plugin for controlling and analyzing FPGA and Gpib devices',
       author='Jack Minardi, Nadiah Husseini Zainol Abidin and Anas Khalid Alfuntukh',
       author_email='jack@minardi.org, nadiah.husseini.zainol.abidin@vanderbilt.edu and anas.alfuntukh@vanderbilt.edu',
-      packages=['scripts'],
-      package_dir={'scripts': 'scripts'},
+      packages=['DRscripts'],
+      package_dir={'DRscripts': 'DRscripts'},
       requires=['data_acquisition','numpy'],
       provides=['Deathray']
      )
