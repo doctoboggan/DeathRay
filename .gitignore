@@ -2,3 +2,4 @@
 *.pyo
 *.swp
 *.DS_Store
+build/
