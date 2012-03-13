@@ -3,6 +3,8 @@
 import os
 import numpy as np
 
+from pdb import set_trace as bp
+
 class FileProcessor:
   '''
   This class takes a list of files to open
@@ -17,10 +19,7 @@ class FileProcessor:
     #instance variables
     self.filesList = filesList
     self.processedData = [{}]
-    self.plotType = 'histogram'
-    self.plotTitle = 'Frequency of detected pulse widths'
-    self.xAxis = 'Pulse Width (picoseconds)'
-    self.yAxis = 'Frequency'
+    self.cube = []
 
     #process the files and then prepare the data for display
     self.processFiles()
@@ -30,62 +29,65 @@ class FileProcessor:
 
   def processFiles(self):
 
-    #initialize the first dictionary to be the total of all the runs
-    self.processedData[0] = {'filename': 'All Runs',
-                              'Decoder': '',
-                              'AutoMea': '',
-                       'pulsewidthList': [],
-                            'dataCount': 0,
-                          'doublePulse': [],
-                        'invalidString': []}
+    #leave open the possiblility to process more than 1 file, but for now only 1 works
+    for filename in self.filesList:
+      boardNumber = 10
+      registerNumber = 17
+      
+      f = open(filename)
+      lines = f.readlines()
+      lines = lines[2:] #Remove putty log lines before processing
+      f.close()
+      #This will hold all the timestamps in order for each file
+      timestampVector = []
+      #This matrix counts how many times each register has rolled over
+      rollOverCount = np.zeros([boardNumber, registerNumber], dtype=int)
 
-    #loop over each file in the file list
-    for filepath in self.filesList:
-      #place a dictionary in the list for each run of the experiment
+      #timeCube will be a 3d array to hold all the data
+      #Dim  0       1        2
+      #Val  time    board    register
+      timeCube = []
+      for line in lines:
+        timestampVector.append(int(line[0:9].strip(), 16))
+        boardCodes = line[11:].strip()
+        boardMat = []
+        for b in range(boardNumber):
+          #will hold all the values of the registers on the current board
+          regVector = []
+          for r in range(registerNumber):
+            pointer = b*34+2*r
+            regValue = int(boardCodes[pointer:pointer+2], 16)
+            #if there is no previous value to compare to, simple add in the current value
+            if len(timeCube) is 0:
+              regVector.append(regValue)
+            else: #if there is a value, check to see if it is lower than the previous (rollover)
+              if timeCube[-1][b][r] <= regValue:
+                regVector.append(regValue + 256*rollOverCount[b,r])
+              else:
+                rollOverCount[b,r] += 1
+                regVector.append(regValue + 256*rollOverCount[b,r])
+          boardMat.append(regVector)
+        timeCube.append(boardMat)
+      self.cube = np.array(timeCube)
+    
+
+    #add in first plot data which is simply each register and total count
+    self.processedData[0]['plotType'] = 'sticks'
+    self.processedData[0]['x-axis'] = 'Register Number'
+    self.processedData[0]['y-axis'] = 'Total Error Count'
+    self.processedData[0]['x-vector'] = np.arange(1,18)
+    self.processedData[0]['y-vector'] = sum(self.cube[-1,:,:])
+
+    
+    #Iterate over each register and pull out the data vector from the cube
+    for r in range(17):
       self.processedData.append({})
-      self.processedData[-1] = {'filename': os.path.basename(filepath).split('.')[0],
-                                 'Decoder': '',
-                                 'AutoMea': '',
-                          'pulsewidthList': [],
-                               'dataCount': 0,
-                             'doublePulse': [],
-                           'invalidString': []}
+      self.processedData[r+1]['plotType'] = 'step'
+      self.processedData[r+1]['x-axis'] = 'Timestamp'
+      self.processedData[r+1]['y-axis'] = 'Total Error Count'
+      self.processedData[r+1]['x-vector'] = timestampVector
+      self.processedData[r+1]['y-vector'] = sum(np.transpose(self.cube[:,:,r]))
 
-      #open the current file and loop over each line
-      currentFile = open(filepath)
-      lineNumber = 0
-      for line in currentFile:
-        fixedLine = line.strip()
-        lineNumber += 1
-        if 'Decoder' in line:
-          currentDecoder = fixedLine[10]
-        self.processedData[-1]['Decoder'] = currentDecoder
-        if 'AutoMea' in line:
-          currentAutoMea = fixedLine[10]
-        self.processedData[-1]['AutoMea'] = currentAutoMea
-        if '0000000' in line:
-          #if there is an invalid string (non hex char) the rawPulse creation will fail
-          try:
-            rawPulse = filter(None, bin(int(fixedLine[11:] ,16))[2:].split('0'))
-            #if more than one pulse is detected set the flag to true
-            if len(rawPulse) > 1:
-              self.processedData[-1]['doublePulse'].append(lineNumber)
-            #if no pulse listed, it is the smallest pulse detected
-            if len(rawPulse) == 0:
-              self.processedData[-1]['pulsewidthList'].append(15)
-              self.processedData[0]['pulsewidthList'].append(15)
-              self.processedData[-1]['dataCount'] += 1
-              self.processedData[0]['dataCount'] += 1
-            for pulse in rawPulse:
-              pulsewidth = len(pulse)
-              #store the pulsewidths in picoseconds. One '1' is equal to 30 ps
-              self.processedData[-1]['pulsewidthList'].append(pulsewidth*30)
-              self.processedData[0]['pulsewidthList'].append(pulsewidth*30)
-              #increment the datacounts
-              self.processedData[-1]['dataCount'] += 1
-              self.processedData[0]['dataCount'] += 1
-          except ValueError:
-            self.processedData[-1]['invalidString'].append(lineNumber)
 
 
   def prepareDataForDisplay(self):
@@ -103,51 +105,8 @@ class FileProcessor:
     '''
 
     self.displayData = []
-    for run in self.processedData:
-      self.displayData.append([])
-      self.displayData[-1].append(run['filename'])
-
-      if run['Decoder'] != '':
-        decoderType = ['DIRECT_INPUT',
-                      'inv_1x_avt_fb',
-                      'inv_1x_rvt',
-                      '24576_inv_1x_rvt',
-                      'OR_Tree_rvt',
-                      'inv_1x_rvt_bt',
-                      'OR_Tree_bt',
-                      'nhit_rvt',
-                      'phit_bt',
-                      'nhit_bt',
-                      'inv_1x_to_bt',
-                      'inv_5x_s_rvt',
-                      'inv_1x_to',
-                      'OR_Tree_to',
-                      'phit_rvt,'
-                      'inv_5x_f_rvt']
-        decNum = run['Decoder']
-        self.displayData[-1].append('Decoder ' + decNum + ': ' + decoderType[int(decNum, 16)])
-      
-      if run['AutoMea'] != '':
-        autoMeaType = ['30%',
-                      '49%',
-                      '56%',
-                      '70%',
-                      '80%',
-                      'OVERFLOW',
-                      'NOT VALID',
-                      'NOT VALID']
-        autoNum = run['AutoMea']
-        self.displayData[-1].append('AutoMeasure ' + autoNum + ': ' + autoMeaType[int(autoNum)])
-      
-      if run['dataCount'] != 0:
-        self.displayData[-1].append('Data points: ' + str(run['dataCount']))
-
-      if run['invalidString'] != []:
-        self.displayData[-1].append('Invalid lines: ' + str(run['invalidString']))
-
-      if run['doublePulse'] != []:
-        self.displayData[-1].append('Double pulse lines: ' + str(run['doublePulse']))
-
+    for item in self.processedData:
+      self.displayData.append('yup')
 
   def prepareTableData(self):
     '''
@@ -183,22 +142,5 @@ class FileProcessor:
 
     Store this data in the variable self.tableData and it will be displayed.
     '''
-    for run in self.processedData:
-      if run['filename'] == 'All Runs':
-        self.tableData = [[['Run', 'Decoder', 'AutoMea', 'Count'], [], [], [], []]]
-        for run2 in self.processedData:
-          if run2['filename'] != 'All Runs':
-              self.tableData[0][1].append(run2['filename'])
-              self.tableData[0][2].append(run2['Decoder'])
-              self.tableData[0][3].append(run2['AutoMea'])
-              self.tableData[0][4].append(run2['dataCount'])
-      else:
-        self.tableData.append([['Pulsewidths', 'Avg', 'Max', 'Min', 'Stdv'], [], [], [], [], []])
-        self.tableData[-1][1] = run['pulsewidthList']
-        self.tableData[-1][2].append(np.around(np.mean(run['pulsewidthList'])))
-        self.tableData[-1][3].append(max(run['pulsewidthList']))
-        self.tableData[-1][4].append(min(run['pulsewidthList']))
-        self.tableData[-1][5].append(np.around(np.std(run['pulsewidthList'])))
-    print self.tableData
-
+    self.tableData = []
 

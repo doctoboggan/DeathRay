@@ -7,9 +7,12 @@ from interface import Ui_MainWindow
 import PyQt4.Qwt5 as Qwt
 import numpy as np
 
-from FileProcessor import FileProcessor
+from FileProcessor2 import FileProcessor
 from Histogram import HistogramItem
 from ImagePlot import ImagePlot, square
+
+
+from pdb import set_trace as bp #DEBUGING
 
  
 class DeathRay(QtGui.QMainWindow):
@@ -56,11 +59,7 @@ class DeathRay(QtGui.QMainWindow):
     self.updateRunDisplay()
 
     #Plot some stuffs
-    self.plotHistogram(self.ui.qwtPlot_1, 0)
-    self.plotLine(self.ui.qwtPlot_2, 0, 'scatter')
-    self.plotHeatMap(self.ui.qwtPlot_3, 0)
-    self.plotLine(self.ui.qwtPlot_4, 0, 'step')
-
+    self.plotLine(self.ui.qwtPlot_1, 0)
  
   def plotHistogram(self, plot, runIndex):
     '''
@@ -113,10 +112,12 @@ class DeathRay(QtGui.QMainWindow):
     plot.replot()
     plot.show()
 
-  def plotLine(self, plot, runIndex, curveType):
+  def plotLine(self, plot, runIndex):
 
-    x = np.arange(0,3,.1)
-    y = x*np.random.rand(30)
+    plot.clear()
+    y = self.Experiment.processedData[runIndex]['y-vector']
+    x = self.Experiment.processedData[runIndex]['x-vector']
+    curveType = self.Experiment.processedData[runIndex]['plotType']
 
     grid = Qwt.QwtPlotGrid()
     grid.setPen(Qt.QPen(Qt.Qt.gray, 0, Qt.Qt.DotLine))
@@ -135,6 +136,9 @@ class DeathRay(QtGui.QMainWindow):
     if curveType == 'step':
       curve.setStyle(Qwt.QwtPlotCurve.Steps)
 
+    if curveType == 'sticks':
+      curve.setStyle(Qwt.QwtPlotCurve.Sticks)
+
     if curveType == 'scatter':
       curve.setStyle(Qwt.QwtPlotCurve.NoCurve)
       curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Cross,
@@ -150,6 +154,10 @@ class DeathRay(QtGui.QMainWindow):
                                         Qwt.QwtPicker.AlwaysOff,
                                         plot.canvas())
     self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
+
+    plot.setAxisTitle(Qwt.QwtPlot.xBottom, self.Experiment.processedData[runIndex]['x-axis'])
+    plot.setAxisTitle(Qwt.QwtPlot.yLeft, self.Experiment.processedData[runIndex]['y-axis'])
+
     plot.replot()
 
 
@@ -191,10 +199,11 @@ class DeathRay(QtGui.QMainWindow):
         child.setText(0, run[subItemIndex+1])
         treeItem.insertChild(0, child)
         child.setDisabled(True)
+      bp()
       
     #Set 'All Runs' as the selected item
-    allRunsItem = self.ui.treeRun.findItems('All Runs',QtCore.Qt.MatchExactly)[0]
-    self.ui.treeRun.setItemSelected(allRunsItem, True)
+    #allRunsItem = self.ui.treeRun.findItems(self.Experiment.displayData[0],QtCore.Qt.MatchExactly)[0]
+    #self.ui.treeRun.setItemSelected(allRunsItem, True)
 
   def updateDataTable(self, index):
     '''
@@ -217,7 +226,7 @@ class DeathRay(QtGui.QMainWindow):
 
   def runClicked(self):
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
-    self.plotHistogram(self.ui.qwtPlot_1, index)
+    self.plotLine(self.ui.qwtPlot_1, index)
     self.updateDataTable(index)
 
   def setPlotNumber(self, number):

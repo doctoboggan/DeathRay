@@ -1,6 +1,6 @@
 #!/usr/bin/python -d
  
-import sys, random, pprint
+import sys, os
 
 from PyQt4 import QtCore, QtGui, Qt
 from interface import Ui_MainWindow
@@ -25,6 +25,9 @@ class DeathRay(QtGui.QMainWindow):
 
    #Initialize the UI
     self.initUI()
+
+
+    self.findArguments()
     
   def initUI(self):
     #Connect the signals and slots
@@ -61,9 +64,18 @@ class DeathRay(QtGui.QMainWindow):
     GPIB = str(self.ui.lineEditGPIB.text())
     device = str(self.ui.listWidgetDevices.currentItem().text())
     result = str(modules.command[str(command)](IP, GPIB, device).get())
-
-
+    1/0
     self.ui.lineEditResult.setText(result)
+
+
+  def findArguments(self):
+    for module in os.listdir('modules'):
+      ffile = open('modules/'+module)
+      lines = ffile.readlines()
+      for line in lines:
+        if 'def __init__' in line:
+          print module
+          print line[line.find('(')+7:line.find(')')]
 
   
 
