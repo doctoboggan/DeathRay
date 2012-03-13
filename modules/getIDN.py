@@ -20,7 +20,7 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
   --> This class requires "os" library.
   '''
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0", timeout = 500):
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0", timeout = 100):
 
     '''
     Requirement: (ip address, Gpib address)
@@ -46,9 +46,14 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
     '''
     --> Here is the SCPI command. 
     '''
-    # check method suppose to be here. 
-    z, x, a = self.transaction('*IDN?')
-    return a
+
+    try:    # to take care of the error.
+      x, y, a = self.transaction('*IDN?')
+      print "a is " + a     #debugging 
+    except:   # we are going to use less than 500ms for timeout (the dafult is going to be 100ms). So, to aviod error, we have to have "except"
+      a = None    # just return "None" to work well woth "getdevice" filter. 
+    
+    return a    #return name of the device.
 
 # It works, I need to comment it. 
 # In the manual: rightDevice list should contain: 
@@ -58,4 +63,5 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
 # There is no check function Here, I have write a check method in case of if the given gpib address does not exist (aviod run out in vacuum) <-- only happen in very small time-out (less than 500ms).
 # In other words, it will run out in vacuum if the timeout too short even if the device exist (less than 50ms).
 # If timeout is higher than 500ms and the device does not exist, it will return "None".  
-# an idea to improve the speed. I should use the "Except" method for "VXI_11_Stream_Sync_Lost" error. 
+# an idea to improve the speed. I should use the "Except" method for "VXI_11_Stream_Sync_Lost" error. I did this idea. I did not see much improvement ...!
+# we have to have a layer of protection from wrong IP address. It suppose to be in the begining of the program. 

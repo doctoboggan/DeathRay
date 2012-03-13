@@ -2,7 +2,6 @@ import getvoltageDC
 import getvoltageAC 
 import getcurrentDC
 import setcurrentDC
-import getdevice
 import Displayscreen
 import getIDN
 import setvoltageDC

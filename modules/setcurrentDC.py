@@ -15,6 +15,8 @@
 # Also, note that, the current stay in that value until the time out is over. So, please feed it the right amount of time out duration. 
 #-----------------------------------------
 # Result: One string. it notifies output has been changed to the new DC current.  
+# User input: voltage,float
+# User input: channel,str
 
 import data_acquisition
 
@@ -26,11 +28,11 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", Input = 0.5, channel='p25v', timeout = 1000): 
+  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", voltage = 0.5, channel='p25v', timeout = 1000): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=2000)
-    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', 0.5 , channel='P25v', timeout=3000)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', 0.5 , 'P25v', 3000)
     ____________________________
     To store the given values from the user. 
     Note:
@@ -55,7 +57,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     self.rightDevice = ['hpe3631a']
     self.channels_for_hpe3631a = ['P6V', 'p6v', 'P25V', 'p25v', 'N25V', 'n25v']
     self.channel = channel.lower()    #lower case the input
-    self.value = Input
+    self.value = voltage
     self.timeout = timeout
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
@@ -203,6 +205,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 #         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 #         ---> 'q' timeout input is not number.
+#         ---> 'w' something wrong with code.
 #         ---> 'z' out of range 
 # CcurrentDC.CcurrentDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # I have to considre when it the input is more than the limit ...!! I do not know. Still, the control modules are not rupest enouph. 
