@@ -1,11 +1,11 @@
 # This file for checking __init__ file
 # not done yet.
 
-import listgood
+from DRscripts import goodlist
 
 class checkinit(goodlist.goodlist):   #do not forget, if you are going to change name of class, change it too in the getcommand.py file. !!
 
-  def __init__(self, direct = '../modules/__init__.py'):
+  def __init__(self, direct = '../DeathRay/DRmodules/__init__.py'):
 
     #direct is the path of __init__ file (include the name of the file)
     # dirr is the path of module folder (where, the system will check the modules avalibilty). IT is fixed. SO, no need to change!!.
@@ -14,9 +14,10 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
 
     self.file = open(direct, 'a+')
     self.linelist = []
-    self.lineelist = []
+    self.linefromlist = []
     goodlist.goodlist.__init__(self)
     self.rightDevice = ['']
+    self.miss = []
 
   def read(self):
 
@@ -25,10 +26,7 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
     self.linelist = self.file.readlines()
     print "real list is "
     print self.linelist
-    print "done"
-    print "file is here:"
-    print ":)"
-    print "_______________________over_______________"
+
 
   #  return linelist
 
@@ -41,12 +39,37 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
     print "yesssssssssssssssssssssss"
      
     for count in range(0,len(self.linelist)):
+ 
+      # I have to considre how to deal with empty lines. 
+      print "the first thing: "
+      print self.linelist[count].split()[0]
+      print type(self.linelist[count].split()[0])
+      print "done"
 
-      self.lineelist.append(self.linelist[count].split()[1]) 
+      if self.linelist[count].split()[0] == 'from':
 
-    print "lineelist from the scan method is "
-    print self.lineelist
+        self.linefromlist.append(self.linelist[count].split()[1])
+        print  self.linelist[count].split()[1]
+        print count
+
+      else: 
+
+        pass
+
+    print "linefromlist from the scan method is "
+    print self.linefromlist
     print "_-_-_-_-[___--__--__----_-"
+
+
+  def scanntwo(self): 
+
+    self.scann()
+    for count in range(0,len(self.linelist)):
+
+      self.miss.append(self.linelist[count].split()[0][1:-2])   # I do not need to make the list global. However, I face error if I do not
+
+    # I am going to tweak it using a dirty way. (stuff gets way hard with clean way). (I stop here)
+
 
 
   def decide(self):
