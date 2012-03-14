@@ -8,7 +8,7 @@
 # Result: a list of names of all avalible devices in the network and another list of their Gpib addressses.
  
 
-from modules import getIDN   # This method is going to be used later.
+from DRmodules import getIDN   # This method is going to be used later.
 
 class getdevice():
 
@@ -22,7 +22,7 @@ class getdevice():
 
     '''
     Requirement: (ip address, number of devices)
-    Ex: getIDN.getIDN('129.59.93.179', 30)
+    Ex: getIDN('129.59.93.179', 30)
     ____________________
     --> IPad is the number of ip-address with quotation mark.
     --> number of devices means the number of ports, which will be scanned. 
@@ -50,7 +50,7 @@ class getdevice():
           g = "gpib0,0%d" % (x)
           print g
           #gp = '"' + g + '"'
-          self.group[x] = getIDN.getIDN(self.ip_ad,g).do()
+          self.group[x] = getIDN(self.ip_ad,g).do()
           #a, b, self.group[x] = k.transaction('*IDN?')
           print "it is here"
           print self.group[x]
@@ -62,7 +62,7 @@ class getdevice():
           g = "gpib0,%d" % (x)
           print g
           #gp = '"' + g + '"'
-          self.group[x] = getIDN.getIDN(self.ip_ad,g).do()
+          self.group[x] = getIDN(self.ip_ad,g).do()
           #a , b, self.group[x] = k.transaction('*IDN?')
           print "it is here"
           print self.group[x]

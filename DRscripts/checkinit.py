@@ -5,13 +5,15 @@ from DRscripts import goodlist
 
 class checkinit(goodlist.goodlist):   #do not forget, if you are going to change name of class, change it too in the getcommand.py file. !!
 
-  def __init__(self, direct = '../DeathRay/DRmodules/__init__.py'):
+  def __init__(self, direct = 'DRmodules/__init__.py'):
 
     #direct is the path of __init__ file (include the name of the file)
     # dirr is the path of module folder (where, the system will check the modules avalibilty). IT is fixed. SO, no need to change!!.
     # both input have to be string (they have to have [""]to be string. EX: checkinit.check('/home/computer/DeathRay/modules/__init__.py','/home/computer/DeathRay/modules/').scann()
 
 
+    import os
+    print os.getcwd()
     self.file = open(direct, 'a+')
     self.linelist = []
     self.linefromlist = []

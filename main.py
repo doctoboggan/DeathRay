@@ -15,8 +15,7 @@ from pdb import set_trace as bp #DEBUGING
 
  
 class DeathRay(QtGui.QMainWindow):
-  '''
-  Main application class that contains the GUI control and helper methods.
+  '''Main application class that contains the GUI control and helper methods.
   '''
 
   def __init__(self, parent=None):
@@ -63,9 +62,7 @@ class DeathRay(QtGui.QMainWindow):
   def plotLine(self, plot, processedData, index):
     '''
     This method is used to plot and replot all the data.
-    It has the ability to allow the caller to select which plot to draw to, but currently only
-    the first plot is implemented. Up to 4 plots may be imlemented in the future.
-
+    It has the ability to allow the caller to select which plot to draw to.
     The index is used to index into processedData. It is supplied by the runClicked method
 
     Qwt is quite powerful and able to provide many types of plots.
@@ -206,7 +203,8 @@ class DeathRay(QtGui.QMainWindow):
 
 
   def runClicked(self):
-    '''This method is called whenever an item is clicked on the tree widget'''
+    '''This method is called whenever an item is clicked on the tree widget
+    '''
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
     self.updatePlots(index)
     self.updateDataTable(index)
