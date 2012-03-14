@@ -10,9 +10,9 @@
 # -----------------------------------
 # Result: One string. it notifies the osc is set to the mode requested  
 
-import libgpib
+import data_acquisition
 
-class AcqType:		
+class AcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class sets the type of mode to operate the oscillscope
   """
