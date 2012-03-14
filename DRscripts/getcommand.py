@@ -42,10 +42,7 @@ class getcommand(checkinit.checkinit):
       print "in the command, it is going to be: "+ aa +" ....!. Also, the type is: " 
       print type(aa) 
       print  " ....ok"
-      cc = "DRmodules." + aa +'("' +self.ip_id + '","' + self.gpib_id+'").rightDevice'      # we can aviod eval (ask Jack). (it is special because it using __init__
-      print "the command is --> " + cc + " <--- !"
-      a = eval(cc)
-      print a
+      a = DRmodules.command[aa]('129.59.93.179', 'gpib0,07').rightDevice     # we can aviod eval (ask Jack). (it is special because it using __init__
       if self.look in a:
         self.wow.append(num)
         self.wow[num] = qqq[u]

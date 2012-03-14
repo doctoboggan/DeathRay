@@ -14,7 +14,7 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
 
     import os
     print os.getcwd()
-    self.file = open(direct, 'a+')
+    self.file = open(direct, 'r')
     self.linelist = []
     self.linefromlist = []
     goodlist.goodlist.__init__(self)
@@ -22,7 +22,6 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
     self.miss = []
 
   def read(self):
-
 
 
     self.linelist = self.file.readlines()

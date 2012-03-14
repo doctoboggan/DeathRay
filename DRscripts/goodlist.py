@@ -14,6 +14,7 @@
 
 import os     # It will be used in upcoming functions.
 
+
 class goodlist(): # do not forget, if you are going to change the name of class, change too in the checkinit.py file.!!
 
   '''

@@ -7,7 +7,7 @@
 
 import data_acquisition
 
-class getImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class getImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):		
   """
 This class selects the input impedance setting for the specified analog channel. The legal values for this command are
 ONEMeg (1 M) and FIFTy (50),please use rightdevice function.
@@ -27,13 +27,13 @@ NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope mo
 fixed at ONEMeg (1 M).
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = 1, timeout = 500):
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', timeout = 500):
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
     self.rightDevice = ['dso6032a']
     self.channel = channel
-    self.typeChannel = [1, 2, 3, 4]
+    self.typeChannel = ['1', '2', '3', '4']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
     #here we are feeding the data_acquisition library
@@ -54,7 +54,7 @@ fixed at ONEMeg (1 M).
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if type(self.channel) is int:
+          if type(self.channel) is str:
 
             if self.name_of_device == 'dso6032a':
 
@@ -69,7 +69,7 @@ fixed at ONEMeg (1 M).
               return False, "you dont have the right device" #if we have another device, add elif argument here
 
           else:
-            print "the input channel needs to be an integer !!"  # For debug purpose
+            print "the input channel needs to be an str !!"  # For debug purpose
             return False, 'n'
 
         else:
@@ -111,9 +111,9 @@ ONEMeg (1 M) and FIFTy (50).
         # this line's purpose is if we want to add another device. 
 
           
-          impedance_channel = self.transaction('CHAN'+str(self.channel)+':IMP?')   
+          impedance_channel = self.transaction('CHAN'+self.channel+':IMP?')   
 
-          print "the impedance at channel "+str(self.channel)+" is "+str(impedance_channel[2])    # For debug reasons. returns 
+          print "the impedance at channel "+self.channel+" is "+impedance_channel[2]    # For debug reasons. returns 
 
           if impedance_channel[0] == 0:             #check if it times out.
 

@@ -7,7 +7,7 @@
 
 import data_acquisition
 
-class setImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
+class setImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):		
   """
 This class selects the input impedance setting for the specified analog channel. The legal values for this command are
 ONEMeg (1 Mohm) and FIFTy (50ohm),please use rightdevice' function.
@@ -26,14 +26,14 @@ Return Format <impedance value><NL>
 <impedance value> ::= {ONEM | FIFT}
 
 NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope models is
-fixed at ONEMeg (1 MΩ).
+fixed at ONEMeg (1 M).
   """
 
   def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', impedance = "ONEM", timeout = 500):
-'''
-    Requiremnt: ( IPad, Gpibad, namdev, input, channel='p25v', timeout=500)
+    '''
+    DRmodules.getImpedanceChannel('129.59.93.179', 'gpib0,07', 'dso6032a', '1', timeout=500).do()
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)
-'''
+    '''
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -71,20 +71,17 @@ fixed at ONEMeg (1 MΩ).
 
               if self.channel in self.typeChannel: # for channel checking. (we can not accept unknown channel any more).
                 
-                if self.impedance in self.typeImpedance
+                if self.impedance in self.typeImpedance:
                   
-                  if self.impedance in self.ONEMegImpedance
-                    return self.impedance = "ONEM" #making sure impedance is standardized
+                  if self.impedance in self.ONEMegImpedance:
+                    self.impedance = "ONEM" #making sure impedance is standardized
                     return True
-
-                  elif:
-
-                    if self.impedance in self.FiftyOhmImpendance
-                      return self.impedance = "FIFT" #making sure impedance is standardized
+                  elif self.impedance in self.FiftyOhmImpedance:
+                      self.impedance = "FIFT" #making sure impedance is standardized
                       return True
 
                 else:
-                return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
+                  return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
 
               else:
                 print "chosen channel does not exist !!"     # For debug purpose
@@ -170,7 +167,7 @@ ONEMeg (1 Mohm) and FIFTy (50ohm).
     
 
 
-''''
+'''
 page 235
 Command Syntax :CHANnel<n>:IMPedance <impedance>
 <impedance> ::= {ONEMeg | FIFTy}
@@ -178,6 +175,6 @@ Command Syntax :CHANnel<n>:IMPedance <impedance>
 <n> ::= {1 | 2} for the two channel oscilloscope models
 The :CHANnel<n>:IMPedance command selects the input impedance setting
 for the specified analog channel. The legal values for this command are
-ONEMeg (1 MΩ) and FIFTy (50Ω).
-''''''
+ONEMeg (1 M) and FIFTy (50).
+'''
 
