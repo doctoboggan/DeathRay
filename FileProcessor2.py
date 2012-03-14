@@ -98,7 +98,6 @@ class FileProcessor:
   def processFiles(self):
     '''This method should build self.processedData
     '''
-
     #leave open the possiblility to process more than 1 file, but for now only 1 works
     #if more than one file is presented, only the last file gets displayed
     #this code assumes the lines are in in temporal order

@@ -11,8 +11,10 @@
 # Result: One string. it notifies the osc is set to the mode requested  
 
 import data_acquisition
+from pdb import set_trace as bp #DEBUGGIN
 
-class AcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
+
+class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class sets the type of mode to operate the oscillscope
   """
@@ -40,7 +42,7 @@ class AcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_ut
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input
     self.rightDevice = ['dso6032a']
-    self.modetype_for_dso = ['normal', 'average', 'hresolution', 'peak']
+    self.modetype_for_dso = ['normal', 'average', 'hresolution', 'peak', 'norm', 'aver', 'hres']
     self.setmode = setmode.lower()          # It will convert it to lower case to consider how it will be written (from the user).
     self.timeout = timeout
     rise_on_error = 0
@@ -126,6 +128,7 @@ class AcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_ut
 
           else:
             print self.identify_vxi_11_error(set_mode[0])      #print the error information.
+            bp()
             return False, set_mode[0]  # It is going to return the error number. 
 
       

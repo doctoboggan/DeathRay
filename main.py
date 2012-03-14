@@ -7,7 +7,7 @@ from interface import Ui_MainWindow
 import PyQt4.Qwt5 as Qwt
 import numpy as np
 
-from FileProcessor2 import FileProcessor
+from FileProcessor import FileProcessor
 from ImagePlot import ImagePlot, square
 
 

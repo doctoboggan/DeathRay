@@ -235,7 +235,6 @@ class FileProcessor:
         self.tableData[-1][3].append(max(run['pulsewidthList']))
         self.tableData[-1][4].append(min(run['pulsewidthList']))
         self.tableData[-1][5].append(np.around(np.std(run['pulsewidthList'])))
-    print self.tableData
 
 
 def fillBins(vector):
