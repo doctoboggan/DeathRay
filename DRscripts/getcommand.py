@@ -1,11 +1,11 @@
 # Here, we should be able to get the right commands for given device
 
-from scripts import checkinit
-from modules import __init__
+from DRscripts import checkinit
+import DRmodules 
 
 class getcommand(checkinit.checkinit):
 
-  def __init__(self, IPad , Gpibad, namdev):    
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device"):    
 
     # namdev is the name of choosen device (by the user). The program will search of any match commands for this device. 
     # direct is the path of __init__ file (include the name of the file)
@@ -24,7 +24,7 @@ class getcommand(checkinit.checkinit):
   def do(self):        # there is two ways. 1) feed the function the right gpib address from "getdevice or make excaption (I will  go with the first one. it is more clean)
 
     self.scann()
-    qqq = self.lineelist
+    qqq = self.linefromlist
     num = 0
     print "the qqq is: "
     print qqq
@@ -42,7 +42,7 @@ class getcommand(checkinit.checkinit):
       print "in the command, it is going to be: "+ aa +" ....!. Also, the type is: " 
       print type(aa) 
       print  " ....ok"
-      cc = "__init__." + aa + '.' + aa + '("' +self.ip_id + '","' + self.gpib_id+'").rightDevice'
+      cc = "DRmodules." + aa +'("' +self.ip_id + '","' + self.gpib_id+'").rightDevice'      # we can aviod eval (ask Jack). (it is special because it using __init__
       print "the command is --> " + cc + " <--- !"
       a = eval(cc)
       print a
@@ -61,10 +61,11 @@ class getcommand(checkinit.checkinit):
 # I need to build a check method for it.
 # way to write the GUI:
 '''
+0) run checkinit. 
+0.5) install the DRlibraries in the user system.
 1) ask the user the IP address
-2) run "getdevice" to get the avialble devices and their gpib addresses. 
-3) run "checkinit" to check __init__ file in the module folder. 
-4) run "getcommand"
+2) run "getdevice" to get the avialble devices and their gpib addresses.  
+3) run "getcommand"
 '''
 # getcommand.getcommand('129.59.93.179','gpib0,10','hp34401a','/home/computer/DeathRay/modules/__init__.py','/home/computer/DeathRay/modules/').do()
 

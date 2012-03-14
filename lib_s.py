@@ -14,5 +14,5 @@ setup(name='DeathRay',
       packages=['DRscripts'],
       package_dir={'DRscripts': 'DRscripts'},
       requires=['data_acquisition','numpy'],
-      provides=['Deathray']
+      provides=['DeathRay']
      )

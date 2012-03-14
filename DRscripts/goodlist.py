@@ -21,7 +21,7 @@ class goodlist(): # do not forget, if you are going to change the name of class,
   --> This class requires "os" library. 
   '''
 
-  def __init__(self, direct = '../DeathRay/DRm'):   # to accessble from the installed module. (works on linux so far...)
+  def __init__(self, direct = '../DeathRay/DRmodules'):   # to accessble from the installed module. (works on linux so far...)
     '''
     Requirement: (direct path)
     Ex: goodlist.goodlist()

@@ -23,6 +23,12 @@ class FileProcessor:
         'y-vector'   : vector representing the y-values (list or np-array)
       You can also store your own data in this dictionary under different keys
 
+      To target different plot locations:
+        First plot  : self.processedData
+        Second plot : self.processedData2
+        Third plot  : self.processedData3
+        Fourth Plot : self.processedData4
+
     ********************************************************************************************
     2) self.displayData
 
@@ -90,8 +96,7 @@ class FileProcessor:
 
 
   def processFiles(self):
-    '''
-    This method should build self.processedData
+    '''This method should build self.processedData
     '''
 
     #leave open the possiblility to process more than 1 file, but for now only 1 works
@@ -154,7 +159,6 @@ class FileProcessor:
       self.processedData[r+1]['y-axis'] = 'Total Error Count'
       self.processedData[r+1]['x-vector'] = timestampVector
       self.processedData[r+1]['y-vector'] = sum(np.transpose(self.cube[:,:,r]))
-
 
 
   def prepareDataForDisplay(self):
