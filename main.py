@@ -1,6 +1,6 @@
 #!/usr/bin/python -d
  
-import sys, random, pprint
+import sys
 
 from PyQt4 import QtCore, QtGui, Qt
 from interface import Ui_MainWindow
@@ -58,86 +58,53 @@ class DeathRay(QtGui.QMainWindow):
     #pp.pprint(self.Experiment.processedData)
     self.updateRunDisplay()
 
-    #Plot some stuffs
+    #Plot the first element in self.processedData
     self.plotLine(self.ui.qwtPlot_1, 0)
  
-  def plotHistogram(self, plot, runIndex):
+  def plotLine(self, plot, index):
     '''
-    This method displays a histogram using data from .processedData
+    This method is used to plot and replot all the data.
+    It has the ability to allow the caller to select which plot to draw to, but currently only
+    the first plot is implemented. Up to 4 plots may be imlemented in the future.
+
+    The index is used to index into processedData. It is supplied by the runClicked method
+
+    Qwt is quite powerful and able to provide many types of plots.
+    To add some more, modify this method. Qwt documentation and examples can be found online
     '''
+    plot.clear() #Clear the previous plot
+    #grab the data and plotType from the file processor script
+    y = self.Experiment.processedData[index]['y-vector']
+    x = self.Experiment.processedData[index]['x-vector']
+    curveType = self.Experiment.processedData[index]['plotType']
 
-    #if there is currently a histogram attached, remove it
-    try:
-      self.histogram.detach()
-    except AttributeError:
-      pass
-
-    self.histogram = HistogramItem()
-    self.histogram.setColor(Qt.Qt.darkGreen)
-
-
-    try:
-      maxBinValue = max(self.Experiment.processedData[runIndex]['pulsewidthList'])
-    except ValueError:
-      maxBinValue = 0
-    #Add 1 so maxBinValue is included in the array
-    binValue = np.arange(0,maxBinValue+1, 30)
-    binCounts = np.zeros(len(binValue))
-    for pulsewidth in self.Experiment.processedData[runIndex]['pulsewidthList']:
-      binCounts[int(pulsewidth/30)] += 1
-
-
-    numBins = len(binCounts)
-    intervals = []
-    binNumber = Qwt.QwtArrayDouble(numBins)
-
-    pos = 0.0
-    for i in range(numBins):
-      width = 30
-      binNumber[i] = binCounts[i]
-      if pos > 0:
-        intervals.append(Qwt.QwtDoubleInterval(pos-15, pos+width-15));
-      else:
-        intervals.append(Qwt.QwtDoubleInterval(pos, pos+width-15));
-      pos += width
-
-    self.histogram.setData(Qwt.QwtIntervalData(intervals, binNumber))
-    self.histogram.attach(self.ui.qwtPlot_1)
-
-    plot.setAxisScale(Qwt.QwtPlot.yLeft, 0.0, max(binNumber))
-    plot.setAxisScale(Qwt.QwtPlot.xBottom, 0.0, pos, 30)
-    plot.setAxisTitle(Qwt.QwtPlot.xBottom, self.Experiment.xAxis)
-    plot.setAxisTitle(Qwt.QwtPlot.yLeft, self.Experiment.yAxis)
-    plot.setTitle(self.Experiment.plotTitle)
-    plot.replot()
-    plot.show()
-
-  def plotLine(self, plot, runIndex):
-
-    plot.clear()
-    y = self.Experiment.processedData[runIndex]['y-vector']
-    x = self.Experiment.processedData[runIndex]['x-vector']
-    curveType = self.Experiment.processedData[runIndex]['plotType']
-
+    #Add a grid
     grid = Qwt.QwtPlotGrid()
-    grid.setPen(Qt.QPen(Qt.Qt.gray, 0, Qt.Qt.DotLine))
+    grid.setPen(Qt.QPen(Qt.Qt.gray, 0.1, Qt.Qt.DotLine))
     grid.attach(plot)
 
+    #instantiate a curve and set some properties
     curve = Qwt.QwtPlotCurve()
     curve.setPen(Qt.QPen(Qt.Qt.red))
     curve.setRenderHint(Qwt.QwtPlotItem.RenderAntialiased)
-    curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Ellipse,
-                                      Qt.QBrush(),
-                                      Qt.QPen(Qt.Qt.black),
-                                      Qt.QSize(5, 5)))
+
     if curveType == 'spline':
       curve.setCurveAttribute(Qwt.QwtPlotCurve.Fitted)
+      curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Ellipse,
+                                  Qt.QBrush(),
+                                  Qt.QPen(Qt.Qt.black),
+                                  Qt.QSize(5, 5)))
 
     if curveType == 'step':
       curve.setStyle(Qwt.QwtPlotCurve.Steps)
 
     if curveType == 'sticks':
+      curve.setPen(Qt.QPen(Qt.Qt.darkGreen, 6))    
       curve.setStyle(Qwt.QwtPlotCurve.Sticks)
+      curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Ellipse,
+                                  Qt.QBrush(),
+                                  Qt.QPen(Qt.Qt.black),
+                                  Qt.QSize(5, 5)))
 
     if curveType == 'scatter':
       curve.setStyle(Qwt.QwtPlotCurve.NoCurve)
@@ -145,9 +112,12 @@ class DeathRay(QtGui.QMainWindow):
                                       Qt.QBrush(),
                                       Qt.QPen(Qt.Qt.red),
                                       Qt.QSize(5, 5)))
-    curve.setData(x,y)
+    
+    #Set the data and attach the plot
+    curve.setData(np.array(x),np.array(y))
     curve.attach(plot)
 
+    #allow the user to select and zoom in on sections (right-click to recenter)
     self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
                                         Qwt.QwtPlot.yLeft,
                                         Qwt.QwtPicker.DragSelection,
@@ -155,13 +125,14 @@ class DeathRay(QtGui.QMainWindow):
                                         plot.canvas())
     self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
 
-    plot.setAxisTitle(Qwt.QwtPlot.xBottom, self.Experiment.processedData[runIndex]['x-axis'])
-    plot.setAxisTitle(Qwt.QwtPlot.yLeft, self.Experiment.processedData[runIndex]['y-axis'])
+    plot.setAxisTitle(Qwt.QwtPlot.xBottom, self.Experiment.processedData[index]['x-axis'])
+    plot.setAxisTitle(Qwt.QwtPlot.yLeft, self.Experiment.processedData[index]['y-axis'])
 
     plot.replot()
 
 
   def plotHeatMap(self, plot, runIndex):
+    '''Not currently implemented, but this method is ready for future versions'''
     plotImage = ImagePlot('Heatmap')
     plotImage.attach(plot)
     plotImage.setData(square(512, -2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi))
@@ -185,28 +156,25 @@ class DeathRay(QtGui.QMainWindow):
     This method updates the display widget to show a list of all the runs of the
     current experiment.
     
-    The data in FileProcessor.displayData is used for the treeWidget
+    The data in Experiment.displayData is used for the treeWidget
     '''
-
     self.ui.treeRun.clear()
-
     for run in self.Experiment.displayData:
       treeItem = QtGui.QTreeWidgetItem(self.ui.treeRun)
       treeItem.setText(0, run[0])
-
       for subItemIndex in range(len(run)-1):
         child = QtGui.QTreeWidgetItem(treeItem)
         child.setText(0, run[subItemIndex+1])
         treeItem.insertChild(0, child)
         child.setDisabled(True)
-      
-    #Set 'All Runs' as the selected item
-    #allRunsItem = self.ui.treeRun.findItems(self.Experiment.displayData[0],QtCore.Qt.MatchExactly)[0]
-    #self.ui.treeRun.setItemSelected(allRunsItem, True)
+    #Set the first element as the selected item
+    firstItem = self.ui.treeRun.findItems(self.Experiment.displayData[0][0],QtCore.Qt.MatchExactly)[0]
+    self.ui.treeRun.setItemSelected(firstItem, True)
+
 
   def updateDataTable(self, index):
     '''
-    This method updates the table widget with the data stored in FileProcessor.tableData
+    This method updates the table widget with the data stored in Experiment.tableData
     '''
     currentTableData = self.Experiment.tableData[index]
     self.ui.tableWidgetData.clear()
@@ -220,15 +188,18 @@ class DeathRay(QtGui.QMainWindow):
         tableItem.setTextAlignment(2)
         self.ui.tableWidgetData.setItem(r, c, tableItem)
       self.ui.tableWidgetData.resizeColumnToContents(c)
+    #Sorting is buggy, enable with caution.
     #self.ui.tableWidgetData.setSortingEnabled(True)
 
 
   def runClicked(self):
+    '''This method is called whenever an item is clicked on the tree widget'''
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
     self.plotLine(self.ui.qwtPlot_1, index)
     self.updateDataTable(index)
 
   def setPlotNumber(self, number):
+    '''Not currently in use but ready for future versions'''
     self.ui.qwtPlot_1.setVisible(number > 0)
     self.ui.qwtPlot_2.setVisible(number > 1)
     self.ui.qwtPlot_3.setVisible(number > 2)

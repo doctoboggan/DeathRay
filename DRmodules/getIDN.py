@@ -20,7 +20,7 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
   --> This class requires "os" library.
   '''
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0", timeout = 100):
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0", namedev = 'filler', timeout = 100):
 
     '''
     Requirement: (ip address, Gpib address)

@@ -3,24 +3,87 @@
 import os
 import numpy as np
 
+
+from pdb import set_trace as bp #DEBUGIN
+
+
 class FileProcessor:
   '''
   This class takes a list of files to open
+  It is designed to be imported by the main GUI window and to expose a few variables
+  The variables you **MUST** build are:
+    
+    1) self.processedData
 
-  .processedData - returns a list of dicts (one for each file) with the labeled processed data
-  .displayData - list of lists with data formated to be displayed by the treeWidget
+      This variable will hold the data to be plotted, and information about how to plot it
+      It is a list of dictionaries, each dictionary corresponding to an item in the
+      treeWidget (List on the left side of the window)
+      Each dictionary must have the following keys:
+        'plotType'   : 'spline', 'steps', 'sticks', or 'scatter'
+        'x-axis'     : label for the x axis
+        'y-axis'     : label for the y axis
+        'x-vector'   : vector representing the x-values (list or np-array)
+        'y-vector'   : vector representing the y-values (list or np-array)
+      You can also store your own data in this dictionary under different keys
 
-  This will ultimately be the class that has to be written for each experimental setup
+    ********************************************************************************************
+    2) self.displayData
+
+      Prepare a list of lists for display in the treeWidget. Each sublist contains only strings
+      The first string is the title that will be displayed on the top level
+      All the following strings will be displayed as sub items when the arrow is dropped down
+
+      ex: ['title', 'drop down 1', 'drop down 2', 'drop down 3'] will display as
+
+      >title
+        drop down 1
+        drop down 2
+        drop down 3
+
+    ********************************************************************************************
+    3) self.tableData
+
+      Prepare a list of lists of lists (yes) for display in the table. The outermost list contains 
+      one element for each item in the treeWidget. When a run is selected in the treeWidget, the
+      corresponding list is displayed in the table
+      
+      Each list inside that outermost list also contains lists representing the columns in the
+      table from left to right. However the first list is a list of the column headers. Maybe
+      an example will help
+
+      [
+        [
+          ['first header 1', 'first header 2'],
+          [1,2,3,4,5],
+          ['a','b','c','d','e']
+        ],
+        [
+          ['second header 1', 'second header 2'],
+          [6,7,8,9,0],
+          ['f','g','h','i','j']
+        ]
+      ]
+
+      When the first item in the tree widget is selected the table will display:
+      
+              first header 1    first header 2
+              1                  a
+              2                  b
+              3                  c
+              4                  d
+              5                  e
+
+      and likewise when the second item is selected.
+    ********************************************************************************************
+
   '''
 
   def __init__(self, filesList):
     #instance variables
     self.filesList = filesList
     self.processedData = [{}]
-    self.plotType = 'histogram'
-    self.plotTitle = 'Frequency of detected pulse widths'
-    self.xAxis = 'Pulse Width (picoseconds)'
-    self.yAxis = 'Frequency'
+    self.displayData = []
+    self.tableData = []
 
     #process the files and then prepare the data for display
     self.processFiles()
@@ -29,7 +92,9 @@ class FileProcessor:
 
 
   def processFiles(self):
-
+    '''
+    This method should build self.processedData
+    '''
     currentDecoder = '' #initiailze variables
     currentAutoMea = ''
 
@@ -90,22 +155,20 @@ class FileProcessor:
           except ValueError:
             self.processedData[-1]['invalidString'].append(lineNumber)
 
+    #Further refine the data and prepare it for plotting
+    for i in range(len(self.processedData)):
+      x, y = fillBins(self.processedData[i]['pulsewidthList'])
+      self.processedData[i]['plotType'] = 'sticks'
+      self.processedData[i]['x-axis'] = 'Pulse Width (Picoseconds)'
+      self.processedData[i]['y-axis'] = 'Total Pulse Count'
+      self.processedData[i]['x-vector'] = x
+      self.processedData[i]['y-vector'] = y
+
 
   def prepareDataForDisplay(self):
     '''
-    Prepare a list of lists for display in the treeWidget. Each sublist contains only strings
-    The first string is the run name that will be displayed on the top level
-    All the following strings will be displayed as sub items when the arrow is dropped down
-
-    ex: ['title', 'drop down 1', 'drop down 2', 'drop down 3'] will display as
-
-    >title
-      drop down 1
-      drop down 2
-      drop down 3
+    This method should build self.displayData
     '''
-
-    self.displayData = []
     for run in self.processedData:
       self.displayData.append([])
       self.displayData[-1].append(run['filename'])
@@ -154,37 +217,7 @@ class FileProcessor:
 
   def prepareTableData(self):
     '''
-    Prepare a list of lists of lists (yes) for display in the table. The outermost list contains one element
-    for each run. When a run is selected in the treeWidget, the corresponding list is displayed in the table
-    
-    Each list inside that outermost list also contains lists representing the columns in the table from
-    left to right. However the first list is a list of the column headers. Maybe an example will help
-
-    [
-      [
-        ['first header 1', 'first header 2'],
-        [1,2,3,4,5],
-        ['a','b','c','d','e']
-      ],
-      [
-        ['second header 1', 'second header 2'],
-        [6,7,8,9,0],
-        ['f','g','h','i','j']
-      ]
-    ]
-
-    When the first item in the tree widget is selected the table will display:
-    
-            first header 1    first header 2
-            1                  a
-            2                  b
-            3                  c
-            4                  d
-            5                  e
-
-    and likewise when the second item is selected.
-
-    Store this data in the variable self.tableData and it will be displayed.
+    This method should build self.tableData
     '''
     for run in self.processedData:
       if run['filename'] == 'All Runs':
@@ -205,3 +238,16 @@ class FileProcessor:
     print self.tableData
 
 
+def fillBins(vector):
+  '''
+  This method returns an x and a y vector with x representing the bin number and y
+  representing the count. It is intended to help approximate a histogram.
+
+  To use, call this method on your raw samples and then plot its return values
+  with plottype 'sticks'
+  '''
+  x = list(np.arange(np.min(vector), np.max(vector)+1))
+  y = list(np.zeros(len(x), int))
+  for item in vector:
+    y[x.index(item)] += 1
+  return x, y
