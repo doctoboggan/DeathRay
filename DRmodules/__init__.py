@@ -8,6 +8,7 @@ from setvoltageDC import setvoltageDC
 from getcurrentAC import getcurrentAC
 from setAcqType import setAcqType
 from getTrigMode import getTrigMode
+from setTrigMode import setTrigMode
 command = {
     'getvoltageDC': getvoltageDC,
     'getvoltageAC': getvoltageAC,
@@ -18,7 +19,8 @@ command = {
     'setvoltageDC': setvoltageDC,
     'getcurrentAC': getcurrentAC,
     'setAcqType': setAcqType,
-    'getTrigMode': getTrigMode
+    'getTrigMode': getTrigMode,
+    'setTrigMode': setTrigMode
     }
 # never ever have an empty line inside this file !! (the program will crash!!)
 # because of the "command" dic.We have to get use to how to import stuff from DRmodules (not the same way as DRscripts and other stuff because of different in __init__ method )
