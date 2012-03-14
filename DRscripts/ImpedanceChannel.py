@@ -29,17 +29,16 @@ NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope mo
 fixed at ONEMeg (1 MΩ).
   """
 
-  def __init__(self, IPad, Gpibad, namdev, timeout=1500, channel, impedance):
-
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = 1, impedance = "ONEM" timeout = 500):
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
     self.rightDevice = ['dso6032a']
     self.channel = channel
     self.impedance = impedance
-    self.typeChannel = ['1', '2', '3', '4', ' ']
-    self.typeImpedance = ['ONEMeg', '1Meg', '1M', '1MEG', 'ONEMEG', '1000000', 'ONEM', 'FIFTY', '50OHM', 'FIFT', 'fifty', 'fiftyohm', 'fiftyOhm', '50']
-    self.ONEMegImpedance = ['ONEMeg', '1Meg', '1M', '1MEG', 'ONEMEG', 'ONEM', '1000000']
+    self.typeChannel = ['1', '2', '3', '4']
+    self.typeImpedance = ['ONEMeg', '1Meg', '1M', '1MEG', 'ONEMEG', 'onemeg', '1000000', '1meg' 'ONEM', 'FIFTY', '50OHM', 'FIFT', 'fifty', 'fiftyohm', 'fiftyOhm', '50']
+    self.ONEMegImpedance = ['ONEMeg', '1Meg', '1M', '1MEG', 'ONEMEG', 'ONEM', '1000000', 'onemeg', '1meg']
     self.FiftyOhmImpedance = ['FIFTY', '50OHM', 'FIFT', 'fifty', 'fiftyohm', 'fiftyOhm', '50']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
@@ -61,25 +60,44 @@ fixed at ONEMeg (1 MΩ).
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if type(self.trigmode) is str: #setmode should only be a string type
+          if type(self.channel) is int:
 
             if self.name_of_device == 'dso6032a':
 
-              if self.trigmode not in self.trigMode_for_dso: # for checking. very important to make sure trigger mode is valid
-                print "chosen trigger mode does not exist !!"     # For debug purpose #also do not accept empty strings
-                return False, 'c'
-              
+              if self.channel in self.typeChannel: # for channel checking. (we can not accept unknown channel any more).
+                
+                if self.impedance in self.typeImpedance
+                  
+                  if self.impedance in self.ONEMegImpedance
+                    return self.impedance = "ONEM" #making sure impendace is standardized
+                  
+                  elif:
+
+                    if self.impedance in self.FiftyOhmImpendance
+                      return self.impedance = "FIFT" #making sure impendace is standardized
+
+
+                else:
+                return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
+
+
+              elif:
+                if self.channel != '':
+                  print "The device does not have any channel. So, your input channel will be ignored."     
+                  # To remind the user about his/her mistake of entering channel,     where the device does not have (for future devices). 
+                  return True
+
               else:
-                return True
+                print "chosen channel does not exist !!"     # For debug purpose
+                                                              ###Nadiah: if the user enters blank string channel, does that default to the previous channel/or channel 1?
+                return False, 'c'
 
             else:
-              print  "you probably got the wrong device.. how did you get here?" #for debug purposes
-                                                                                 #the user may add elif here if there exist another device that works with the command
-              
+              return False, "you dont have the right device" #if we have another device, add elif argument here
 
           else:
-            print "input trigger mode is not a string!!"  # For debug purpose
-            return False, 's'
+            print "the input channel needs to be an integer !!"  # For debug purpose
+            return False, 'n'
 
         else:
           print "The time-out is too short"   # For debug purpose
@@ -93,40 +111,59 @@ fixed at ONEMeg (1 MΩ).
     else:
       print "the device is not in data base"    # For debug purpose
       return False, 'x'
-  
 
 
-  def get(self):  	
+  def do(self):		
     """
-    The main SCPI command
+    The main SCPI command.  
+''''
+page 235
+Command Syntax :CHANnel<n>:IMPedance <impedance>
+<impedance> ::= {ONEMeg | FIFTy}
+
+<n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
+<n> ::= {1 | 2} for the two channel oscilloscope models
+The :CHANnel<n>:IMPedance command selects the input impedance setting
+for the specified analog channel. The legal values for this command are
+ONEMeg (1 MΩ) and FIFTy (50Ω).
+''''''  
     """
+
     if self.check() is True:
 
       print "PASS check test"         # For debug purpose
 
       if self.name_of_device == 'dso6032a':
 
-        SelImp= self.transaction('CHAN'+self.channel+':IMP'+self.impedance)
-        self.disconnect
-       #print "you have selected "+currDC[2]    # For debug reasons.
+        # this line's purpose is if we want to add another device. 
 
-        #if currDC[2] == '':             #check if it times out.
+          
+          impedance_channel = self.transaction('CHAN'+self.channel+':IMP '+self.impedance)   
 
-        #  print "For some reasons, it times out. Maybe the hard coded time-out duration is not enouph (if so, please modify the module 'currentDC' to the right time out[by hard coding it in check() and __init__() defs). Or, the hard coded SCPI command is not right (if so, please modify the module 'currentDC' by hard coded to the right SCPI command in get() command). Or, The gpib address is not right (Double check it). Or, for other unknown reaosns !!.....Good luck :O"               # For debug reasons. 
-         # return False, 'e'               # I have to considre this test here because I need to know the result. 
+          print "the impedance is "+impedance_channel[2]    # For debug reasons. #not sure what this returns
 
-        #else:
+          if impedance_channel[0] == 0:             #check if it times out.
 
-         # return float(currDC[2])
+            print "It works !!"               # For debug reasons. 
+            return True                # I have to considre this test here because I need to know the result. 
 
+          else:
+            print self.identify_vxi_11_error(impedance_channel[0])      #print the error information.
+            return False, impedance_channel[0]  # It is going to return the error number. 
+
+      
       else: 
-        print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands. The user should not get here at all (hopefully)
-        
+        print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       
+        # here , we add new devices with new commands (using "elif" command). The user should not get here at all (hopefully).
+        return False, 'w'
 
 
     else:
       return self.check()
 
+
+
+ 
 
 
 
@@ -143,4 +180,5 @@ Command Syntax :CHANnel<n>:IMPedance <impedance>
 The :CHANnel<n>:IMPedance command selects the input impedance setting
 for the specified analog channel. The legal values for this command are
 ONEMeg (1 MΩ) and FIFTy (50Ω).
+''''''
 
