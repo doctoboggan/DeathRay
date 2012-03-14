@@ -40,9 +40,7 @@ class TrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_u
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
-    self.trigmode = trigmode.lower() # dont know what will happen to numbers after lower case :(
-    self.rightDevice = ['dso6032a']
-    self.trigMode_for_dso = ['edge', 'pattern', 'can', 'duration', 'i2s', 'iic', 'lin', 'm1553', 'sequence', 'spi', 'tv', 'uart', 'usb', 'flexray', 'glitch', 'eburst']  
+    self.rightDevice = ['dso6032a'] 
     self.timeout = timeout
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
@@ -63,25 +61,13 @@ class TrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_u
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if type(self.trigmode) is str: #setmode should only be a string type
-
-            if self.name_of_device == 'dso6032a':
-
-              if self.trigmode not in self.trigMode_for_dso: # for checking. very important to make sure trigger mode is valid
-                print "chosen trigger mode does not exist !!"     # For debug purpose #also do not accept empty strings
-                return False, 'c'
-              
-              else:
-                return True
-
-            else:
-              print  "you probably got the wrong device.. how did you get here?" #for debug purposes
-                                                                                 #the user may add elif here if there exist another device that works with the command
-              
+          if self.name_of_device == 'dso6032a':
+            return True
+           
 
           else:
-            print "input trigger mode is not a string!!"  # For debug purpose
-            return False, 's'
+            print  "you probably got the wrong device.. how did you get here?" #for debug purposes
+            return False                                                                    #the user may add elif here if there exist another device that works with the comman
 
         else:
           print "The time-out is too short"   # For debug purpose
