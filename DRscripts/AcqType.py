@@ -117,7 +117,7 @@ class AcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_ut
 
           set_mode = self.transaction('ACQ:TYPE '+self.setmode)
 
-          print "the mode selected is "+set_mode[2]    # For debug reasons.
+          print "the mode selected is "+set_mode[2]    # For debug reasons. #######Nadiah: not really sure what this will return since this is not a query?
 
           if set_mode[0] == 0:             #check if it times out.
 
