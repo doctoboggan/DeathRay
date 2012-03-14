@@ -8,7 +8,6 @@ import PyQt4.Qwt5 as Qwt
 import numpy as np
 
 from FileProcessor2 import FileProcessor
-from Histogram import HistogramItem
 from ImagePlot import ImagePlot, square
 
 
@@ -38,9 +37,9 @@ class DeathRay(QtGui.QMainWindow):
     #Set initial sizes
     self.ui.splitter.setSizes([150, 500, 150])
     
-    self.ui.qwtPlot_2.setHidden(True)
-    self.ui.qwtPlot_3.setHidden(True)
-    self.ui.qwtPlot_4.setHidden(True)
+    #start off with no plots visible
+    self.setPlotNumber(0)
+
 
     #jump to this method while developing
     self.openFiles()
@@ -54,14 +53,14 @@ class DeathRay(QtGui.QMainWindow):
         '/Users/jack/Documents/Senior Year/Senior Design/data/raw')
     self.filesList = [str(x) for x in list(fname)]
     self.Experiment = FileProcessor(self.filesList)
-    #pp=pprint.PrettyPrinter()
-    #pp.pprint(self.Experiment.processedData)
     self.updateRunDisplay()
 
     #Plot the first element in self.processedData
-    self.plotLine(self.ui.qwtPlot_1, 0)
+    self.updatePlots(0)
+
+
  
-  def plotLine(self, plot, index):
+  def plotLine(self, plot, processedData, index):
     '''
     This method is used to plot and replot all the data.
     It has the ability to allow the caller to select which plot to draw to, but currently only
@@ -74,9 +73,9 @@ class DeathRay(QtGui.QMainWindow):
     '''
     plot.clear() #Clear the previous plot
     #grab the data and plotType from the file processor script
-    y = self.Experiment.processedData[index]['y-vector']
-    x = self.Experiment.processedData[index]['x-vector']
-    curveType = self.Experiment.processedData[index]['plotType']
+    y = processedData[index]['y-vector']
+    x = processedData[index]['x-vector']
+    curveType = processedData[index]['plotType']
 
     #Add a grid
     grid = Qwt.QwtPlotGrid()
@@ -125,14 +124,15 @@ class DeathRay(QtGui.QMainWindow):
                                         plot.canvas())
     self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
 
-    plot.setAxisTitle(Qwt.QwtPlot.xBottom, self.Experiment.processedData[index]['x-axis'])
-    plot.setAxisTitle(Qwt.QwtPlot.yLeft, self.Experiment.processedData[index]['y-axis'])
+    plot.setAxisTitle(Qwt.QwtPlot.xBottom, processedData[index]['x-axis'])
+    plot.setAxisTitle(Qwt.QwtPlot.yLeft, processedData[index]['y-axis'])
 
     plot.replot()
 
 
   def plotHeatMap(self, plot, runIndex):
-    '''Not currently implemented, but this method is ready for future versions'''
+    '''Not currently implemented, but this method is ready for future versions
+    '''
     plotImage = ImagePlot('Heatmap')
     plotImage.attach(plot)
     plotImage.setData(square(512, -2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi))
@@ -172,9 +172,23 @@ class DeathRay(QtGui.QMainWindow):
     self.ui.treeRun.setItemSelected(firstItem, True)
 
 
+  def updatePlots(self, index):
+    if hasattr(self.Experiment, 'processedData'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData, index)
+      self.setPlotNumber(1)
+    if hasattr(self.Experiment, 'processedData2'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData2, index)
+      self.setPlotNumber(2)
+    if hasattr(self.Experiment, 'processedData3'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData3, index)
+      self.setPlotNumber(3)
+    if hasattr(self.Experiment, 'processedData4'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData4, index)
+      self.setPlotNumber(4)
+
+
   def updateDataTable(self, index):
-    '''
-    This method updates the table widget with the data stored in Experiment.tableData
+    '''This method updates the table widget with the data stored in Experiment.tableData
     '''
     currentTableData = self.Experiment.tableData[index]
     self.ui.tableWidgetData.clear()
@@ -183,7 +197,6 @@ class DeathRay(QtGui.QMainWindow):
     self.ui.tableWidgetData.setHorizontalHeaderLabels(currentTableData[0])
     for c in range(len(currentTableData)-1):
       for r in range(len(currentTableData[c+1])):
-        print c, ',', r
         tableItem = QtGui.QTableWidgetItem(str(currentTableData[c+1][r]))
         tableItem.setTextAlignment(2)
         self.ui.tableWidgetData.setItem(r, c, tableItem)
@@ -195,11 +208,18 @@ class DeathRay(QtGui.QMainWindow):
   def runClicked(self):
     '''This method is called whenever an item is clicked on the tree widget'''
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
-    self.plotLine(self.ui.qwtPlot_1, index)
+    self.updatePlots(index)
     self.updateDataTable(index)
 
   def setPlotNumber(self, number):
-    '''Not currently in use but ready for future versions'''
+    '''This function sets the number of plots visible
+    '''
+
+    self.ui.qwtPlot_1.setVisible(False)
+    self.ui.qwtPlot_2.setVisible(False)
+    self.ui.qwtPlot_3.setVisible(False)
+    self.ui.qwtPlot_4.setVisible(False)
+
     self.ui.qwtPlot_1.setVisible(number > 0)
     self.ui.qwtPlot_2.setVisible(number > 1)
     self.ui.qwtPlot_3.setVisible(number > 2)
