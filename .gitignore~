@@ -2,5 +2,4 @@
 *.pyo
 *.swp
 *.DS_Store
-*.py~
 build/

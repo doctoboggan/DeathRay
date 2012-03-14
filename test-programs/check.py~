@@ -1,0 +1,62 @@
+# Here, the file should scan for Gpi ports. 
+
+import fun
+
+class check(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):
+
+  def __init__(self,IPad, numberofdevices = 0):
+
+    self.ip_ad = IPad
+    self.gpib_id = 'gpib0,00'
+    self.numd = numberofdevices
+    self.group = []
+    #data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=0,timeout=500,device_name='nothing')
+    self.str_ip_ad = '"'+IPad+'"'
+
+  def writes(self):
+
+    for x in range(0,self.numd):
+
+      if x <= 9:
+        # I hope "x" go all th way
+        while x != 9 or x != self.numd:
+          g = "gpib0,0%d" % (x)
+          gp = '"' + g + '"'
+          self.group[x] = self.fun(self.str_ip_ad, gp,'*IDN?')
+
+      else:
+
+        while x != self.numd:
+          g = "gpib0,%d" % (x)
+          gp = '"' + g + '"'
+          k = data_acquisition.vxi_11.vxi_11_connection.__init__(host=self.ip_ad,device=gp,raise_on_err=0,timeout=500,device_name='nothing')
+          error, reason , self.group[x] = k.transaction('*IDN?')
+
+  def ok(self):
+
+    self.writes()
+    print self.group
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  #    print 'We\'re on time %d' % (x)
+
+
+    

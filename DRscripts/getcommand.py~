@@ -48,7 +48,6 @@ class getcommand(checkinit.checkinit):
       print type(aa) 
       print  " ....ok"
       a = DRmodules.command[aa](self.ip_id, self.gpib_id).rightDevice     # we can aviod eval (ask Jack). (it is special because it using __init__
-      print "after the command"
       if self.look in a:
         self.wow.append(num)
         self.wow[num] = qqq[u]
