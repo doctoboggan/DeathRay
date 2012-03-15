@@ -12,5 +12,7 @@
 13) have the ability of refresh rate within GNU level. 
 14) the ability to open the result of old expermint analyzation.
 15) show the user some animations while the software is runnig (not idle)(ex: scanning, ...)
+16) catch and fix timeout errors on module level
+17) reorganize directory structure
 
 
