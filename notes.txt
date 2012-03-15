@@ -80,6 +80,9 @@ put together a state diagram of how the program operates --IN PROGRESS (Nadiah)-
 
 
 
+
+
+
 1/18 class
 Design day is Thursday, April 19th 2 to 4
 Go to presentation next wednesday 3-4 in the jacobs auditorium instead of class
@@ -195,3 +198,25 @@ Design Review (Thurs 15)
     challenges we might be facing/how t overcome
   anticipated way of completed todo tasks
   grad students/faculty membors - ISDE team members.
+
+
+
+
+
+
+Show our current source tree structure and explain where to place everything
+Talk about how the DRmodules can be used independently of our application
+  they make it easier for you to write simple scripts to communicate with the devices
+  EX:
+    from DRmodules import getcurrentAC
+    samples = []
+    for i in range(10):
+      sample = getcurrentAC('129.59.93.179', 'gpib0,22',
+			                    'hp34401a', timeout=1500).do()
+      samples.append(sample)
+
+the response of getdevice is not the same as the srings we use
+  we use: hp34401a
+  response: 34401a
+we need to either drop the hp in our own code (cleaner but harder)
+or add hp into the response (hackish)

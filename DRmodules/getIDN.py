@@ -11,6 +11,8 @@
 
 import data_acquisition  # This library is going to be used later. 
 
+from pdb import set_trace as bp #DEBUGING
+
 
 class getIDN(data_acquisition.vxi_11.vxi_11_connection):
 
@@ -49,6 +51,7 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
 
     try:    # to take care of the error.
       x, y, a = self.transaction('*IDN?')
+      bp()
       print "a is " + a     #debugging 
     except:   # we are going to use less than 500ms for timeout (the dafult is going to be 100ms). So, to aviod error, we have to have "except"
       a = None    # just return "None" to work well woth "getdevice" filter. 

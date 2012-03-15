@@ -21,11 +21,14 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
 
-    self.defaultIP = '129.59.93.179'
-    self.defaultGPIB = 'gpib0,22'
+    self.IP = '129.59.93.179'
+    self.GPIB = 'gpib0,22'
 
-    self.deviceList, self.GPIBlist = DRscripts.getdevice(self.defaultIP, 23).fix()
-    print DRscripts.getcommand(self.defaultIP, self.defaultGPIB, '34401A').do()
+    #self.deviceList, self.GPIBlist = DRscripts.getdevice(self.defaultIP, 30).fix()
+    self.deviceList = ['DSO6032A', 'E3631A', '34401A']
+    self.GPIBlist = ['gpib0,07', 'gpib0,10', 'gpib0,22']
+
+    self.getCommands()
 
     self.updateDeviceList()
 
@@ -42,8 +45,8 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.listWidgetDevices, QtCore.SIGNAL('itemSelectionChanged()'), self.deviceSelected)
     self.connect(self.ui.pushButtonGet, QtCore.SIGNAL('clicked()'), self.getClicked)
 
-    self.ui.lineEditIP.setText(self.defaultIP)
-    self.ui.lineEditGPIB.setText(self.defaultGPIB)
+    self.ui.lineEditIP.setText(self.IP)
+    self.ui.lineEditGPIB.setText(self.GPIB)
 
 
   def updateDeviceList(self):
@@ -57,12 +60,8 @@ class DeviceControl(QtGui.QMainWindow):
 
   def updateCommands(self, deviceName):
     self.ui.listWidgetCommands.clear()
-    if deviceName == 'hp34401a':
-      for command in ['getcurrentDC', 'getvoltageAC', 'getvoltageDC']:
-        listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
-        listItem.setText(command)
-    if deviceName == 'hpe3631a':
-      for command in ['getcurrentDC', 'getvoltageDC']:
+    for device in self.deviceList:
+      for command in self.commands[device.lower()]:
         listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
         listItem.setText(command)
 
@@ -72,8 +71,19 @@ class DeviceControl(QtGui.QMainWindow):
     GPIB = str(self.ui.lineEditGPIB.text())
     device = str(self.ui.listWidgetDevices.currentItem().text())
     result = str(DRmodules.command[str(command)](IP, GPIB, device).get())
-    1/0
     self.ui.lineEditResult.setText(result)
+
+
+  def getCommands(self):
+    self.commands = {}
+    for module in DRmodules.command.keys():
+      deviceList = DRmodules.command[module](self.IP, self.GPIB).rightDevice
+      for device in deviceList:
+        if device in self.commands:
+          self.commands[device].append(module)
+        else:
+          self.commands[device] = [module]
+
 
 
   def findArguments(self):
