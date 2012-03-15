@@ -11,4 +11,6 @@
 12) adding the ability to open old "config" expermint files to run them again with new files.
 13) have the ability of refresh rate within GNU level. 
 14) the ability to open the result of old expermint analyzation.
+15) show the user some animations while the software is runnig (not idle)(ex: scanning, ...)
+
 
