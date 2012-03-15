@@ -1,5 +1,4 @@
-python lib_m.py install
-python lib_s.py install 
+python /interfaces/lib_m.py install 
 #python main.py
 # test
 

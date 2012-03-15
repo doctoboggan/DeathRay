@@ -2,4 +2,9 @@
 *.pyo
 *.swp
 *.DS_Store
+*.py~
+*.pyo~
+*.pyc~
+*.txt~
+*.swp~
 build/

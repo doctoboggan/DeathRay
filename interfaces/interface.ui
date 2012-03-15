@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>655</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>DeathRay</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QTreeWidget" name="treeRun">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <column>
+        <property name="text">
+         <string>Select Run to View Plot</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QwtPlot" name="qwtPlot_1"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QwtPlot" name="qwtPlot_2"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QwtPlot" name="qwtPlot_4"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QwtPlot" name="qwtPlot_3"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QTableWidget" name="tableWidgetData"/>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_Experiment"/>
+    <addaction name="actionOpen"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_Plot"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_Experiment_Setup"/>
+   </widget>
+   <widget class="QMenu" name="menuDeathRay">
+    <property name="title">
+     <string>DeathRay</string>
+    </property>
+    <addaction name="actionAbout_DeathRay"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionCopy_Plot"/>
+    <addaction name="separator"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuPlots">
+     <property name="title">
+      <string>Plots</string>
+     </property>
+     <addaction name="actionOne_Plot"/>
+     <addaction name="actionTwo_Plots"/>
+     <addaction name="actionThree_Plots"/>
+     <addaction name="actionFour_Plots"/>
+    </widget>
+    <addaction name="menuPlots"/>
+   </widget>
+   <addaction name="menuDeathRay"/>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionNew_Experiment">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>New Experiment</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open file(s) for plotting...</string>
+   </property>
+  </action>
+  <action name="actionSave_Plot">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save Plot</string>
+   </property>
+  </action>
+  <action name="actionSave_Experiment_Setup">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save Experiment Setup</string>
+   </property>
+  </action>
+  <action name="actionAbout_2">
+   <property name="text">
+    <string>About...</string>
+   </property>
+  </action>
+  <action name="actionPreferences_2">
+   <property name="text">
+    <string>Preferences...</string>
+   </property>
+  </action>
+  <action name="actionQuit_2">
+   <property name="text">
+    <string>Quit DeathRay</string>
+   </property>
+  </action>
+  <action name="actionAsd">
+   <property name="text">
+    <string>asd</string>
+   </property>
+  </action>
+  <action name="actionAbout_3">
+   <property name="text">
+    <string>About...</string>
+   </property>
+  </action>
+  <action name="actionQuit_DeathRay">
+   <property name="text">
+    <string>Quit DeathRay</string>
+   </property>
+  </action>
+  <action name="actionPreferences_3">
+   <property name="text">
+    <string>Quit DeathRay</string>
+   </property>
+  </action>
+  <action name="actionAbout_DeathRay">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Placeholder</string>
+   </property>
+  </action>
+  <action name="actionCopy_Plot">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Copy Plot</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionOne_Plot">
+   <property name="text">
+    <string>One Plot</string>
+   </property>
+  </action>
+  <action name="actionTwo_Plots">
+   <property name="text">
+    <string>Two Plots</string>
+   </property>
+  </action>
+  <action name="actionThree_Plots">
+   <property name="text">
+    <string>Three Plots</string>
+   </property>
+  </action>
+  <action name="actionFour_Plots">
+   <property name="text">
+    <string>Four Plots</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QwtPlot</class>
+   <extends>QGraphicsView</extends>
+   <header>qwt_plot.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
