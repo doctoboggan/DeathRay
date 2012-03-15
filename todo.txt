@@ -1,0 +1,14 @@
+1) build a file extension for the program. (and make sure the program can read and write these extension)
+2) adding protection layer for wrong IP in the GUI level.
+3) adding real time changing files feature. 
+4) document modules for less coumented modules. 
+5) writing user manual
+7) writing developer user
+8) writing a easy GUItool for adding Gpib modules. (optional).
+9) review all the modules.
+10) write a complete GUI (include a welcome page, credit, ...)
+11) adding the ability to run FPGA and Gpib expermint together. 
+12) adding the ability to open old "config" expermint files to run them again with new files.
+13) have the ability of refresh rate within GNU level. 
+14) the ability to open the result of old expermint analyzation.
+

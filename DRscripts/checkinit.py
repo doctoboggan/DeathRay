@@ -5,7 +5,7 @@ from DRscripts import goodlist
 
 class checkinit(goodlist.goodlist):   #do not forget, if you are going to change name of class, change it too in the getcommand.py file. !!
 
-  def __init__(self, direct = 'DRmodules/__init__.py'):
+  def __init__(self, direct = 'DRmodules/__init__.py'):   # make it global.
 
     #direct is the path of __init__ file (include the name of the file)
     # dirr is the path of module folder (where, the system will check the modules avalibilty). IT is fixed. SO, no need to change!!.
@@ -14,7 +14,7 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
 
     import os
     print os.getcwd()
-    self.file = open(direct, 'a+')
+    self.file = open(direct, 'r')
     self.linelist = []
     self.linefromlist = []
     goodlist.goodlist.__init__(self)
@@ -22,7 +22,6 @@ class checkinit(goodlist.goodlist):   #do not forget, if you are going to change
     self.miss = []
 
   def read(self):
-
 
 
     self.linelist = self.file.readlines()

@@ -140,7 +140,6 @@ class FileProcessor:
           boardMat.append(regVector)
         timeCube.append(boardMat)
       self.cube = np.array(timeCube)
-    
 
     #add in first plot data which is simply each register and total count
     self.processedData[0]['plotType'] = 'sticks'
@@ -149,7 +148,6 @@ class FileProcessor:
     self.processedData[0]['x-vector'] = np.arange(1,18)
     self.processedData[0]['y-vector'] = sum(self.cube[-1,:,:])
 
-    
     #Iterate over each register and pull out the data vector from the cube
     for r in range(17):
       self.processedData.append({})
@@ -161,8 +159,7 @@ class FileProcessor:
 
 
   def prepareDataForDisplay(self):
-    '''
-    This method should build self.displayData
+    '''This method should build self.displayData
     '''
     for i in range(len(self.processedData)):
       if i is 0:
@@ -172,8 +169,7 @@ class FileProcessor:
         
 
   def prepareTableData(self):
-    '''
-    This method should build self.tableData
+    '''This method should build self.tableData
     '''
     for i in range(len(self.processedData)):
       self.tableData.append([]) #New list for each plot item

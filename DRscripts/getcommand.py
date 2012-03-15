@@ -7,6 +7,10 @@ class getcommand(checkinit.checkinit):
 
   def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device"):    
 
+    '''
+    DRscripts.getcommand('129.59.93.179','','dso6032a').do()
+    '''
+
     # namdev is the name of choosen device (by the user). The program will search of any match commands for this device. 
     # direct is the path of __init__ file (include the name of the file)
     # dirr is the path of module folder (where, the system will check the modules avalibilty)
@@ -33,6 +37,7 @@ class getcommand(checkinit.checkinit):
     print len(qqq)
     print "--over--"
     for u in range(0,len(qqq)): 
+      print "start"
       qqq.append(u)
       print "the u number is: "
       print u
@@ -42,10 +47,8 @@ class getcommand(checkinit.checkinit):
       print "in the command, it is going to be: "+ aa +" ....!. Also, the type is: " 
       print type(aa) 
       print  " ....ok"
-      cc = "DRmodules." + aa +'("' +self.ip_id + '","' + self.gpib_id+'").rightDevice'      # we can aviod eval (ask Jack). (it is special because it using __init__
-      print "the command is --> " + cc + " <--- !"
-      a = eval(cc)
-      print a
+      a = DRmodules.command[aa](self.ip_id, self.gpib_id).rightDevice     # we can aviod eval (ask Jack). (it is special because it using __init__
+      print "after the command"
       if self.look in a:
         self.wow.append(num)
         self.wow[num] = qqq[u]
