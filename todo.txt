@@ -14,5 +14,7 @@
 15) show the user some animations while the software is runnig (not idle)(ex: scanning, ...)
 16) catch and fix timeout errors on module level
 17) reorganize directory structure
+18) try the Finderlist method to get devices list. (optional for now)
+
 
 
