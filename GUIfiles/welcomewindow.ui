@@ -76,6 +76,9 @@ p, li { white-space: pre-wrap; }
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QPushButton" name="fpgaButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>FPGA</string>
         </property>
@@ -83,6 +86,9 @@ p, li { white-space: pre-wrap; }
       </item>
       <item>
        <widget class="QPushButton" name="gpibButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Gpib</string>
         </property>
@@ -210,8 +216,8 @@ p, li { white-space: pre-wrap; }
      <y>463</y>
     </hint>
     <hint type="destinationlabel">
-     <x>337</x>
-     <y>456</y>
+     <x>336</x>
+     <y>466</y>
     </hint>
    </hints>
   </connection>
@@ -292,6 +298,38 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>264</x>
      <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>verifyButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gpibButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>361</x>
+     <y>452</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>492</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>verifyButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fpgaButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>410</x>
+     <y>450</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>105</x>
+     <y>488</y>
     </hint>
    </hints>
   </connection>

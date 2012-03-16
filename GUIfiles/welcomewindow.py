@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'welcomewindow.ui'
 #
-# Created: Fri Mar 16 03:47:54 2012
+# Created: Fri Mar 16 13:26:12 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -61,10 +61,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.fpgaButton = QtGui.QPushButton(self.centralwidget)
+        self.fpgaButton.setEnabled(False)
         self.fpgaButton.setText(QtGui.QApplication.translate("MainWindow", "FPGA", None, QtGui.QApplication.UnicodeUTF8))
         self.fpgaButton.setObjectName(_fromUtf8("fpgaButton"))
         self.horizontalLayout_2.addWidget(self.fpgaButton)
         self.gpibButton = QtGui.QPushButton(self.centralwidget)
+        self.gpibButton.setEnabled(False)
         self.gpibButton.setText(QtGui.QApplication.translate("MainWindow", "Gpib", None, QtGui.QApplication.UnicodeUTF8))
         self.gpibButton.setObjectName(_fromUtf8("gpibButton"))
         self.horizontalLayout_2.addWidget(self.gpibButton)
@@ -143,10 +145,10 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.actionCopy, QtCore.SIGNAL(_fromUtf8("activated()")), self.IPaddresslineEdit.copy)
         QtCore.QObject.connect(self.actionPaste, QtCore.SIGNAL(_fromUtf8("activated()")), self.IPaddresslineEdit.paste)
         QtCore.QObject.connect(self.actionClose, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.close)
+        QtCore.QObject.connect(self.verifyButton, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.gpibButton.setEnabled)
+        QtCore.QObject.connect(self.verifyButton, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.fpgaButton.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         pass
-
-
 
