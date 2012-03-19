@@ -3,7 +3,7 @@
 # I face some issues with picutres...
 
 from PyQt4 import QtCore, QtGui
-from GUIfiles import aboutwindow, welcomewindow  #add new windows here
+import aboutwindow, welcomewindow  #add new windows here
 
 if __name__ == "__main__":
     import sys

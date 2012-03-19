@@ -3,7 +3,7 @@
 import sys
 
 from PyQt4 import QtCore, QtGui, Qt
-from interfaces import interface
+from interface import Ui_MainWindow
 import PyQt4.Qwt5 as Qwt
 import numpy as np
 
