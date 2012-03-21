@@ -5,14 +5,18 @@
 # Devices:  1) "dso6032a" 
 # Modifiers:  None 
 
-#pathname directory not yet worked on. will do it later. SAVEPWD something like that. 
-#right now it only has a name but not a directory. needs a lot of work to do. 
-# did not use Anas's way because not familiar yet
 
-import libgpib
 
-class saveFileWaveform:		
+import data_acquisition
+
+class saveFileWaveform (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):	
   """
+  :SAVE:PWD <path_name>
+
+  <path_name> ::= quoted ASCII string
+  The :SAVE:PWD command sets the present working directory for save
+  operations.  
+
   The :SAVE:FILename command specifies the source for any SAVE
   operations.
 
@@ -30,8 +34,11 @@ class saveFileWaveform:
   saves in the directory requested by the user. 
   """
 
-  def __init__(self, IPad, Gpibad, namdev, FileName, pointsInFile, pathName): 
-
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName, timeout = 500): 
+'''
+not sure how timeout works with saving files
+def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName, timeout = 500): 
+'''
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
@@ -39,42 +46,104 @@ class saveFileWaveform:
     self.baseName = FileName
     self.lengthOfFile = pointsInFile
     self.pathName = pathName
-
-##########################################note: how to check if file name already exists?
+    self.nameOfFiles = [] #add in self.baseName if self.baseName is not the same name that exists in self.nameOfFiles. HOW? 
+    rise_on_error = 0
+    data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
+    #here we are feeding the data_acquisition library
 
 
   def check(self):
-    """
-        
-    """
-    if self.name_of_device not in self.rightDevice:
-      return False
 
-    return True
+
+    if self.name_of_device in self.rightDevice:
+
+      if type(self.timeout) is int or float:
+
+        if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
+
+          if type(self.baseName) is str:
+      
+            if self.baseName not in self.nameOfFiles: #have to add agrument if baseName does not exist in directory already. 
+            
+              if type(self.pathName) is str:
+
+                if type(self.lengOfFile) is int and self.lengthOfFile <= 255 and self.lengOfFile >= 100:
+
+                  if self.name_of_device == 'dso6032a':
+                    return True
+              
+                  else:
+                    return False, 'wrong device'
+              
+                else: 
+                  return False, 'File length error'
+               
+              else: 
+                return False, 'path name error'
+
+             
+            else: 
+              return False, 'file name already taken'
+
+          else:
+             return False, 'file name is not a string'
+           
+        else:
+          print "The time-out is too short"   # For debug purpose
+          return False, 'o'
+
+      else: 
+
+        print "timeout input is not acceptable"
+        return False, 'q'
+
+    else:
+      print "the device is not in data base"    # For debug purpose
+      return False, 'x'
+
+
 
 
 
   def get(self):		
     """
-    The main SCPI command. It has ____ steps,
-    
-    Note: between each transaction, we have to disconnect the connection to aviod time-out errors. Also, to allow other connection to be established. 
+   
     """
-    m = eval('libgpib.'+ self.name_of_device+'(host="'+self.ip_id+'", device="'+self.gpib_id+'")')
-    z , c , a = m.transaction('SAVE:FIL '+self.baseName) #SAVE:FILename <base_name>
-    m.disconnect()
-    z , c , d = m.transaction('SAVE:PWD'+self.pathName+']') #SAVE:PWD <path_name> 
-    m.disconnect()
-    z , c , b = m.transaction('SAVE:WAV[:STAR] ['+self.FileName+']') #SAVE:WAV[:STARt] [<file_name>]
-    m.disconnect()
-    z , c , e = m.transaction('SAVE:WAV:LENG'+self.lengthOfFile+']') #SAVE:WAVeform:LENGth <length>  
-    m.disconnect()
-    
-    return 'Waveform is saved in file'+self.baseName+'and the length is'+self.lengthOfFile
-    
-#save image is done yet
+ if self.check() is True:
 
-''''
+      print "PASS check test"         # For debug purpose
+
+      if self.name_of_device == 'dso6302a':
+
+          fileName = self.transaction('SAVE:FIL '+self.baseName)      #First step
+          directory = self.transaction('SAVE:PWD'+self.pathName+']')   #second step
+          startSave = self.transaction('SAVE:WAV[:STAR] ['+self.baseName+']') #third
+          endSave = self.transaction('SAVE:WAV:LENG'+self.lengthOfFile+']') #fourth
+           
+
+          print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
+
+          if startSave[0] == 0:             #check if it times out.
+
+            print "It works !!"               # For debug reasons. 
+            return True                # I have to considre this test here because I need to know the result. 
+
+          else:
+            print self.identify_vxi_11_error(startSave[0])      #print the error information.
+            return False, startSave[0]  # It is going to return the error number. 
+
+      
+      else: 
+        print "you should not be here at all. HOW DID YOU PASS THE CHECK TEST !!"       # here , we add new devices with new commands (using "elif" command). The user should not get here at all (hopefully).
+        return False, 'w'
+
+
+    else:
+      return self.check()
+
+
+
+'''
 :SAVE:FILename <base_name>
 <base_name> ::= quoted ASCII string
 The :SAVE:FILename command specifies the source for any SAVE
