@@ -114,6 +114,8 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     <suffix> ::= {V | mV}
     <n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
     <n> ::= {1 | 2} for the two channel oscilloscope models
+    
+    NR3 format is Floating point numbers 4.5E-1, 8.25E+1
 
     TIMebase:SCALe <scale_value>
     <scale_value> ::= 500 ps through 50 s in NR3 format
