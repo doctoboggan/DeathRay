@@ -1,16 +1,22 @@
-# Name: getImpedanceChannel
+# Goal: ImpedanceChannel
 # Made by: Nadiah Zainol Abidin
 # Date: 03/08/12  (MM/DD/YY)
-# Goal: get the impedance Setting for specified analog channel
+# Goal: Input impedance Setting for specified analog channel
 # Devices:  1) "dso6032a" 
 # Modifiers:  None 
 
 import data_acquisition
 
-class getImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):		
+class setImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device):		
   """
-This class gets the input impedance setting for the specified analog channel. The legal values that it should return are
-ONEMeg (1 M) and FIFTy (50),please use rightdevice function.
+This class selects the input impedance setting for the specified analog channel. The legal values for this command are
+ONEMeg (1 Mohm) and FIFTy (50ohm),please use rightdevice' function.
+We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library 
+  
+
+The :CHANnel<n>:IMPedance command selects the input impedance setting
+for the specified analog channel. The legal values for this command are
+ONEMeg (1 Mohm) and FIFTy (50ohm).
 
 Query Syntax :CHANnel<n>:IMPedance?
 The :CHANnel<n>:IMPedance? query returns the current input impedance
@@ -20,16 +26,25 @@ Return Format <impedance value><NL>
 <impedance value> ::= {ONEM | FIFT}
 
 NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope models is
-fixed at ONEMeg (1 M).
+fixed at ONEMeg (1 MΩ).
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', timeout = 500):
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', impedance = "ONEM", timeout = 500):
+'''
+    Requiremnt: ( IPad, Gpibad, namdev, input, channel='p25v', timeout=500)
+    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)
+'''
+
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev.lower()
+    self.name_of_device = namdev
     self.rightDevice = ['dso6032a']
     self.channel = channel
-    self.typeChannel = ['1', '2']
+    self.impedance = impedance.lower()
+    self.typeChannel = ['1', '2', '3', '4']
+    self.typeImpedance = ['1meg', '1m', 'onemeg', '1000000', 'onem', '50ohm', 'fift', 'fifty', 'fiftyohm', '50']
+    self.ONEMegImpedance = ['1meg', '1m', 'onemeg', '1000000', 'onem']
+    self.FiftyOhmImpedance = ['50ohm', 'fift', 'fifty', 'fiftyohm', '50']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
     #here we are feeding the data_acquisition library
@@ -38,9 +53,9 @@ fixed at ONEMeg (1 M).
 
   def check(self):
     """
-    To check if the given device will work with getImpedanceChannel.
-    Also, it makes sure that the input channels do exist. 
-    ALso, we take care of time-out minimum duration.
+    To check if the given device will work with ImpedanceChannel (avoiding issues).
+    Also, it makes sure that the input channels do exist (to aviod conflicts). 
+    ALso, we take care of time-out minimum duration (to aviod run out of time).
     Also, we remind the user that the input channel is required for the given device. 
     """
     
@@ -55,7 +70,22 @@ fixed at ONEMeg (1 M).
             if self.name_of_device == 'dso6032a':
 
               if self.channel in self.typeChannel: # for channel checking. (we can not accept unknown channel any more).
-                return True
+                
+                if self.impedance in self.typeImpedance
+                  
+                  if self.impedance in self.ONEMegImpedance
+                    return self.impedance = "ONEM" #making sure impedance is standardized
+                    return True
+
+                  elif:
+
+                    if self.impedance in self.FiftyOhmImpendance
+                      return self.impedance = "FIFT" #making sure impedance is standardized
+                      return True
+
+                else:
+                return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
+
               else:
                 print "chosen channel does not exist !!"     # For debug purpose
                                                               ###Nadiah: if the user enters blank string channel, does that default to the previous channel/or channel 1?
@@ -65,7 +95,7 @@ fixed at ONEMeg (1 M).
               return False, "you dont have the right device" #if we have another device, add elif argument here
 
           else:
-            print "the input channel needs to be an str !!"  # For debug purpose
+            print "the input channel needs to be an integer !!"  # For debug purpose
             return False, 'n'
 
         else:
@@ -92,9 +122,9 @@ Command Syntax :CHANnel<n>:IMPedance <impedance>
 
 <n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
 <n> ::= {1 | 2} for the two channel oscilloscope models
-The :CHANnel<n>:IMPedance? command gets the input impedance setting
-for the specified analog channel. The legal values that should be returned are
-ONEMeg (1 M) and FIFTy (50).
+The :CHANnel<n>:IMPedance command selects the input impedance setting
+for the specified analog channel. The legal values for this command are
+ONEMeg (1 Mohm) and FIFTy (50ohm).
 ''''''  
     """
 
@@ -107,14 +137,14 @@ ONEMeg (1 M) and FIFTy (50).
         # this line's purpose is if we want to add another device. 
 
           
-          impedance_channel = self.transaction('CHAN'+self.channel+':IMP?')   
+          impedance_channel = self.transaction('CHAN'+self.channel+':IMP '+self.impedance)   
 
-          print "the impedance at channel "+self.channel+" is "+impedance_channel[2]    # For debug reasons. returns 
+          print "the impedance is "+impedance_channel[2]    # For debug reasons. #not sure what this returns
 
           if impedance_channel[0] == 0:             #check if it times out.
 
             print "It works !!"               # For debug reasons. 
-            return impedance_channel[2].strip()    # I have to considre this test here because I need to know the result. 
+            return True                # I have to considre this test here because I need to know the result. 
 
           else:
             print self.identify_vxi_11_error(impedance_channel[0])      #print the error information.
@@ -140,7 +170,7 @@ ONEMeg (1 M) and FIFTy (50).
     
 
 
-'''
+''''
 page 235
 Command Syntax :CHANnel<n>:IMPedance <impedance>
 <impedance> ::= {ONEMeg | FIFTy}
@@ -148,6 +178,6 @@ Command Syntax :CHANnel<n>:IMPedance <impedance>
 <n> ::= {1 | 2} for the two channel oscilloscope models
 The :CHANnel<n>:IMPedance command selects the input impedance setting
 for the specified analog channel. The legal values for this command are
-ONEMeg (1 M) and FIFTy (50).
-'''
+ONEMeg (1 MΩ) and FIFTy (50Ω).
+''''''
 

@@ -1,7 +1,0 @@
-/Library/Python/2.7/site-packages/fpga_api/__init__.py
-/Library/Python/2.7/site-packages/fpga_api/Histogram.py
-/Library/Python/2.7/site-packages/fpga_api/ImagePlot.py
-/Library/Python/2.7/site-packages/fpga_api/__init__.pyc
-/Library/Python/2.7/site-packages/fpga_api/Histogram.pyc
-/Library/Python/2.7/site-packages/fpga_api/ImagePlot.pyc
-/Library/Python/2.7/site-packages/DeathRay-0.20-py2.7.egg-info

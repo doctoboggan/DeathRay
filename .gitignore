@@ -7,4 +7,5 @@
 *.pyc~
 *.txt~
 *.swp~
+build_*
 build/
