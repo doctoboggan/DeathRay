@@ -1,0 +1,11 @@
+/usr/local/lib/python2.7/dist-packages/utils/checkinit.py
+/usr/local/lib/python2.7/dist-packages/utils/goodlist.py
+/usr/local/lib/python2.7/dist-packages/utils/__init__.py
+/usr/local/lib/python2.7/dist-packages/utils/getAttachedDevices.py
+/usr/local/lib/python2.7/dist-packages/utils/getcommand.py
+/usr/local/lib/python2.7/dist-packages/utils/checkinit.pyc
+/usr/local/lib/python2.7/dist-packages/utils/goodlist.pyc
+/usr/local/lib/python2.7/dist-packages/utils/__init__.pyc
+/usr/local/lib/python2.7/dist-packages/utils/getAttachedDevices.pyc
+/usr/local/lib/python2.7/dist-packages/utils/getcommand.pyc
+/usr/local/lib/python2.7/dist-packages/DeathRay-0.20.egg-info
