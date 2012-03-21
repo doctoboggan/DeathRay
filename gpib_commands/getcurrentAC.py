@@ -15,7 +15,7 @@ class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   like this: (VPP, Freq)
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", timeout=1300): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", timeout=1500): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=2500)

@@ -3,9 +3,9 @@
 import sys, os
 
 from PyQt4 import QtCore, QtGui, Qt
-from DeviceControlInterface import Ui_MainWindow
+from GUIfiles import DeviceControlInterface
 
-import DRmodules, DRscripts
+import utils, gpib_commands
 
 
 from pdb import set_trace as bp #DEBUGING
@@ -18,13 +18,13 @@ class DeviceControl(QtGui.QMainWindow):
 
   def __init__(self, parent=None):
     QtGui.QWidget.__init__(self)
-    self.ui = Ui_MainWindow()
+    self.ui = DeviceControlInterface.Ui_MainWindow()
     self.ui.setupUi(self)
 
     self.IP = '129.59.93.179'
     self.GPIB = 'gpib0,22'
 
-    #self.deviceList, self.GPIBlist = DRscripts.getdevice(self.defaultIP, 30).fix()
+    #self.deviceList, self.GPIBlist = utils.getAttachedDevices(self.defaultIP, 30).fix()
     self.deviceList = ['DSO6032A', 'E3631A', '34401A']
     self.GPIBlist = ['gpib0,07', 'gpib0,10', 'gpib0,22']
 
@@ -60,24 +60,22 @@ class DeviceControl(QtGui.QMainWindow):
 
   def updateCommands(self, deviceName):
     self.ui.listWidgetCommands.clear()
-    for device in self.deviceList:
-      for command in self.commands[device.lower()]:
-        listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
-        listItem.setText(command)
+    for command in self.commands[str(deviceName).lower()]:
+      listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
+      listItem.setText(command)
 
   def getClicked(self):
     command = self.ui.listWidgetCommands.currentItem().text()
     IP = str(self.ui.lineEditIP.text())
-    GPIB = str(self.ui.lineEditGPIB.text())
     device = str(self.ui.listWidgetDevices.currentItem().text())
-    result = str(DRmodules.command[str(command)](IP, GPIB, device).get())
+    GPIB = self.GPIBlist[self.deviceList.index(device)]
+    result = str(gpib_commands.command[str(command)](IP, GPIB, device.lower()).do())
     self.ui.lineEditResult.setText(result)
-
 
   def getCommands(self):
     self.commands = {}
-    for module in DRmodules.command.keys():
-      deviceList = DRmodules.command[module](self.IP, self.GPIB).rightDevice
+    for module in gpib_commands.command.keys():
+      deviceList = gpib_commands.command[module](self.IP, self.GPIB).rightDevice
       for device in deviceList:
         if device in self.commands:
           self.commands[device].append(module)
@@ -87,8 +85,8 @@ class DeviceControl(QtGui.QMainWindow):
 
 
   def findArguments(self):
-    for module in os.listdir('DRmodules'):
-      ffile = open('DRmodules/'+module)
+    for module in os.listdir('gpib_commands'):
+      ffile = open('gpib_commands/'+module)
       lines = ffile.readlines()
       for line in lines:
         if 'def __init__' in line:

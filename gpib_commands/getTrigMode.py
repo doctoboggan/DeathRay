@@ -39,7 +39,7 @@ class getTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev
+    self.name_of_device = namdev.lower()
     self.rightDevice = ['dso6032a'] 
     self.timeout = timeout
     rise_on_error = 0

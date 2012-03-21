@@ -2,7 +2,7 @@ from getvoltageDC import getvoltageDC
 from getvoltageAC import getvoltageAC 
 from getcurrentDC import getcurrentDC
 from setcurrentDC import setcurrentDC
-from Displayscreen import Displayscreen
+from setdisplayscreen import setdisplayscreen
 from getIDN import getIDN
 from setvoltageDC import setvoltageDC
 from getcurrentAC import getcurrentAC
@@ -16,7 +16,7 @@ command = {
     'getvoltageAC': getvoltageAC,
     'getcurrentDC': getcurrentDC,
     'setcurrentDC': setcurrentDC,
-    'Displayscreen': Displayscreen,
+    'setdisplayscreen': setdisplayscreen,
     'getIDN': getIDN,
     'setvoltageDC': setvoltageDC,
     'getcurrentAC': getcurrentAC,

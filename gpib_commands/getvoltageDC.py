@@ -93,7 +93,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       print "PASS check test"         # For debug purpose
 
-      if self.name_of_device == 'hpe3631a':
+      if self.name_of_device == 'e3631a':
 
         voltDC = self.transaction('meas:volt:dc? '+self.channel)
         #self.disconnect                   

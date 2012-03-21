@@ -30,7 +30,7 @@ fixed at ONEMeg (1 M).
   def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', timeout = 500):
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev
+    self.name_of_device = namdev.lower()
     self.rightDevice = ['dso6032a']
     self.channel = channel
     self.typeChannel = ['1', '2', '3', '4']
