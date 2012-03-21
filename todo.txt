@@ -20,7 +20,7 @@
 ---> verify is not accurate (it will not if thereis server or not. But, it will not know if it is the right one). 
 20) gix the issue with lib_m path (not a bug) (optional).
 21) build a setup and uninstall files for the whole program (Also make libraries of the program).  (100%)
-22) build a gui for setup and uninstall files (wizard.Also, include have shortcut and some other stuff). (optional)
-23) make sure that uninstall do not crash when the required files do not exsit. 
-24) delete the generated files from setup afer uninstalling.
-
+22) build a gui for setup and uninstall files (wizard.Also, include have shortcut and some other stuff). (optional) 
+23) make sure that uninstall do not crash when the required files do not exsit.   (50%)
+24) delete the generated files from setup afer uninstalling.  (100%)
+ 
