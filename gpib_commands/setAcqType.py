@@ -31,11 +31,6 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
       --> namdev is the name of the device.
       --> setmode is the mode that the user wants the oscillscope to be in. The setmode can take in inputs - refer self.mode_type_dso 
       --> timeout is time duration of the operation. 
-    Ex (for channel device) :   -----CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '5', channel='p25v').get()
-    Also, the definition has the devices list (hard-coded).
-    Besdies that, you can control the time-out duration. The dafult time-out duration is 2500 msec. To change the time-out to 3000msec:
-    Ex (for channel device with different time-out): ----- CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '15', channel='p25v', timeout=3000).get()
-    Becareful with time-out, it will cause crazy issues if the time-out is small (ex: 100msec).
     """
 
     self.ip_id = IPad
@@ -52,10 +47,10 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
   def check(self):
     """
-    To check if the given device will work with AcqType function (to avoid module from crashing).
+    To check if the given device will work with setAcqType function.
     Also, it checks if the specified channel of certain device matches the data base of the names of channels in that device.
     it also checks to make sure the setmode entered by the user is valid for the device
-    ALso, we take care of time-out minimum duration (to aviod run out of time).
+    ALso, we take care of time-out minimum duration.
     Also, we remind the user if the input channel is not required for the given device. 
     whatever that has been entered into setmode by the user, it is converted to lower case: so the only valid cases should be - refer self.modetype_for_dso
     """
@@ -104,7 +99,6 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
   def do(self):		
     """
     The main SCPI command. 
-    First step:
     select the mode of the device. this is done using the SCPI command 
     ACQuire:TYPE <type>
     the type of mode can be selected from the following option:
