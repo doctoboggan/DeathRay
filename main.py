@@ -3,12 +3,11 @@
 import sys
 
 from PyQt4 import QtCore, QtGui, Qt
-from interface import Ui_MainWindow
+from GUIfiles import interface
 import PyQt4.Qwt5 as Qwt
 import numpy as np
 
-from FileProcessor2 import FileProcessor
-from ImagePlot import ImagePlot, square
+import fpga_scripts
 
 
 from pdb import set_trace as bp #DEBUGING
@@ -20,7 +19,7 @@ class DeathRay(QtGui.QMainWindow):
 
   def __init__(self, parent=None):
     QtGui.QWidget.__init__(self)
-    self.ui = Ui_MainWindow()
+    self.ui = interface.Ui_MainWindow()
     self.ui.setupUi(self)
     self.initUI()
     
@@ -51,7 +50,7 @@ class DeathRay(QtGui.QMainWindow):
     fname = QtGui.QFileDialog.getOpenFileNames(self, 'Select FPGA Output File(s)',
         '/Users/jack/Documents/Senior Year/Senior Design/data/raw')
     self.filesList = [str(x) for x in list(fname)]
-    self.Experiment = FileProcessor(self.filesList)
+    self.Experiment = fpga_scripts.experiment['pulse_width_count'].FileProcessor(self.filesList)
     self.updateRunDisplay()
 
     #Plot the first element in self.processedData
@@ -125,23 +124,6 @@ class DeathRay(QtGui.QMainWindow):
     plot.setAxisTitle(Qwt.QwtPlot.yLeft, processedData[index]['y-axis'])
 
     plot.replot()
-
-
-  def plotHeatMap(self, plot, runIndex):
-    '''Not currently implemented, but this method is ready for future versions
-    '''
-    plotImage = ImagePlot('Heatmap')
-    plotImage.attach(plot)
-    plotImage.setData(square(512, -2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi), (-2*np.pi, 2*np.pi))
-    
-    self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
-                                        Qwt.QwtPlot.yLeft,
-                                        Qwt.QwtPicker.DragSelection,
-                                        Qwt.QwtPicker.AlwaysOff,
-                                        plot.canvas())
-    self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
-
-
 
 
   ####################
