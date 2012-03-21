@@ -41,7 +41,7 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
     rise_on_error = 0   # do not worry about it. It is required by data-acquisition library.
     namdev = 'nothing'  # as dafult. it will make any different.
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)
-    self.rightDevice = ['*']
+    self.rightDevice = ['dso6032a', 'e3631a', '34401a']
 
   def do(self):
 
@@ -67,3 +67,4 @@ class getIDN(data_acquisition.vxi_11.vxi_11_connection):
 # If timeout is higher than 500ms and the device does not exist, it will return "None".  
 # an idea to improve the speed. I should use the "Except" method for "VXI_11_Stream_Sync_Lost" error. I did this idea. I did not see much improvement ...!
 # we have to have a layer of protection from wrong IP address. It suppose to be in the begining of the program. 
+# in the manual, askthe developer to add manually the name of device in the working commands for that devcie.
