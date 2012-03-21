@@ -84,7 +84,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
           if type(self.value) is int or float:
 
-            if self.name_of_device == 'hpe3631a':
+            if self.name_of_device == 'e3631a':
 
               if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
                 print "choosen channel does not exist !!"     # For debug purpose
@@ -174,7 +174,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       print "PASS check test"         # For debug purpose
 
-      if self.name_of_device == 'hpe3631a':
+      if self.name_of_device == 'e3631a':
 
         set_channel = self.transaction('INST:SEL '+self.channel)      #First step
         set_currentDC = self.transaction('curr:lev:imm:ampl '+self.value)   #second step

@@ -69,7 +69,7 @@ class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
       print "PASS check test"         # For debug purpose
 
  
-      if self.name_of_device == 'hp34401a':
+      if self.name_of_device == '34401a':
 
         currAC = self.transaction('meas:curr:ac?')
         self.disconnect

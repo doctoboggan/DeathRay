@@ -77,7 +77,7 @@ class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       print "PASS check test"         # For debug purpose
 
-      if self.name_of_device == 'hp34401a':           # the device was specified to make the program more ropust and easy to expand in the future.
+      if self.name_of_device == '34401a':           # the device was specified to make the program more ropust and easy to expand in the future.
 
         voltAC = self.transaction('meas:volt:ac?')
         print "AC voltage is "+voltAC[2]    # For debug reasons.

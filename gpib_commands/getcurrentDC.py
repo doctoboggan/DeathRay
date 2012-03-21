@@ -61,7 +61,7 @@ class getcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       if self.timeout >= 2500:      # hardcoded. Also, the number was choosen after several testing.
 
-        if self.name_of_device == 'hpe3631a':
+        if self.name_of_device == 'e3631a':
 
           if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V']:      # cor channel checking. Wehave to do this with each and every channelly device!!
             print "choosen channel does not exist !!"     # For debug purpose
@@ -95,7 +95,7 @@ class getcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       print "PASS check test"         # For debug purpose
 
-      if self.name_of_device == 'hpe3631a':
+      if self.name_of_device == 'e3631a':
 
         currDC = self.transaction('meas:curr:dc? '+self.channel)
 
@@ -111,7 +111,7 @@ class getcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
           return False, currDC[0]   # return the error number.   
 
  
-      elif self.name_of_device == 'hp34401a':
+      elif self.name_of_device == '34401a':
 
         currDC = self.transaction('meas:curr:dc?')
         print "DC current is "+currDC[2]      # For debug reasons.

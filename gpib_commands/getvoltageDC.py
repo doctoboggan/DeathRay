@@ -60,7 +60,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       if self.timeout >= 300:      # hardcoded. Also, the number was choosen after several testing.
 
-        if self.name_of_device == 'hpe3631a':
+        if self.name_of_device == 'e3631a':
 
           if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
             print "choosen channel does not exist !!"     # For debug purpose
@@ -112,7 +112,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
 
  
-      elif self.name_of_device == 'hp34401a':
+      elif self.name_of_device == '34401a':
 
         #import time #debug                             [clean]
         voltDC = self.transaction('meas:volt:dc?')
