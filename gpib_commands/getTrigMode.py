@@ -20,21 +20,15 @@ class getTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
   def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", timeout = 500): 
     """
-    Requiremnt: ( IPad, Gpibad, namdev, trigmode= "edge", timeout=500)
-    Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)
+    Requiremnt: ( IPad, Gpibad, namdev, timeout)
+    Ex of requirement: '129.59.93.179', 'gpib0,07', 'dso6032a', '3' , channel='1', timeout=3000)
     ____________________________
     To store the given values from the user. 
     Note:
       --> IPad is the number of ip-address with quotation mark. 
       --> Gpibad is the number of Gpib address with quotation mark.
       --> namdev is the name of the device.
-      --> setmode is the mode that the user wants the oscillscope to be in. The setmode can take in inputs - refer self.mode_type_dso 
       --> timeout is time duration of the operation. 
-    Ex (for channel device) :   -----CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '5', channel='p25v').get()
-    Also, the definition has the devices list (hard-coded).
-    Besdies that, you can control the time-out duration. The dafult time-out duration is 2500 msec. To change the time-out to 3000msec:
-    Ex (for channel device with different time-out): ----- CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '15', channel='p25v', timeout=3000).get()
-    Becareful with time-out, it will cause crazy issues if the time-out is small (ex: 100msec).
     """
 
     self.ip_id = IPad
@@ -49,11 +43,10 @@ class getTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
   def check(self):
     """
-    To check if the given device will work with TrigMode function (to avoid module from crashing).
+    To check if the given device will work with getTrigMode function
     it also checks to make sure the setmode entered by the user is valid for the device
     ALso, we take care of time-out minimum duration (to aviod run out of time).
     Also, we remind the user if the input channel is not required for the given device. 
-    whatever that has been entered into trigmode by the user, it is converted to lower case: so the only valid cases should be - refer self.TrigMode_for_dso
     """
     if self.name_of_device in self.rightDevice:
 
@@ -66,7 +59,7 @@ class getTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
            
 
           else:
-            print  "you probably got the wrong device.. how did you get here?" #for debug purposes
+            print  "you probably got the wrong device" #for debug purposes
             return False                                                                    #the user may add elif here if there exist another device that works with the comman
 
         else:
@@ -114,7 +107,7 @@ class getTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
       
       else: 
         print "you should not be here at all. HOW DiD YOU PASS THE CHECK TEST !!"       
-        # here , we add new devices with new commands (using "elif" command). The user should not get here at all (hopefully).
+        # here , we add new devices with new commands (using "elif" command). The user should not get here at all 
         return False, 'w'
 
 
