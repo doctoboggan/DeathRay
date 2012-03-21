@@ -7,7 +7,7 @@ Library for GUI code (under the GUIfiles folder).
 from distutils.core import setup
 
 setup(name='DeathRay',
-      version='0.16',
+      version='0.20',
       description='A GUI files',
       author='Jack Minardi, Nadiah Husseini Zainol Abidin and Anas Khalid Alfuntukh',
       author_email='jack@minardi.org, nadiah.husseini.zainol.abidin@vanderbilt.edu and anas.alfuntukh@vanderbilt.edu',

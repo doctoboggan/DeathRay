@@ -1,23 +1,26 @@
 1) build a file extension for the program. (and make sure the program can read and write these extension)
-2) adding protection layer for wrong IP in the GUI level.
+2) adding protection layer for wrong IP in the GUI level.     (30%)
 3) adding real time changing files feature. 
 4) document modules for less coumented modules. 
 5) writing user manual
 7) writing developer user
 8) writing a easy GUItool for adding Gpib modules. (optional).
 9) review all the modules.
-10) write a complete GUI (include a welcome page, credit, ...)
+10) write a complete GUI (include a welcome page, credit, ...)    (75%)
 11) adding the ability to run FPGA and Gpib expermint together. 
 12) adding the ability to open old "config" expermint files to run them again with new files.
-13) have the ability of refresh rate within GNU level. 
+13) have the ability of refresh rate within GNU level (using "sleep" method). 
 14) the ability to open the result of old expermint analyzation.
 15) show the user some animations while the software is runnig (not idle)(ex: scanning, ...)
 16) catch and fix timeout errors on module level
-17) reorganize directory structure
-18) try the Finderlist method to get devices list. (optional for now)
+17) reorganize directory structure    (100%)
+18) try the Finderlist method to get devices list. (optional)
 19)Weelcome page notes:
 --->  The IP box in welcome page only accept IPv4. I do not know if we should care about it. 
 ---> verify is not accurate (it will not if thereis server or not. But, it will not know if it is the right one). 
 20) gix the issue with lib_m path (not a bug) (optional).
+21) build a setup and uninstall files for the whole program (Also make libraries of the program).  (100%)
+22) build a gui for setup and uninstall files. (optional)
+23) make sure that uninstall do not crash when the required files do not exsit. 
 
 

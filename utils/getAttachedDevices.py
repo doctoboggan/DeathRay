@@ -9,7 +9,7 @@ from DRmodules import getIDN
 from pdb import set_trace as bp #DEBUGING
 
 
-class getdevice():
+class getAttachedDevices():
 
   def __init__(self, IP ='127.0.0.1', numberofdevices = 30):
     '''Returns the attached device names and their gpibID's in 2 different lists
