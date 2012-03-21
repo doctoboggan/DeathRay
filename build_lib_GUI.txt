@@ -1,0 +1,15 @@
+/usr/local/lib/python2.7/dist-packages/GUIfiles/startfromhere.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/welcomepic.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/__init__.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/interface.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/aboutwindow.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/welcomewindow.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/DeviceControlInterface.py
+/usr/local/lib/python2.7/dist-packages/GUIfiles/startfromhere.pyc
+/usr/local/lib/python2.7/dist-packages/GUIfiles/welcomepic.pyc
+/usr/local/lib/python2.7/dist-packages/GUIfiles/__init__.pyc
+/usr/local/lib/python2.7/dist-packages/GUIfiles/interface.pyc
+/usr/local/lib/python2.7/dist-packages/GUIfiles/aboutwindow.pyc
+/usr/local/lib/python2.7/dist-packages/GUIfiles/welcomewindow.pyc
+/usr/local/lib/python2.7/dist-packages/GUIfiles/DeviceControlInterface.pyc
+/usr/local/lib/python2.7/dist-packages/DeathRay-0.20.egg-info

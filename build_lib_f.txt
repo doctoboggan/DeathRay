@@ -1,0 +1,7 @@
+/usr/local/lib/python2.7/dist-packages/fpga_api/__init__.py
+/usr/local/lib/python2.7/dist-packages/fpga_api/ImagePlot.py
+/usr/local/lib/python2.7/dist-packages/fpga_api/Histogram.py
+/usr/local/lib/python2.7/dist-packages/fpga_api/__init__.pyc
+/usr/local/lib/python2.7/dist-packages/fpga_api/ImagePlot.pyc
+/usr/local/lib/python2.7/dist-packages/fpga_api/Histogram.pyc
+/usr/local/lib/python2.7/dist-packages/DeathRay-0.20.egg-info
