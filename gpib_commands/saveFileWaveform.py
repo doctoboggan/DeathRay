@@ -34,11 +34,11 @@ class saveFileWaveform (data_acquisition.vxi_11.vxi_11_connection,data_acquisiti
   saves in the directory requested by the user. 
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName, timeout = 500): 
-'''
-not sure how timeout works with saving files
-def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName, timeout = 500): 
-'''
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName = 'C:\Users\zainoln\Documents\DeathRay\DeathRay\saveWaveform', timeout = 500): 
+    '''
+    not sure how timeout works with saving files
+    def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName, timeout = 500): 
+    '''
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
@@ -46,14 +46,16 @@ def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Devic
     self.baseName = FileName
     self.lengthOfFile = pointsInFile
     self.pathName = pathName
-    self.nameOfFiles = [] #add in self.baseName if self.baseName is not the same name that exists in self.nameOfFiles. HOW? 
+    #self.nameOfFiles = [] #add in self.baseName if self.baseName is not the same name that exists in self.nameOfFiles. HOW? 
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
     #here we are feeding the data_acquisition library
 
 
   def check(self):
-
+    '''
+    this performs a check to make sure the user enters the right input for the program
+    '''
 
     if self.name_of_device in self.rightDevice:
 
@@ -63,30 +65,26 @@ def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Devic
 
           if type(self.baseName) is str:
       
-            if self.baseName not in self.nameOfFiles: #have to add agrument if baseName does not exist in directory already. 
+            #if self.baseName not in self.nameOfFiles: #have to add agrument if baseName does not exist in directory already. 
             
-              if type(self.pathName) is str:
+            if type(self.pathName) is str:
 
-                if type(self.lengOfFile) is int and self.lengthOfFile <= 255 and self.lengOfFile >= 100:
+              if type(self.lengOfFile) is int and self.lengthOfFile <= 255 and self.lengOfFile >= 100:
 
-                  if self.name_of_device == 'dso6032a':
-                    return True
+                if self.name_of_device == 'dso6032a':
+                  return True
               
-                  else:
-                    return False, 'wrong device'
+                else:
+                  return False, 'wrong device'
               
-                else: 
-                  return False, 'File length error'
-               
               else: 
-                return False, 'path name error'
-
-             
+                return False, 'File length error'
+               
             else: 
-              return False, 'file name already taken'
+              return False, 'path name error'
 
           else:
-             return False, 'file name is not a string'
+           return False, 'file name is not a string'
            
         else:
           print "The time-out is too short"   # For debug purpose
@@ -107,9 +105,9 @@ def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Devic
 
   def get(self):		
     """
-   
+    this performs the commands and gives us result whether it works or not
     """
- if self.check() is True:
+    if self.check() is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -118,7 +116,7 @@ def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Devic
           fileName = self.transaction('SAVE:FIL '+self.baseName)      #First step
           directory = self.transaction('SAVE:PWD'+self.pathName+']')   #second step
           startSave = self.transaction('SAVE:WAV[:STAR] ['+self.baseName+']') #third
-          endSave = self.transaction('SAVE:WAV:LENG'+self.lengthOfFile+']') #fourth
+          endSave = self.transaction('SAVE:WAV:LENG'+self.lengthOfFile+']') #fourth #it will write a file in the path with the fileName given
            
 
           print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
@@ -188,3 +186,4 @@ The :SAVE:WAVeform:LENGth command sets the waveform data length
 <path_name> ::= quoted ASCII string
 The :SAVE:PWD command sets the present working directory for save
 operations.
+'''

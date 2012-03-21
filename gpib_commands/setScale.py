@@ -14,12 +14,13 @@ class Scale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_uti
   """
   This class sets the vertical and horizontal scale of the window display 
   """
-print "please enter information in this format\n"
-print "(IP address, GPIB address, Channel {1|2|3|4}, vertical scale: units perdivision, vertical units {V, mV}, horizontalScale: <scale_value> ::= 500 ps through 50 s)"
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500)
-'''
-def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500)
-'''
+
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500):
+    '''
+    please enter information in this format
+    (IP address, GPIB address, Channel {1|2|3|4}, vertical scale: units perdivision, vertical units {V, mV}, horizontalScale: <scale_value> ::= 500 ps through 50 s)
+    def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500)
+    '''
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
@@ -38,7 +39,7 @@ def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Devic
 
 
   
-def check(self):
+  def check(self):
     """
     To check if the given device will work with Scale.py (avoiding issues).
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
@@ -53,9 +54,9 @@ def check(self):
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
 
-          if self.name_of_device == 'dso6032a'
+          if self.name_of_device == 'dso6032a':
 
-            if :type(self.Channel) is str: #[1, 2, 3, 4] #####vertical starts here
+            if type(self.Channel) is str: #[1, 2, 3, 4] #####vertical starts here
 
               if self.Channel in self.ChannelType: # for channel checking. (we can not accept unknown channel any more).
                 
@@ -65,7 +66,8 @@ def check(self):
         
                     if self.horScale is float or int: 
 
-                      if self.horScale is <= 50 and self.horScale >= (50*10^-9): #50 ps to 50s
+                      if self.horScale <= 50 and self.horScale >= (50*10^-9): #50 ps to 50s
+                        return True
 
                       else:
                         return False, 'horizontal#'  #horizontal scale entered is out of bounds
@@ -105,18 +107,18 @@ def check(self):
       return False, 'x'
 
 
-def do(self):		
+  def do(self):		
     """
-  Command Syntax :CHANnel<n>:SCALe <scale>[<suffix>]
-<scale> ::= vertical units per division in NR3 format
-<suffix> ::= {V | mV}
-<n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
-<n> ::= {1 | 2} for the two channel oscilloscope models
+    Command Syntax :CHANnel<n>:SCALe <scale>[<suffix>]
+    <scale> ::= vertical units per division in NR3 format
+    <suffix> ::= {V | mV}
+    <n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
+    <n> ::= {1 | 2} for the two channel oscilloscope models
 
-TIMebase:SCALe <scale_value>
-<scale_value> ::= 500 ps through 50 s in NR3 format
-The :TIMebase:SCALe command sets the horizontal scale or units per
-division for the main window.
+    TIMebase:SCALe <scale_value>
+    <scale_value> ::= 500 ps through 50 s in NR3 format
+    The :TIMebase:SCALe command sets the horizontal scale or units per
+    division for the main window.
     """
 
     if self.check() is True:
@@ -167,7 +169,7 @@ division for the main window.
       return self.check()
 
 
-''''
+'''
 NR3 Floating point numbers 4.5E-1, 8.25E+1
 
 
@@ -202,25 +204,26 @@ enabled and all others blanked. The autoscale channels mode (see
 the autoscale is performed.
 When the :AUToscale command is sent, the following conditions are
 affected and actions are taken:
-• Thresholds.
-• Channels with activity around the trigger point are turned on, others
+Thresholds.
+Channels with activity around the trigger point are turned on, others
 are turned off.
-• Channels are reordered on screen; analog channel 1 first, followed by
+Channels are reordered on screen; analog channel 1 first, followed by
 
 the remaining analog channels, then the digital channels 0- 15.
-• Delay is set to 0 seconds.
-• Time/Div.
+Delay is set to 0 seconds.
+Time/Div.
 The :AUToscale command does not affect the following conditions:
-• Label names.
-• Trigger conditioning.
+Label names.
+Trigger conditioning.
 
 The :AUToscale command turns off the following items:
-• Cursors.
-• Measurements.
-• Trace memories.
-• Zoomed (delayed) time base mode.
+Cursors.
+Measurements.
+Trace memories.
+Zoomed (delayed) time base mode.
 
 For further information on :AUToscale, see the User's Guide.
+'''
 
 
 
