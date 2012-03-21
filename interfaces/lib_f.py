@@ -1,20 +1,18 @@
-#!/usr/bin/env python
-
-'''
-Library for GUI code (under the GUIfiles folder).
-'''
+"""
+Distutils setup script.
+Created on Mar 12, 2012
+@author: Anas Alfuntukh
+"""
 
 from distutils.core import setup
 
 setup(name='DeathRay',
-      version='0.16',
-      description='A GUI files',
+      version='0.17',
+      description='FPGA-api',
       author='Jack Minardi, Nadiah Husseini Zainol Abidin and Anas Khalid Alfuntukh',
       author_email='jack@minardi.org, nadiah.husseini.zainol.abidin@vanderbilt.edu and anas.alfuntukh@vanderbilt.edu',
-      packages=['GUIfiles'],
-      package_dir={'GUIfiles': './GUIfiles'},   # Here, the path only works when the user run setup file. If the user tries to install it from here, it will fail.
+      packages=['fpga_api'],
+      package_dir={'fpga_api': './fpga_api'},   # Here, the path only works when the user run setup file. If the user tries to install it from here, it will fail.
       requires=['data_acquisition','numpy'],
       provides=['DeathRay']
      )
-
-
