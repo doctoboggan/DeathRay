@@ -9,12 +9,8 @@ import data_acquisition
 
 class getImpedanceChannel(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):		
   """
-This class selects the input impedance setting for the specified analog channel. The legal values for this command are
+This class gets the input impedance setting for the specified analog channel. The legal values that it should return are
 ONEMeg (1 M) and FIFTy (50),please use rightdevice function.
-We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library
-The :CHANnel<n>:IMPedance command selects the input impedance setting
-for the specified analog channel. The legal values for this command are
-ONEMeg (1 M) and FIFTy (50).
 
 Query Syntax :CHANnel<n>:IMPedance?
 The :CHANnel<n>:IMPedance? query returns the current input impedance
@@ -33,7 +29,7 @@ fixed at ONEMeg (1 M).
     self.name_of_device = namdev
     self.rightDevice = ['dso6032a']
     self.channel = channel
-    self.typeChannel = ['1', '2', '3', '4']
+    self.typeChannel = ['1', '2']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  
     #here we are feeding the data_acquisition library
@@ -42,9 +38,9 @@ fixed at ONEMeg (1 M).
 
   def check(self):
     """
-    To check if the given device will work with ImpedanceChannel (avoiding issues).
-    Also, it makes sure that the input channels do exist (to aviod conflicts). 
-    ALso, we take care of time-out minimum duration (to aviod run out of time).
+    To check if the given device will work with getImpedanceChannel.
+    Also, it makes sure that the input channels do exist. 
+    ALso, we take care of time-out minimum duration.
     Also, we remind the user that the input channel is required for the given device. 
     """
     
@@ -96,8 +92,8 @@ Command Syntax :CHANnel<n>:IMPedance <impedance>
 
 <n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
 <n> ::= {1 | 2} for the two channel oscilloscope models
-The :CHANnel<n>:IMPedance command selects the input impedance setting
-for the specified analog channel. The legal values for this command are
+The :CHANnel<n>:IMPedance? command gets the input impedance setting
+for the specified analog channel. The legal values that should be returned are
 ONEMeg (1 M) and FIFTy (50).
 ''''''  
     """
