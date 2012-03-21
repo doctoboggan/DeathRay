@@ -10,7 +10,7 @@
 
 import data_acquisition
 
-class Scale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):		
+class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device, data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class sets the vertical and horizontal scale of the window display 
   """
@@ -41,7 +41,7 @@ class Scale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_uti
   
   def check(self):
     """
-    To check if the given device will work with Scale.py (avoiding issues).
+    To check if the given device will work with setScale.py (avoiding issues).
     Also, it makes sure that the input channels do exist (to aviod conflicts). 
     ALso, we take care of time-out minimum duration (to aviod run out of time).
     Also, we remind the user that the input channel is required for the given device. 
@@ -114,6 +114,8 @@ class Scale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_uti
     <suffix> ::= {V | mV}
     <n> ::= {1 | 2 | 3 | 4} for the four channel oscilloscope models
     <n> ::= {1 | 2} for the two channel oscilloscope models
+    
+    NR3 format is Floating point numbers 4.5E-1, 8.25E+1
 
     TIMebase:SCALe <scale_value>
     <scale_value> ::= 500 ps through 50 s in NR3 format

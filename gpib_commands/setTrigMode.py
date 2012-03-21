@@ -30,17 +30,12 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
       --> namdev is the name of the device.
       --> setmode is the mode that the user wants the oscillscope to be in. The setmode can take in inputs - refer self.mode_type_dso 
       --> timeout is time duration of the operation. 
-    Ex (for channel device) :   -----CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '5', channel='p25v').get()
-    Also, the definition has the devices list (hard-coded).
-    Besdies that, you can control the time-out duration. The dafult time-out duration is 2500 msec. To change the time-out to 3000msec:
-    Ex (for channel device with different time-out): ----- CvoltageDC('129.59.93.27', 'gpib0,10', 'hp34401a', '15', channel='p25v', timeout=3000).get()
-    Becareful with time-out, it will cause crazy issues if the time-out is small (ex: 100msec).
     """
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev
-    self.trigmode = trigmode.lower() # dont know what will happen to numbers after lower case :(
+    self.trigmode = trigmode.lower() 
     self.rightDevice = ['dso6032a']
     self.trigMode_for_dso = ['edge', 'pattern', 'can', 'duration', 'i2s', 'iic', 'lin', 'm1553', 'sequence', 'spi', 'tv', 'uart', 'usb', 'flexray', 'glitch', 'eburst', 'glit', 'patt', 'dur', 'ebur', 'setq', 'flex']  
     self.timeout = timeout
@@ -51,7 +46,7 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
   def check(self):
     """
-    To check if the given device will work with TrigMode function (to avoid module from crashing).
+    To check if the given device will work with TrigMode function
     it also checks to make sure the setmode entered by the user is valid for the device
     ALso, we take care of time-out minimum duration (to aviod run out of time).
     Also, we remind the user if the input channel is not required for the given device. 
@@ -69,32 +64,31 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
               if self.trigmode not in self.trigMode_for_dso: # for checking. very important to make sure trigger mode is valid
                 print "chosen trigger mode does not exist !!"     # For debug purpose #also do not accept empty strings
-                return False, 'c'
+                return False, 'trig mode input not exist'
               
               else:
                 return True
 
             else:
-              print  "you probably got the wrong device.. how did you get here?" #for debug purposes
-                                                                                 #the user may add elif here if there exist another device that works with the command
-              
+              return False, 'wrong device' #for debug purposes
+                                                                                 #the user may add elif here if there exist another device that works with the command  
 
           else:
             print "input trigger mode is not a string!!"  # For debug purpose
-            return False, 's'
+            return False, 'trigmode input not string'
 
         else:
           print "The time-out is too short"   # For debug purpose
-          return False, 'o'
+          return False, 'time out input short'
 
       else: 
 
         print "timeout input is not acceptable"
-        return False, 'q'
+        return False, 'timeout input not float or string'
 
     else:
       print "the device is not in data base"    # For debug purpose
-      return False, 'x'
+      return False, 'device not exist'
   
 
 
