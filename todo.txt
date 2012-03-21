@@ -22,5 +22,8 @@
 21) build a setup and uninstall files for the whole program (Also make libraries of the program).  (100%)
 22) build a gui for setup and uninstall files (wizard.Also, include have shortcut and some other stuff). (optional) 
 23) make sure that uninstall do not crash when the required files do not exsit.   (50%)
-24) delete the generated files from setup afer uninstalling.  (100%)
+24) delete the generated files from setup afer uninstalling.  (100%) 
+25) There is bug in data_acq...
+26) adding layer to not show time out to the user by changing the time out when it happens. (try twice before changing) (in low level) (anas task)
+27) make all the modules accept string and add check method to make sure they are integer or float. (focus in the check method. you may have to layer one to check if the input string (if yes -->) second layer to check if the string input is int or float (depend in the requirement). Also, make sure if it only "int" or "float". 
  
