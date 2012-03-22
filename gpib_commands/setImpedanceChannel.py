@@ -67,33 +67,43 @@ fixed at ONEMeg (1 M).
 
           if type(self.channel) is str:
 
-            if self.name_of_device == 'dso6032a':
+            try: 
 
-              if self.channel in self.typeChannel: # for channel checking. (we can not accept unknown channel any more).
-                
-                if self.impedance in self.typeImpedance:
+              dump = int(self.channel)
+
+              if self.name_of_device == 'dso6032a':
+
+                if self.channel in self.typeChannel: # for channel checking. (we can not accept unknown channel any more).
                   
-                  if self.impedance in self.ONEMegImpedance:
-                    self.impedance = "ONEM" #making sure impedance is standardized
-                    return True
-                  elif self.impedance in self.FiftyOhmImpedance:
-                      self.impedance = "FIFT" #making sure impedance is standardized
+                  if self.impedance in self.typeImpedance:
+                    
+                    if self.impedance in self.ONEMegImpedance:
+                      self.impedance = "ONEM" #making sure impedance is standardized
                       return True
+                    elif self.impedance in self.FiftyOhmImpedance:
+                        self.impedance = "FIFT" #making sure impedance is standardized
+                        return True
+
+                  else:
+                    return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
 
                 else:
-                  return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
+                  print "chosen channel does not exist !!"     # For debug purpose
+                                                                ###Nadiah: if the user enters blank string channel, does that default to the previous channel/or channel 1?
+                  return False, 'c'
 
               else:
-                print "chosen channel does not exist !!"     # For debug purpose
-                                                              ###Nadiah: if the user enters blank string channel, does that default to the previous channel/or channel 1?
-                return False, 'c'
+                return False, "you dont have the right device" #if we have another device, add elif argument here
 
-            else:
-              return False, "you dont have the right device" #if we have another device, add elif argument here
+            except ValueError:
+
+              print "the input is not integer (can not be converted to a integer)!!"
+
+              return False, 'n'
 
           else:
-            print "the input channel needs to be an integer !!"  # For debug purpose
-            return False, 'n'
+            print "The input voltage is not string. I know it should not be string. However, the input number has to have string type... sorry"  # For debug purpose
+            return False, 's'
 
         else:
           print "The time-out is too short"   # For debug purpose
@@ -158,6 +168,17 @@ ONEMeg (1 Mohm) and FIFTy (50ohm).
       return self.check()
 
 
+
+# Note:   ---> 'o' means time-out is too short.
+#         ---> 'e' means empty string
+#         ---> 'n' means input voltage is not number.
+#         ---> 'c' means wrong channel input. 
+#         ---> 'x' wrong name of device. 
+#         ---> 'w' wired error (something wrong with code)
+#         ---> 'z' out of range 
+#         ---> 'q' timeout input is not number.
+#         ---> 's' the input type is not string.
+#         ---> 'n' the input can not be converted to int or float (depend)
 
  
 

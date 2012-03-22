@@ -145,7 +145,7 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
               return False, 'n'
 
           else:
-            print "The input voltage is string. I know it should not be string. However, the input number has to have string type... sorry"  # For debug purpose
+            print "The input voltage is not string. I know it should not be string. However, the input number has to have string type... sorry"  # For debug purpose
             return False, 's'
 
         else:
@@ -217,6 +217,7 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 #         ---> 'z' out of range 
 #         ---> 'q' timeout input is not number.
 #         ---> 's' the input type is not string.
+#         ---> 'n' the input can not be converted to int or float (depend)
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # check if input is negative or not for the negative or positive channels. 
 # we have another douple check in the GUI level (the user input)
