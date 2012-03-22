@@ -37,7 +37,6 @@ class saveFileWaveform (data_acquisition.vxi_11.vxi_11_connection,data_acquisiti
   def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName = 'C:\Users\zainoln\Documents\DeathRay\DeathRay\saveWaveform', timeout = 500): 
     '''
     not sure how timeout works with saving files
-    def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", FileName = 'Experiment1', pointsInFile = 150, pathName, timeout = 500): 
     '''
     self.ip_id = IPad
     self.gpib_id = Gpibad
