@@ -15,7 +15,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
   This class sets the vertical and horizontal scale of the window display 
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500):
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = '10' , verticalUnit = 'mV' , horizontalScale = '1', timeout = 500):
     '''
     please enter information in this format
     (IP address, GPIB address, Channel {1|2|3|4}, vertical scale: units perdivision, vertical units {V, mV}, horizontalScale: <scale_value> ::= 500 ps through 50 s)
@@ -53,45 +53,86 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
+          #   starting special case for "dso6032a"devcie:
 
-          if self.name_of_device == 'dso6032a':
+          if self.name_of_device == 'dso6032a':   
 
             if type(self.Channel) is str: #[1, 2, 3, 4] #####vertical starts here
 
-              if self.Channel in self.ChannelType: # for channel checking. (we can not accept unknown channel any more).
-                
-                if self.verUnits in self.Units: # [mV or V]
+              try: 
 
-                  if self.VerScale is float or int: #units per division in vertical scale in NR3 format(float) #####vertical ends here
-        
-                    if self.horScale is float or int: 
+                dump = int(self.channel)
 
-                      if self.horScale <= 50 and self.horScale >= (50*10^-9): #50 ps to 50s
-                        return True
+                if self.Channel in self.ChannelType: # for channel checking. (we can not accept unknown channel any more).
 
+                  if type(self.verUnits) is str:    # make the input for 'vertical Unit' is string.
+                  
+                    if self.verUnits in self.Units: # [mV or V]. Also,  
+
+                      if self.VerScale is str: # to make sure the the type of input is string. Also, vertical Scale is units per division in vertical scale in NR3 format(float) #####vertical ends here
+
+                        try: 
+
+                          self.VerScale = int(self.VerScale)
+            
+                          if self.horScale is str: 
+
+                            try:
+
+                              self.horScale = int(self.horScale)
+
+                              if self.horScale <= 50 and self.horScale >= (50*10^-9): #50 ps to 50s
+                                return True
+
+                              else:
+                                return False, 'z'  #horizontal scale entered is out of bounds
+
+                            except ValueError:
+                              print " The horizontal Scale input is not int (can not be converted to int)!"
+                              return False, 'n'
+
+                          
+                          else:
+                            print "the horizontal Scale input type is not string type even the input is an int."
+                            return False, 's' #horizontal scale is not a float nor intege
+
+                        except ValueError:
+                          print "vertical Scale input is not int (can not be converted to int)!"
+                          return False, 'n'
+            
                       else:
-                        return False, 'horizontal#'  #horizontal scale entered is out of bounds
-                    
+                        print "the input vertical Scale type has to be string even if it is an int."
+                        return False, 's' #vertical scale is not a float nor integer
+
                     else:
-                      return False, 'horFloat' #horizontal scale is not a float nor integer
-        
+                      print " the vertical Unit input does not match the data base"
+                      return False, 'd' #vertical suffix is not valid
+
                   else:
-                    return False, 'verFloat' #vertical scale is not a float nor integer
+                    print "the input vertical Unit is not string!"
+                    return False, 's'
+
 
                 else:
+                  print "chosen channel does not exist !!"     # For debug purpose                                             
+                  return False, 'c'
 
-                  return False, 'verSuf' #vertical suffix is not valid
-
-              else:
-                print "chosen channel does not exist !!"     # For debug purpose                                             
-                return False, 'c'
+              except ValueError:
+                  
+                print "the input is not real int (can not be converted to a int) !!"
+                return False, 'n'
 
             else:
-              return False, "you dont have the right device" #if we have another device, add elif argument here
+              print "the input channel needs to be an string tyoe (even if input is number (int)) !!"  # For debug purpose
+              return False, 's'
+
+
+                  # End of "dso62032" case configuration.
+
 
           else:
-            print "the input channel needs to be an integer !!"  # For debug purpose
-            return False, 'n'
+            print "the device is registre. but, there is no special configuration for it in the check method. Any way, you shell pass!" #if we have another device, add elif argument here
+            return True 
 
         else:
           print "The time-out is too short"   # For debug purpose
@@ -99,7 +140,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
       else: 
 
-        print "timeout input is not acceptable"
+        print "timeout input is not acceptable has to be int."
         return False, 'q'
 
     else:
@@ -143,7 +184,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
           
             
-            vertical = self.transaction('CHAN'+self.Channel+':SCAL '+self.verScale+'['+self.verUnit+']')
+            vertical = self.transaction('CHAN'+self.Channel+':SCAL '+self.verScale+'['+self.verUnit+']')    # to Nadiah: should we put the SCPI command here?
             
             print "the vertical scale"+vertical[2]    # For debug reasons. 
 
@@ -226,7 +267,19 @@ Zoomed (delayed) time base mode.
 
 For further information on :AUToscale, see the User's Guide.
 '''
+# to Nadiah: are all inputs ints(not float)?
 
+# Note:   ---> 'o' means time-out is too short.
+#         ---> 'e' means empty string
+#         ---> 'n' means input voltage is not number.
+#         ---> 'c' means wrong channel input. 
+#         ---> 'x' wrong name of device. 
+#         ---> 'w' wired error (something wrong with code)
+#         ---> 'z' out of range 
+#         ---> 'q' timeout input is not number.
+#         ---> 's' the input type is not string.
+#         ---> 'n' the input can not be converted to int or float (depend)
+#         ---> 'd' The given inut does not match the hardcode database.
 
 
 

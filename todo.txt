@@ -30,4 +30,5 @@
 --> only way to change timeout is via terminal or harcode (no way via GUI).
 --> modules are divided to "set" and "get"..... 
 --> adding input boxes in the GUI is going to hardcode. In the GUI api, there are five boxes by dafult. To add new box, you need hard code it.
+--> All inputs to the modules have to be string regadless of the situation. 
 29) increase the time out for all modules to 2 seconds after Jack finish the referance method. 
