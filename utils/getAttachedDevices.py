@@ -2,7 +2,7 @@
 # Made by: Jack Minardi
 # Date: 3/15/12
 # Goal: Return all devices attached to gpib gateway specified by IP
-# Result: List of tuples (attached device name, attached device gpibID)
+# Result: Two lists (attached device name list, attached device gpibID list)
  
 from DRmodules import getIDN
 

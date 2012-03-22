@@ -1,3 +1,4 @@
+python ./utils/buildInit.py #make sure the __init__ file contains all the commands
 python ./interfaces/lib_m.py install --record build_lib_m.txt
 python ./interfaces/lib_GUI.py install --record build_lib_GUI.txt
 python ./interfaces/lib_f.py install --record build_lib_f.txt

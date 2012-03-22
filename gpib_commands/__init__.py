@@ -1,30 +1,34 @@
-from getvoltageDC import getvoltageDC 
-from getvoltageAC import getvoltageAC 
+from getAcqType import getAcqType
+from getcurrentAC import getcurrentAC
 from getcurrentDC import getcurrentDC
+from getIDN import getIDN
+from getImpedanceChannel import getImpedanceChannel
+from getTrigMode import getTrigMode
+from getvoltageAC import getvoltageAC
+from getvoltageDC import getvoltageDC
+from saveFileWaveform import saveFileWaveform
+from setAcqType import setAcqType
 from setcurrentDC import setcurrentDC
 from setdisplayscreen import setdisplayscreen
-from getIDN import getIDN
-from setvoltageDC import setvoltageDC
-from getcurrentAC import getcurrentAC
-from setAcqType import setAcqType
-from getTrigMode import getTrigMode
-from setTrigMode import setTrigMode
-from getImpedanceChannel import getImpedanceChannel
 from setImpedanceChannel import setImpedanceChannel
+from setScale import setScale
+from setTrigMode import setTrigMode
+from setvoltageDC import setvoltageDC
 command = {
-    'getvoltageDC': getvoltageDC,
-    'getvoltageAC': getvoltageAC,
-    'getcurrentDC': getcurrentDC,
-    'setcurrentDC': setcurrentDC,
-    'setdisplayscreen': setdisplayscreen,
-    'getIDN': getIDN,
-    'setvoltageDC': setvoltageDC,
-    'getcurrentAC': getcurrentAC,
-    'setAcqType': setAcqType,
-    'getTrigMode': getTrigMode,
-    'setTrigMode': setTrigMode,
-    'getImpedanceChannel': getImpedanceChannel,
-    'setImpedanceChannel': setImpedanceChannel
-    }
-# never ever have an empty line inside this file !! (the program will crash!!)
-# because of the "command" dic.We have to get use to how to import stuff from DRmodules (not the same way as DRscripts and other stuff because of different in __init__ method )
+  'getAcqType': getAcqType,
+  'getcurrentAC': getcurrentAC,
+  'getcurrentDC': getcurrentDC,
+  'getIDN': getIDN,
+  'getImpedanceChannel': getImpedanceChannel,
+  'getTrigMode': getTrigMode,
+  'getvoltageAC': getvoltageAC,
+  'getvoltageDC': getvoltageDC,
+  'saveFileWaveform': saveFileWaveform,
+  'setAcqType': setAcqType,
+  'setcurrentDC': setcurrentDC,
+  'setdisplayscreen': setdisplayscreen,
+  'setImpedanceChannel': setImpedanceChannel,
+  'setScale': setScale,
+  'setTrigMode': setTrigMode,
+  'setvoltageDC': setvoltageDC,
+}
