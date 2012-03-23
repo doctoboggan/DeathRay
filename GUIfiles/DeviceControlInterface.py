@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'DeviceControlInterface.ui'
 #
-# Created: Thu Mar 22 03:00:04 2012
+# Created: Thu Mar 22 20:03:52 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(783, 542)
+        MainWindow.resize(801, 638)
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -37,6 +37,19 @@ class Ui_MainWindow(object):
         self.pushButtonFindDevices.setText(QtGui.QApplication.translate("MainWindow", "Find Devices", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonFindDevices.setObjectName(_fromUtf8("pushButtonFindDevices"))
         self.horizontalLayout_3.addWidget(self.pushButtonFindDevices)
+        self.verticalLayout_5 = QtGui.QVBoxLayout()
+        self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
+        self.radioButtonSet = QtGui.QRadioButton(self.centralwidget)
+        self.radioButtonSet.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.radioButtonSet.setText(QtGui.QApplication.translate("MainWindow", "Set", None, QtGui.QApplication.UnicodeUTF8))
+        self.radioButtonSet.setObjectName(_fromUtf8("radioButtonSet"))
+        self.verticalLayout_5.addWidget(self.radioButtonSet)
+        self.radioButtonGet = QtGui.QRadioButton(self.centralwidget)
+        self.radioButtonGet.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.radioButtonGet.setText(QtGui.QApplication.translate("MainWindow", "Get", None, QtGui.QApplication.UnicodeUTF8))
+        self.radioButtonGet.setObjectName(_fromUtf8("radioButtonGet"))
+        self.verticalLayout_5.addWidget(self.radioButtonGet)
+        self.horizontalLayout_3.addLayout(self.verticalLayout_5)
         self.verticalLayout_6.addLayout(self.horizontalLayout_3)
         self.line = QtGui.QFrame(self.centralwidget)
         self.line.setFrameShape(QtGui.QFrame.HLine)
@@ -167,7 +180,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addLayout(self.horizontalLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 783, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 801, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)

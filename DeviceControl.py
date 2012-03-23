@@ -1,6 +1,6 @@
 #!/usr/bin/python -d
  
-import sys, os
+import sys, os, glob
 
 from PyQt4 import QtCore, QtGui, Qt
 from GUIfiles import DeviceControlInterface
@@ -28,7 +28,10 @@ class DeviceControl(QtGui.QMainWindow):
     
     #instance variables
     self.argDict = {}
-    self.commands = {}
+    self.commands = {'set':{}, 'get':{}}
+    self.setOrGet = 'set'
+
+    self.radioToggled()
 
 
   def initUI(self):
@@ -37,6 +40,8 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.listWidgetCommands, QtCore.SIGNAL('itemSelectionChanged()'), self.commandSelected)
     self.connect(self.ui.pushButtonExecute, QtCore.SIGNAL('clicked()'), self.getClicked)
     self.connect(self.ui.pushButtonFindDevices, QtCore.SIGNAL('clicked()'), self.findDevicesClicked)
+    self.connect(self.ui.radioButtonSet, QtCore.SIGNAL('clicked()'), self.radioToggled)
+    self.connect(self.ui.radioButtonGet, QtCore.SIGNAL('clicked()'), self.radioToggled)
     
     #set the argument boxes invisible at first
     self.ui.labelArg1.setVisible(False)
@@ -52,6 +57,7 @@ class DeviceControl(QtGui.QMainWindow):
     
     self.ui.verticalLayoutArguments.setAlignment(Qt.Qt.AlignTop)
     self.ui.splitter.setSizes([200,200,200])
+    self.ui.radioButtonSet.setChecked(True)
 
 
   def updateDeviceList(self):
@@ -63,7 +69,7 @@ class DeviceControl(QtGui.QMainWindow):
 
   def updateCommands(self, deviceName):
     self.ui.listWidgetCommands.clear()
-    for command in self.commands[str(deviceName).lower()]:
+    for command in self.commands[self.setOrGet][str(deviceName).lower()]:
       listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
       listItem.setText(command)
 
@@ -115,6 +121,13 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui.lineEditArg4.setVisible(numOfArgs>3)
     self.ui.labelArg5.setVisible(numOfArgs>4)
     self.ui.lineEditArg5.setVisible(numOfArgs>4)
+
+
+  def radioToggled(self):
+    if self.ui.radioButtonSet.isChecked():
+      self.setOrGet = 'set'
+    else:
+      self.setOrGet = 'get'
 
 
   def findDevicesClicked(self):
@@ -170,27 +183,36 @@ class DeviceControl(QtGui.QMainWindow):
     so it can extract the arguments for each command. It also checks the rightDevice
     variable to see which device each command should work with. 
     '''
-    self.commands = {}
-    for command in os.listdir('gpib_commands'):
-      ffile = open('gpib_commands/'+command)
+    self.commands = {'set':{}, 'get':{}}
+    for command in glob.glob('gpib_commands/*.py'):
+      ffile = open(command)
       lines = ffile.readlines()
+      commandName = os.path.split(command)[1].split('.')[0]
       for line in lines:
+        #find the __init__ method to see what extra arguments all the commands need
         if 'def __init__(self,' == line.strip()[:18]:
-          commandName = command.split('.')[0]
+          #argDict is a dict of dicts keyed on command with value of an arg:default-value dict
           self.argDict[commandName] = {}
           for arg in line[line.find('(')+7:line.find(')')].split(',')[3:-1]:
             a,v = arg.split('=')
             a,v = a.strip(), v.strip()[1:-1]
             self.argDict[commandName][a] = v
 
+        #find the right device line and use it to build two command dicts (set and get commands)
+        #key is device name and value is list of commands that work with that device
         if 'self.rightDevice = [' == line.strip()[:20]:
-          deviceList = eval(line[line.find('['):])
+          deviceList = eval(line[line.find('['):]) #this is the rightDevice list
           for device in deviceList:
-            if device in self.commands:
-              self.commands[device].append(commandName)
-            else:
-              self.commands[device] = [commandName]
-
+            if 'set' in commandName[:3]: #if the command starts with set put it in self.commands['set']
+              if device in self.commands['set']:
+                self.commands['set'][device].append(commandName)
+              else:
+                self.commands['set'][device] = [commandName]
+            elif 'get' in commandName[:3]: #if the command starts with get put it in self.commands['get']
+              if device in self.commands['get']:
+                self.commands['get'][device].append(commandName)
+              else:
+                self.commands['get'][device] = [commandName]
   
 
 if __name__ == "__main__":
