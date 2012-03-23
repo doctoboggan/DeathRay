@@ -60,9 +60,11 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if type(self.setmode) is str: #setmode should only be a string type
+          if self.name_of_device == 'dso6032a':
 
-            if self.name_of_device == 'dso6032a':
+            # start configuration for "dso6032a".   [START]
+
+            if type(self.setmode) is str: #setmode should only be a string type
 
               if self.setmode not in self.modetype_for_dso: # for mode checking. very important to make sure mode 
                 print "chosen mode does not exist !!"     # For debug purpose #also do not accept empty strings
@@ -72,20 +74,21 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
                 return True
 
             else:
-              print  "you probably got the wrong device.. how did you get here?" #for debug purposes
-              return False, 'w'                                                                   #the user may add elif here if there exist another device that works with the command
-              
+              print "input mode is not a string!!"  # For debug purpose
+              return False, 's'
 
-          else:
-            print "input mode is not a string!!"  # For debug purpose
-            return False, 's'
+            # end of configuration for "dso6032a".  [END]
+
+          else:    #if we have another device, add elif argument here
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c'                                                                   
+
 
         else:
           print "The time-out is too short"   # For debug purpose
           return False, 'o'
 
       else: 
-
         print "timeout input is not acceptable"
         return False, 'q'
 
@@ -137,13 +140,6 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
 
 #example: "INST:SEL P25V" Select the +25V output
-# Note:   ---> 'o' means time-out is too short.
-#         ---> 's' means input setmode is not a string.
-#         ---> 'c' means wrong channel input. 
-#         ---> 'x' wrong name of device. 
-#         ---> 'w' wired error (something wrong with code)
-#         ---> 'z' out of range 
-#         ---> 'q' timeout input is not number.
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # check if input is negative or not for the negative or positive channels. 
 # we have another douple check in the GUI level (the user input)

@@ -58,37 +58,42 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
         if self.timeout >= 1000:      # hardcoded. Also, the number was choosen after several testing.
 
-          if type(self.trigmode) is str: #setmode should only be a string type
+          # start configuration for "dso6032a".   [START]
 
-            if self.name_of_device == 'dso6032a':
+          if self.name_of_device == 'dso6032a':
+
+            if type(self.trigmode) is str: #setmode should only be a string type
 
               if self.trigmode not in self.trigMode_for_dso: # for checking. very important to make sure trigger mode is valid
                 print "chosen trigger mode does not exist !!"     # For debug purpose #also do not accept empty strings
-                return False, 'trig mode input not exist'
+                return False, 'd'
               
               else:
                 return True
 
             else:
-              return False, 'wrong device' #for debug purposes
-                                                                                 #the user may add elif here if there exist another device that works with the command  
+              print "input trigger mode is not a string!!"  # For debug purpose
+              return False, 's'
 
-          else:
-            print "input trigger mode is not a string!!"  # For debug purpose
-            return False, 'trigmode input not string'
+            # End of "dso6023a" configuration.   [END]
+
+          else:   # You add new devices configuration here (by using "elif" function).
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c'
+                                                                                 #the user may add elif here if there exist another device that works with the command  
 
         else:
           print "The time-out is too short"   # For debug purpose
-          return False, 'time out input short'
+          return False, 'o'
 
       else: 
 
         print "timeout input is not acceptable"
-        return False, 'timeout input not float or string'
+        return False, 'q'
 
     else:
       print "the device is not in data base"    # For debug purpose
-      return False, 'device not exist'
+      return False, 'x'
   
 
 
@@ -144,7 +149,15 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 # The :TRIGger:MODE? query returns the current trigger mode. If the
 # :TIMebase:MODE is ROLL or XY, the query returns "NONE".
 # --------------------------------------
-
+# Note:   ---> 'o' means time-out is too short.
+#         ---> 'e' means empty string
+#         ---> 'x' wrong name of device. 
+#         ---> 'w' wired error (something wrong with code)
+#         ---> 'z' out of range 
+#         ---> 'q' timeout input is not number.
+#         ---> 's' the input type is not string.
+#         ---> 'n' the input can not be converted to int or float (depend)
+#         ---> 'd' The given input does not match the hardcode database.
 
 
 

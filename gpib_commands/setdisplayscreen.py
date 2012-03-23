@@ -54,20 +54,43 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
+      if self.time is not int or float:
 
-        if len(self.text) <= 12:
+        if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          return True
+          if self.text is str:    # Making sure that the input text is string to aviod issue in the SCPI command level.
+
+            if self.name_of_device == 'e3631a' or '34401a':
+
+              # Start configuration for 'e3631a' and '34401a'.     [START]
+
+              if len(self.text) <= 12:
+
+                return True
+
+              else:
+                print "The entered text is too long"    # For debug purpose
+                return False, 'z' 
+
+              # end of configuration for 'e3631a' and '34401a'.    [END]
+
+            else: #if we have another device, add elif argument here
+              print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+              return False, 'c'
+
+          else:
+
+            print "The input text is not string (can not be converted to string)."
+            return False, 's'
+
 
         else:
-          print "The entered text is too long"    # For debug purpose
-          return False, 't' 
-
+          print "The time-out is too short"   # For debug purpose
+          return False, 'o'
 
       else:
-        print "The time-out is too short"   # For debug purpose
-        return False, 'o'
+        print "timeout input is not acceptable"
+        return False, 'q'
 
     else:
       print "the device is not in data base"    # For debug purpose
@@ -88,7 +111,7 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
       
       if m[0] == 0:             #check if it times out.
 
-          print "Te text has been sent"
+          print "The text has been sent"
           return True
 
       else:
@@ -103,7 +126,6 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
 # Note: the string will be in the panel until the time out is over. 
 # Note:   ---> 'o' means time-out is too short.
 #         ---> 'e' means empty string
-#         ---> 't' means the input text is not 
 #         ---> 'x' wrong name of device. 
 # CcurrentDC.CcurrentDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # I am wondering what is different between -- self.disconnect() --- and --- self.disconnect --- ?

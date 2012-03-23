@@ -83,13 +83,16 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
               self.value = float(self.value)
 
+              # Start "e3631a" configuration. [START]
+
               if self.name_of_device == 'e3631a':
 
                 if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V']: # for channel checking. Wehave to do this with each and every channelly device!! (we can not accept unknow channel any more).
                   print "choosen channel does not exist !!"     # For debug purpose
-                  return False, 'c'
+                  return False, 'd'
+
                 else:
-                  # from here, we are entering characteristics of hpe3631a. [START]
+
                   if self.channel in ['p6v']:
 
                     if self.value <= 6.18 and self.value >= 0:
@@ -129,14 +132,13 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
                     print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "    #debug
                     return False, 'w'
 
-                  # End of characteristics of hpe3631a. [END]
+                  # End of characteristics of "e3631a". [END]
 
-              else:
-                if self.channel != '':
-                  print "The device does not have any channel. So, your input channel will be ignored."     # To remind the user about his/her mistake of entering channel, where the device does not have (for future devices). 
-                  return True
-                else:
-                  return True
+              else:     # # You add new devices configuration here (by using "elif" function).
+                
+                print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."     # To remind the user about his/her mistake of entering channel, where the device does not have (for future devices).
+                return False, 'c'
+
 
             except ValueError:
 
@@ -210,8 +212,6 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 #example: "INST:SEL P25V" Select the +25V output
 # Note:   ---> 'o' means time-out is too short.
 #         ---> 'e' means empty string
-#         ---> 'n' means input voltage is not number.
-#         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 #         ---> 'w' wired error (something wrong with code)
 #         ---> 'z' out of range 
@@ -219,6 +219,7 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 #         ---> 's' the input type is not string.
 #         ---> 'n' the input can not be converted to int or float (depend)
 #         ---> 'd' The given inut does not match the hardcode database.
+#         ---> 'c' missing configuration for accpeted device.
 # CvoltageDC.CvoltageDC('129.59.93.179', 'gpib0,22', 'hpe3631a').get()
 # check if input is negative or not for the negative or positive channels. 
 # we have another douple check in the GUI level (the user input)

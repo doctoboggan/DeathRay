@@ -58,26 +58,59 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 300:      # hardcoded. Also, the number was choosen after several testing.
+      if self.timeout is float or int:
 
-        if self.name_of_device == 'e3631a':
+        if self.timeout >= 300:      # hardcoded. Also, the number was choosen after several testing.
 
-          if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
-            print "choosen channel does not exist !!"     # For debug purpose
+          if self.name_of_device == 'e3631a':
+
+            # start configure "33631a".     [START]
+
+            if self.channel is str:
+
+              if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V']:      # cor channel checking. Wehave to do this with each and every channelly device!!
+                print "choosen channel does not exist !!"     # For debug purpose
+                return False, 'c'
+              else:
+                return True
+
+            else:
+              print "the input channel is not string."
+              return False, 's'
+
+            # End of characteristics of "e3631a". [END]
+
+          elif self.name_of_device == '34401a':
+
+            # start configure "34401a".     [START]
+
+            if self.channel is str:   # I check it to follow the rules !!.
+
+              if self.channel != '':
+                print " '34401a' device does not have channels.Your input channel will be ignored."
+                return True
+              else:
+                return True   # the right case for this device.
+
+
+            else:
+              print "the input channel is not string."
+              return False, 's'
+
+            # End of characteristics of "34401a". [END]
+
+
+          else:    #if we have another device, add elif argument here
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
             return False, 'c'
-          else:
-            return True
 
         else:
-          if self.channel != '':
-            print "The device does not have any channel. So, your input channel will be ignored."     # To remind thr user about his/her mistake of entering channel, where the device does not have. 
-            return True 
-          else:
-            return True
+          print "The time-out is too short"   # For debug purpose
+          return False, 'o'
 
       else:
-        print "The time-out is too short"   # For debug purpose
-        return False, 'o'
+        print "timeout input is not acceptable"
+        return False, 'q'
 
     else:
       print "the device is not in data base"    # For debug purpose

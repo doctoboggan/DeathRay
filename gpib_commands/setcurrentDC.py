@@ -28,7 +28,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", voltage = 0.5, channel='p25v', timeout = 1000): 
+  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", voltage = '0.5', channel='p25v', timeout = 1000): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=2000)
@@ -55,7 +55,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input
     self.rightDevice = ['e3631a']
-    self.channels_for_hpe3631a = ['P6V', 'p6v', 'P25V', 'p25v', 'N25V', 'n25v']
+    self.channels_for_e3631a = ['P6V', 'p6v', 'P25V', 'p25v', 'N25V', 'n25v']
     self.channel = channel.lower()    #lower case the input
     self.value = voltage
     self.timeout = timeout
@@ -82,70 +82,86 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
         if type(self.timeout) is int or float:
 
-          if type(self.value) is int or float:
+          if type(self.value) is str:
 
-            if self.name_of_device == 'e3631a':
+            try:    # making sure that the input is a number.
 
-              if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V', '']:      # cor channel checking. Wehave to do this with each and every channelly device!!
-                print "choosen channel does not exist !!"     # For debug purpose
-                return False, 'c'
-              else:
-                
-                # from here, we are entering characteristics of hpe3631a. [START]
-                if self.channel in ['p6v']:
+              self.value = float(self.value)
+            
+              if self.name_of_device == 'e3631a':
 
-                  if self.value <= 5.15 and self.value >= 0:
+                # start configure "e3631a".     [START]
 
-                    return True
+                if self.channel is str:
 
-                  else: 
+                  if self.channel not in self.channels_for_e3631a:      # cor channel checking. Wehave to do this with each and every channelly device!!
+                    print "choosen channel does not exist for e3631a !!"     # For debug purpose
+                    return False, 'c'
+                  else:
+                    
+                    if self.channel in ['p6v']:
 
-                    print "The imput DC voltage is not right (out of range)"    #debug
-                    return False, 'z'
+                      if self.value <= 5.15 and self.value >= 0:
 
-                elif self.channel in ['p25v']:
+                        return True
 
-                  if self.value <= 1.03 and self.value >= 0:
+                      else: 
 
-                    return True
+                        print "The imput DC voltage is not right (out of range)"    #debug
+                        return False, 'z'
 
-                  else: 
-                    print type(self.value)   #debug
-                    print self.value  #debug
-                    print "The imput DC voltage is not right (out of range)"    #debug
-                    return False, 'z'
+                    elif self.channel in ['p25v']:
 
-                elif self.channel in ['n25v']:
+                      if self.value <= 1.03 and self.value >= 0:
 
-                  if self.value <= 1.03 and self.value >= 0:
+                        return True
 
-                    return True
+                      else: 
+                        print type(self.value)   #debug
+                        print self.value  #debug
+                        print "The imput DC voltage is not right (out of range)"    #debug
+                        return False, 'z'
 
-                  else: 
+                    elif self.channel in ['n25v']:
 
-                    print "The imput DC voltage is not right (out of range)"    #debug
-                    return False, 'z'
+                      if self.value <= 1.03 and self.value >= 0:
+
+                        return True
+
+                      else: 
+
+                        print "The imput DC voltage is not right (out of range)"    #debug
+                        return False, 'z'
+
+                    else:   # the user can not be here because we considre all posiblities...!
+
+                      print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "    #debug
+                      return False, 'w'
 
                 else:
 
-                  print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "    #debug
-                  return False, 'w'
+                  print "the channel input is not string"
+                  return False, 's'
 
-                # End of characteristics of hpe3631a. [END]
+                  # End of characteristics of "e3631a". [END]
 
-            else:
-              if self.channel != '':
-                print "The device does not have any channel. So, your input channel will be ignored."     # To remind the user about his/her mistake of entering channel, where the device does not have (for future devices). 
-                return True
-              else:
-                return True
+              else:   #if we have another device, add elif argument here
+                print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+                return False, 'c'
+
+            except ValueError:
+
+              print "The voltagge input value is not number (can not be converted to number)."
+              return False, 'n'
 
           else:
-            print "The input voltage is not a number !!"  # For debug purpose
-            return False, 'n'
+            print "The input voltage type is not a string. I know the input is a number. However, it hasto be string type....sorry"  # For debug purpose
+            return False, 's'
 
-        print "timeout input is not acceptable"
-        return False, 'q'
+        else:
+
+          print "timeout input is not acceptable"
+          return False, 'q'
 
       else:
         print "The time-out is too short"   # For debug purpose
@@ -221,3 +237,4 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 #				"sync":"stream sync lost",
 #				"notconnected": "Device not connected"}
 #---------------------------------------
+

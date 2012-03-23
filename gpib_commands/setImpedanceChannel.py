@@ -65,45 +65,59 @@ fixed at ONEMeg (1 M).
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if type(self.channel) is str:
+          if self.name_of_device == 'dso6032a':
 
-            try: 
+            # start configuration for "dso6023a".  [START]
 
-              dump = int(self.channel)
+            if type(self.channel) is str:
 
-              if self.name_of_device == 'dso6032a':
+              try: # make sure the input is a number (in term of its value (not type).
+
+                dump = int(self.channel)      # I did not convert it because the data base contains strings (take a look at "self.typeChannel"). In case of different device, if a different device can the same command. However, the channels can not be number (ex: channel is "p25v") we have to check this with the configuration of the device.
 
                 if self.channel in self.typeChannel: # for channel checking. (we can not accept unknown channel any more).
+
+                  try:  # I should check if input is string, which is the dafult. 
+
+                    dump = str(self.impedance)
                   
-                  if self.impedance in self.typeImpedance:
-                    
-                    if self.impedance in self.ONEMegImpedance:
-                      self.impedance = "ONEM" #making sure impedance is standardized
-                      return True
-                    elif self.impedance in self.FiftyOhmImpedance:
+                    if self.impedance in self.typeImpedance:
+                      
+                      if self.impedance in self.ONEMegImpedance:
+                        self.impedance = "ONEM" #making sure impedance is standardized
+                        return True
+                      elif self.impedance in self.FiftyOhmImpedance:
                         self.impedance = "FIFT" #making sure impedance is standardized
                         return True
 
-                  else:
-                    return False, 'i' #impedance entered not valid. impedance should only be 1Meg or 50
+                    else:
+                      print "The input impadance does not match the data base."
+                      return False, 'd' #impedance entered not valid. impedance should only be 1Meg or 50
+
+                  except:
+  
+                    print " the input impedance is not string"
+                    return False, 's'
 
                 else:
-                  print "chosen channel does not exist !!"     # For debug purpose
+                  print "chosen channel does not exist for 'dso6032a' !!"     # For debug purpose
                                                                 ###Nadiah: if the user enters blank string channel, does that default to the previous channel/or channel 1?
-                  return False, 'c'
+                  return False, 'd'
 
-              else:
-                return False, "you dont have the right device" #if we have another device, add elif argument here
+              except ValueError:
 
-            except ValueError:
+                print "the input channel is not integer (can not be converted to a integer)!!"
+                return False, 'n'
 
-              print "the input is not integer (can not be converted to a integer)!!"
+            else:
+              print "The input channel is not string. I know it should not be string. However, the input number has to have string type... sorry"  # For debug purpose
+              return False, 's'
 
-              return False, 'n'
+          # End of "dso6023a" configuration.    [END]
 
-          else:
-            print "The input voltage is not string. I know it should not be string. However, the input number has to have string type... sorry"  # For debug purpose
-            return False, 's'
+          else:    #if we have another device, add elif argument here
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c'
 
         else:
           print "The time-out is too short"   # For debug purpose
@@ -171,8 +185,6 @@ ONEMeg (1 Mohm) and FIFTy (50ohm).
 
 # Note:   ---> 'o' means time-out is too short.
 #         ---> 'e' means empty string
-#         ---> 'n' means input voltage is not number.
-#         ---> 'c' means wrong channel input. 
 #         ---> 'x' wrong name of device. 
 #         ---> 'w' wired error (something wrong with code)
 #         ---> 'z' out of range 

@@ -25,10 +25,30 @@
 24) delete the generated files from setup afer uninstalling.  (100%) 
 25) There is bug in data_acq...
 26) adding layer to not show time out to the user by changing the time out when it happens. (try twice before changing) (in low level) (anas task)
-27) make all the modules accept string and add check method to make sure they are integer or float. (focus in the check method. you may have to layer one to check if the input string (if yes -->) second layer to check if the string input is int or float (depend in the requirement). Also, make sure if it only "int" or "float".   (30%)
+27) make all the modules accept string and add check method to make sure they are integer or float. (focus in the check method. you may have to layer one to check if the input string (if yes -->) second layer to check if the string input is int or float (depend in the requirement). Also, make sure if it only "int" or "float".   (30%):
+---> Done: 
+1) setvoltageDC   (new method)
+2) setTrigMode    (new method)
+3) setImpadnaceChannel  (new method)
+4) setdisplayscreen (new mwethod)
+5) setcurrentDC (new method)
+6) getvoltageDC (new method).
 28) in the developer manaul:
 --> only way to change timeout is via terminal or harcode (no way via GUI).
 --> modules are divided to "set" and "get"..... 
 --> adding input boxes in the GUI is going to hardcode. In the GUI api, there are five boxes by dafult. To add new box, you need hard code it.
 --> All inputs to the modules have to be string regadless of the situation. 
+--> the changable perimeters have to be with the configuration of the device (ex: channel can be number for one device but a string for another device) see "setcurrentDC" as an example.
 29) increase the time out for all modules to 2 seconds after Jack finish the referance method. 
+30) refrences are:   add them ihe developer and user manaul.
+# Note:   ---> 'o' means time-out is too short.
+#         ---> 'e' means empty string
+#         ---> 'x' wrong name of device. 
+#         ---> 'w' wired error (something wrong with code)
+#         ---> 'z' out of range 
+#         ---> 'q' timeout input is not number.
+#         ---> 's' the input type is not string.
+#         ---> 'n' the input can not be converted to int or float (depend)
+#         ---> 'd' The given inut does not match the hardcode database.
+#         ---> 'c' missing configuration for accpeted device.
+31)
