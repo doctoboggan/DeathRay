@@ -86,8 +86,8 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
             if self.channel is str:   # I check it to follow the rules !!.
 
-              if self.channel != '':
-                print " '34401a' device does not have channels.Your input channel will be ignored."
+              if self.channel != '':    # Even this device does not have channels, the module accept channel input for the other device. For that, I have considre something here for this device.
+                print " '34401a' device does not have channels. Your input channel will be ignored."
                 return True
               else:
                 return True   # the right case for this device.

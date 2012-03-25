@@ -32,13 +32,17 @@
 3) setImpadnaceChannel  (new method)
 4) setdisplayscreen (new mwethod)
 5) setcurrentDC (new method)
-6) getvoltageDC (new method).
+6) getvoltageDC (new method)
+7) getvoltageAC (new method)
+8) getTrigMode  (new method)
+--------------
 28) in the developer manaul:
 --> only way to change timeout is via terminal or harcode (no way via GUI).
 --> modules are divided to "set" and "get"..... 
 --> adding input boxes in the GUI is going to hardcode. In the GUI api, there are five boxes by dafult. To add new box, you need hard code it.
 --> All inputs to the modules have to be string regadless of the situation. 
 --> the changable perimeters have to be with the configuration of the device (ex: channel can be number for one device but a string for another device) see "setcurrentDC" as an example.
+--> Considre all the inputs for a moudle for all accpeted devices in the configuration section (check sction) regadless of the usability of that input (see "getvoltageDC" line#89 as an example).
 29) increase the time out for all modules to 2 seconds after Jack finish the referance method. 
 30) refrences are:   add them ihe developer and user manaul.
 # Note:   ---> 'o' means time-out is too short.
@@ -51,4 +55,5 @@
 #         ---> 'n' the input can not be converted to int or float (depend)
 #         ---> 'd' The given inut does not match the hardcode database.
 #         ---> 'c' missing configuration for accpeted device.
+------------------------
 31)

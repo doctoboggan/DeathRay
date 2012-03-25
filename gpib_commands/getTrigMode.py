@@ -55,12 +55,16 @@ class getTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
           if self.name_of_device == 'dso6032a':
+
+            # start configuration for "dso6032a".   [START]
+
             return True
            
+            # End of "dso6023a" configuration.   [END]
 
-          else:
-            print  "you probably got the wrong device" #for debug purposes
-            return False                                                                    #the user may add elif here if there exist another device that works with the comman
+          else:   # You add new devices configuration here (by using "elif" function).
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c'                                                                #the user may add elif here if there exist another device that works with the comman
 
         else:
           print "The time-out is too short"   # For debug purpose

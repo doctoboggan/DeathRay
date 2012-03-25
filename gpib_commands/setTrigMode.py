@@ -58,9 +58,9 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
         if self.timeout >= 1000:      # hardcoded. Also, the number was choosen after several testing.
 
-          # start configuration for "dso6032a".   [START]
-
           if self.name_of_device == 'dso6032a':
+
+            # start configuration for "dso6032a".   [START]
 
             if type(self.trigmode) is str: #setmode should only be a string type
 

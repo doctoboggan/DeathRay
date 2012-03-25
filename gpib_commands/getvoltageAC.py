@@ -50,19 +50,35 @@ class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 2000:      # hardcoded. Also, the number was choosen after several testing.
+      if self.timeout is float or int:
 
-        return True 
+        if self.timeout >= 2000:      # hardcoded. Also, the number was choosen after several testing.
+
+          if self.name_of_device == '34401a':
+
+              # start configuration for "34401a".   [START]
+
+            return True
+
+              # end configuration for "34401a".     [END]
+
+          else:    #if we have another device, add elif argument here
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c'
+
+        else:
+          print "The time-out is too short"   # For debug purpose
+          return False, 'o'
 
       else:
-        print "The time-out is too short"   # For debug purpose
-        return False, 'o'
+        print "timeout input is not acceptable"
+        return False, 'q'
 
     else:
       print "the device is not in data base"    # For debug purpose
       return False, 'x'
 
-
+    
 
 
 
