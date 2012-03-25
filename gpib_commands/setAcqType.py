@@ -125,7 +125,6 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
           else:
             print self.identify_vxi_11_error(set_mode[0])      #print the error information.
-            bp()
             return False, set_mode[0]  # It is going to return the error number. 
 
       
