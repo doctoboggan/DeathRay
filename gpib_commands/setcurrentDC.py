@@ -28,7 +28,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", voltage = '0.5', channel='p25v', timeout = 1000): 
+  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", voltage = '0.5', channel='p25v', timeout = 2000): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=2000)

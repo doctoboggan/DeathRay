@@ -24,8 +24,8 @@
 23) make sure that uninstall do not crash when the required files do not exsit.   (50%)
 24) delete the generated files from setup afer uninstalling.  (100%) 
 25) There is bug in data_acq...
-26) adding layer to not show time out to the user by changing the time out when it happens. (try twice before changing) (in low level) (anas task)
-27) make all the modules accept string and add check method to make sure they are integer or float. (focus in the check method. you may have to layer one to check if the input string (if yes -->) second layer to check if the string input is int or float (depend in the requirement). Also, make sure if it only "int" or "float".   (30%):
+26) adding layer to not show time out to the user by changing the time out when it happens. (try twice before changing) (in low level) (anas task)  (fixed without it)  (100?%)
+27) make all the modules accept string and add check method to make sure they are integer or float. (focus in the check method. you may have to layer one to check if the input string (if yes -->) second layer to check if the string input is int or float (depend in the requirement). Also, make sure if it only "int" or "float".   (100%):
 ---> Done: 
 1) setvoltageDC   (new method)
 2) setTrigMode    (new method)
@@ -43,6 +43,7 @@
 --> All inputs to the modules have to be string regadless of the situation. 
 --> the changable perimeters have to be with the configuration of the device (ex: channel can be number for one device but a string for another device) see "setcurrentDC" as an example.
 --> Considre all the inputs for a moudle for all accpeted devices in the configuration section (check sction) regadless of the usability of that input (see "getvoltageDC" line#89 as an example).
+--> "getIDN" is a special case module. It does not have configuration section (check) because it used under "Deviceattache" file. (ask anas for more infomation). (we can not the name of devices before using it)
 29) increase the time out for all modules to 2 seconds after Jack finish the referance method. 
 30) refrences are:   add them ihe developer and user manaul.
 # Note:   ---> 'o' means time-out is too short.
@@ -56,4 +57,4 @@
 #         ---> 'd' The given inut does not match the hardcode database.
 #         ---> 'c' missing configuration for accpeted device.
 ------------------------
-31)
+31) Ip protection layer. So that, if the user input wrong IP, the program should

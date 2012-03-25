@@ -13,7 +13,7 @@ class getAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
   This class sets the type of mode for the trigger
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", timeout = 500): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", timeout = 2000): 
     """
     Requiremnt: ( IPad, Gpibad, namdev, timeout=500)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'dso6032a', timeout=3000)
@@ -50,12 +50,17 @@ class getAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
           if self.name_of_device == 'dso6032a':
+
+            # start configuration for "dso6032a".   [START]
+
             return True
            
+            # End of "dso6023a" configuration.   [END]
+           
 
-          else:
-            print  "you probably got the wrong device.. how did you get here?" #for debug purposes
-            return False                                                                    #the user may add elif here if there exist another device that works with the comman
+          else:   # You add new devices configuration here (by using "elif" function).
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c'                      
 
         else:
           print "The time-out is too short"   # For debug purpose

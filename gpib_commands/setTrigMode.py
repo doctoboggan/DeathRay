@@ -18,7 +18,7 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
   This class sets the type of mode for the trigger
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", trigmode = "edge", timeout = 1000): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", trigmode = "edge", timeout = 2000): 
     """
     Requiremnt: ( IPad, Gpibad, namdev, trigmode= "edge", timeout=500)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)

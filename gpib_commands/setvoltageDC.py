@@ -26,7 +26,7 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", Input = '0.5' , channel='p25v', timeout = 500): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", Input = '0.5' , channel='p25v', timeout = 2000): 
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='p25v', timeout=500)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)

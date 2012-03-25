@@ -29,7 +29,7 @@ NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope mo
 fixed at ONEMeg (1 M).
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', impedance = "ONEM", timeout = 500):
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', impedance = "ONEM", timeout = 2000):
     '''
     DRmodules.getImpedanceChannel('129.59.93.179', 'gpib0,07', 'dso6032a', '1', timeout=500).do()
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', '3' , channel='n25v', timeout=3000)

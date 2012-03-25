@@ -15,7 +15,7 @@ class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   like this: (VPP, Freq)
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", timeout=1500): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", timeout=2000): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, channel='', timeout=2500)
@@ -47,13 +47,29 @@ class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 1300:      # hardcoded. Also, the number was choosen after several testing.
+      if type(self.timeout) is float or type(self.timeout) is int:
 
-        return True
+        if self.timeout >= 1300:      # hardcoded. Also, the number was choosen after several testing.
 
-      else:
-        print "The time-out is too short"   # For debug purpose
-        return False, 'o'
+          if self.name_of_device == '34401a':
+
+          # start configuration of '34401a'.    [START]
+
+            return True
+
+          # end configuration of '34401a'.    [END]
+
+          else:   # You add new devices configuration here (by using "elif" function).
+            print "The device does exist in the data base. However, it does not have any 'check' method configuration, which is not good thing. Anyway, we can not continuse until we have the check method for this device."
+            return False, 'c' 
+
+        else:
+          print "The time-out is too short"   # For debug purpose
+          return False, 'o'
+
+      else: 
+        print "timeout input is not acceptable"
+        return False, 'q'
 
     else:
       print "the device is not in data base"    # For debug purpose
