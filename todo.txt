@@ -58,3 +58,4 @@
 #         ---> 'c' missing configuration for accpeted device.
 ------------------------
 31) Ip protection layer. So that, if the user input wrong IP, the program should
+32) bug with setcurrentDC, if the current input value is out of range, the module run its self twice and freezing with out returning any thing.

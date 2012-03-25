@@ -28,7 +28,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", voltage = '0.5', channel='p25v', timeout = 2000): 
+  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", current = '0.5', channel='p25v', timeout = 2000): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=2000)
@@ -57,7 +57,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     self.rightDevice = ['e3631a']
     self.channels_for_e3631a = ['P6V', 'p6v', 'P25V', 'p25v', 'N25V', 'n25v']
     self.channel = channel.lower()    #lower case the input
-    self.value = voltage
+    self.value = current
     self.timeout = timeout
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
@@ -102,35 +102,36 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
                     if self.channel in ['p6v']:
 
                       if self.value <= 5.15 and self.value >= 0:
-
+                        
+                        self.value = str(self.value)
                         return True
-
+  
                       else: 
 
-                        print "The imput DC voltage is not right (out of range)"    #debug
+                        print "The imput DC current is not right (out of range)"    #debug
                         return False, 'z'
 
                     elif self.channel in ['p25v']:
 
                       if self.value <= 1.03 and self.value >= 0:
 
+                        self.value = str(self.value)
                         return True
 
                       else: 
-                        print type(self.value)   #debug
-                        print self.value  #debug
-                        print "The imput DC voltage is not right (out of range)"    #debug
+                        print "The imput DC current is not right (out of range)"    #debug
                         return False, 'z'
 
                     elif self.channel in ['n25v']:
 
                       if self.value <= 1.03 and self.value >= 0:
 
+                        self.value = str(self.value)
                         return True
 
                       else: 
 
-                        print "The imput DC voltage is not right (out of range)"    #debug
+                        print "The imput DC current is not right (out of range)"    #debug
                         return False, 'z'
 
                     else:   # the user can not be here because we considre all posiblities...!
@@ -151,11 +152,11 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
             except ValueError:
 
-              print "The voltagge input value is not number (can not be converted to number)."
+              print "The current input value is not number (can not be converted to number)."
               return False, 'n'
 
           else:
-            print "The input voltage type is not a string. I know the input is a number. However, it hasto be string type....sorry"  # For debug purpose
+            print "The input current type is not a string. I know the input is a number. However, it hasto be string type....sorry"  # For debug purpose
             return False, 's'
 
         else:
@@ -193,7 +194,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
       if self.name_of_device == 'e3631a':
 
         set_channel = self.transaction('INST:SEL '+self.channel)      #First step
-        set_currentDC = self.transaction('curr:lev:imm:ampl '+self.value)   #second step
+        set_currentDC = self.transaction('curr:lev:imm:ampl '+self.value)   #second step. I have to convert 
 
         if set_currentDC[0] == 0:             #check if it times out.
 
