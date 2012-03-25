@@ -24,12 +24,12 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev
+    self.name_of_device = namdev.lower()
     self.rightDevice = ['dso6032a']
-    self.Channel = Channel
+    self.Channel = channel
     self.horScale = horizontalScale
     self.verScale = verticalScale
-    self.verUnit = verticalUnit
+    self.verUnit = verticalUnit 
     self.ChannelType = ['1', '2']
     self.Units = ['mV', 'V']
     rise_on_error = 0
@@ -61,27 +61,28 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
               try: 
 
-                dump = int(self.channel)
+                dump = int(self.Channel)
 
                 if self.Channel in self.ChannelType: # for channel checking. (we can not accept unknown channel any more).
 
-                  if type(self.verUnits) is str:    # make the input for 'vertical Unit' is string.
+                  if type(self.verUnit) is str:    # make the input for 'vertical Unit' is string.
                   
-                    if self.verUnits in self.Units: # [mV or V]. Also,  
+                    if self.verUnit in self.Units: # [mV or V]. Also,  
 
-                      if self.VerScale is str: # to make sure the the type of input is string. Also, vertical Scale is units per division in vertical scale in NR3 format(float) #####vertical ends here
+                      if type(self.verScale) is str: # to make sure the the type of input is string. Also, vertical Scale is units per division in vertical scale in NR3 format(float) #####vertical ends here
 
                         try: 
 
-                          self.VerScale = int(self.VerScale)
+                          self.verScale = int(self.verScale)
             
-                          if self.horScale is str: 
+                          if type(self.horScale) is str: 
 
                             try:
 
                               self.horScale = int(self.horScale)
 
                               if self.horScale <= 50 and self.horScale >= (50*10^-9): #50 ps to 50s
+                                self.horScale = str(self.horScale)    # I need to convert it back to work with SCPI command.
                                 return True
 
                               else:
