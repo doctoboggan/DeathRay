@@ -54,7 +54,7 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
     """
     if self.name_of_device in self.rightDevice:
 
-      if type(self.timeout) is int or float:
+      if type(self.timeout) is int or type(self.timeout) is  float:
 
         if self.timeout >= 1000:      # hardcoded. Also, the number was choosen after several testing.
 

@@ -58,7 +58,7 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
-          if self.text is str:    # Making sure that the input text is string to aviod issue in the SCPI command level.
+          if type(self.text) is str:    # Making sure that the input text is string to aviod issue in the SCPI command level.
 
             if self.name_of_device == 'e3631a' or '34401a':
 

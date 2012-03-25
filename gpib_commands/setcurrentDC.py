@@ -80,7 +80,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       if self.timeout >= 1000:      # hardcoded. Also, the number was choosen after several testing.
 
-        if type(self.timeout) is int or float:
+        if type(self.timeout) is int or type(self.timeout) is float:
 
           if type(self.value) is str:
 
@@ -92,7 +92,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
                 # start configure "e3631a".     [START]
 
-                if self.channel is str:
+                if type(self.channel) is str:
 
                   if self.channel not in self.channels_for_e3631a:      # cor channel checking. Wehave to do this with each and every channelly device!!
                     print "choosen channel does not exist for e3631a !!"     # For debug purpose

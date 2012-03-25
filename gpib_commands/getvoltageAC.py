@@ -50,7 +50,7 @@ class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout is float or int:
+      if type(self.timeout) is float or type(self.timeout) is int:
 
         if self.timeout >= 2000:      # hardcoded. Also, the number was choosen after several testing.
 
