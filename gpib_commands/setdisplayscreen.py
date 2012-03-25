@@ -19,7 +19,7 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
 
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device" , text_here='text here', timeout = 2000):  
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device" , text_here='text here', Ctimeout = '2000', timeout = 2000):  
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=500)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', 0.5 , channel='P25v', timeout=3000)
@@ -40,12 +40,13 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev
+    self.name_of_device = namdev.lower()
     self.text = text_here
     self.timeout = timeout
     self.rightDevice = ['e3631a','34401a']
     rise_on_error = 0
-    data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
+    self.Ctimeout = int(Ctimeout)
+    data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=self.Ctimeout,device_name=namdev)  #here we are feeding the data_acquisition library
 
   def check(self):
     """
@@ -54,19 +55,19 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.time is not int or float:
+      if type(self.timeout) is int or type(self.timeout) is float :
 
         if self.timeout >= 500:      # hardcoded. Also, the number was choosen after several testing.
 
           if type(self.text) is str:    # Making sure that the input text is string to aviod issue in the SCPI command level.
 
-            if self.name_of_device == 'e3631a' or '34401a':
+            if self.name_of_device == 'e3631a' or self.name_of_device == '34401a':
 
               # Start configuration for 'e3631a' and '34401a'.     [START]
 
               if len(self.text) <= 12:
 
-                return True
+                return True 
 
               else:
                 print "The entered text is too long"    # For debug purpose
