@@ -39,7 +39,7 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.listWidgetDevices, QtCore.SIGNAL('itemSelectionChanged()'), self.deviceSelected)
     self.connect(self.ui.listWidgetCommands, QtCore.SIGNAL('itemSelectionChanged()'), self.commandSelected)
     self.connect(self.ui.listWidgetSavedCommands, QtCore.SIGNAL('itemSelectionChanged()'),
-        self.saveCommandSelected)
+        self.savedCommandSelected)
     #buttons
     self.connect(self.ui.pushButtonExecute, QtCore.SIGNAL('clicked()'), self.getClicked)
     self.connect(self.ui.pushButtonFindDevices, QtCore.SIGNAL('clicked()'), self.findDevicesClicked)
@@ -91,11 +91,14 @@ class DeviceControl(QtGui.QMainWindow):
       listItem.setText(command)
 
   
-  def updateSavedCommands(self, text):
-    '''Draw the saved command to the saved commands list widget
+  def updateSavedCommands(self):
+    '''Draw the saved commands to the saved commands list widget
     '''
-    listItem = QtGui.QListWidgetItem(self.ui.listWidgetSavedCommands)
-    listItem.setText(text)
+    self.ui.listWidgetSavedCommands.clear()
+    for command, args, kwargs in self.savedCommands:
+      listItem = QtGui.QListWidgetItem(self.ui.listWidgetSavedCommands)
+      text = str(args[2])+' -> '+str(command) + str(kwargs)
+      listItem.setText(text)
 
 
   def showArgBoxes(self, numOfArgs):
@@ -146,11 +149,13 @@ class DeviceControl(QtGui.QMainWindow):
     command, args, kwargs = self.returnCurrentCommand()
     self.savedCommands.append((command, args, kwargs))
 
-    text = str(args[2])+' -> '+str(command) + str(kwargs)
-    self.updateSavedCommands(text)
+    self.updateSavedCommands()
 
   def deleteClicked(self):
-    pass
+    item = self.ui.listWidgetSavedCommands.currentItem()
+    index = int(self.ui.listWidgetSavedCommands.indexFromItem(item).row())
+    del self.savedCommands[index]
+    self.updateSavedCommands()
 
 
   def clearClicked(self):
@@ -187,7 +192,7 @@ class DeviceControl(QtGui.QMainWindow):
     args = self.argDict[commandName].keys()
     values = self.argDict[commandName].values()
     numOfArgs = len(args)
-    self.numOfArgs = numOfArgs #save it so other methods know many args are displayed.
+    self.numOfArgs = numOfArgs #save it so other methods know how many args are displayed.
     
     self.showArgBoxes(numOfArgs)
 
@@ -208,8 +213,8 @@ class DeviceControl(QtGui.QMainWindow):
       self.ui.lineEditArg5.setText(values[4])
 
 
-  def saveCommandSelected(self):
-    pass
+  def savedCommandSelected(self):
+    self.ui.pushButtonDelete.setEnabled(True)
 
 
 
