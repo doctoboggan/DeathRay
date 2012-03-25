@@ -34,7 +34,7 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev
+    self.name_of_device = namdev.lower()
     self.trigmode = trigmode.lower() 
     self.rightDevice = ['dso6032a']
     self.trigMode_for_dso = ['edge', 'pattern', 'can', 'duration', 'i2s', 'iic', 'lin', 'm1553', 'sequence', 'spi', 'tv', 'uart', 'usb', 'flexray', 'glitch', 'eburst', 'glit', 'patt', 'dur', 'ebur', 'setq', 'flex']  

@@ -89,7 +89,7 @@ class getAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
       if self.name_of_device == 'dso6032a':
 
-          trig_mode = self.transaction('ACQ:TYPE?')
+          acq_type = self.transaction('ACQ:TYPE?')
 
           if acq_type[0] == 0:             #check if it times out.
 
