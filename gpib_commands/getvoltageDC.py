@@ -58,7 +58,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout is float or int:
+      if type(self.timeout) is float or type(self.timeout) is int:
 
         if self.timeout >= 300:      # hardcoded. Also, the number was choosen after several testing.
 
@@ -66,7 +66,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
             # start configure "33631a".     [START]
 
-            if self.channel is str:
+            if type(self.channel) is str:
 
               if self.channel not in ['p6v', 'P6V', 'p25v', 'P25V', 'n25v', 'N25V']:      # cor channel checking. Wehave to do this with each and every channelly device!!
                 print "choosen channel does not exist !!"     # For debug purpose
@@ -84,7 +84,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
             # start configure "34401a".     [START]
 
-            if self.channel is str:   # I check it to follow the rules !!.
+            if type(self.channel) is str:   # I check it to follow the rules !!.
 
               if self.channel != '':    # Even this device does not have channels, the module accept channel input for the other device. For that, I have considre something here for this device.
                 print " '34401a' device does not have channels. Your input channel will be ignored."
