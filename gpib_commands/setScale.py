@@ -19,7 +19,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     '''
     please enter information in this format
     (IP address, GPIB address, Channel {1|2|3|4}, vertical scale: units perdivision, vertical units {V, mV}, horizontalScale: <scale_value> ::= 500 ps through 50 s)
-    def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500)
+     __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', verticalScale = 10 , verticalUnit = 'mV' , horizontalScale = 1, timeout = 500)
     '''
 
     self.ip_id = IPad
