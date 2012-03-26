@@ -14,7 +14,7 @@
 15) show the user some animations while the software is runnig (not idle)(ex: scanning, ...)
 16) catch and fix timeout errors on module level
 17) reorganize directory structure    (100%)
-18) try the Finderlist method to get devices list. (optional)
+18) try the Finderlist method to get devices list. (optional) (100%)
 19)Weelcome page notes:
 --->  The IP box in welcome page only accept IPv4. I do not know if we should care about it. 
 ---> verify is not accurate (it will not if thereis server or not. But, it will not know if it is the right one). 
@@ -62,4 +62,5 @@
 31) Ip protection layer. So that, if the user input wrong IP, the program should
 32) bug with setcurrentDC, if the current input value is out of range, the module run its self twice and freezing with out returning any thing.
 33) ask the guys if they want to control the current ?
-34) change the "false,15". Also, think about something else
+34) change the "false,15". Also, think about something else (100%)
+35) fic setscale
