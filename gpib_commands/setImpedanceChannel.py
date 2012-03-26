@@ -37,7 +37,7 @@ fixed at ONEMeg (1 M).
 
     self.ip_id = IPad
     self.gpib_id = Gpibad
-    self.name_of_device = namdev
+    self.name_of_device = namdev.lower()
     self.rightDevice = ['dso6032a']
     self.channel = channel
     self.impedance = impedance.lower()
@@ -158,9 +158,7 @@ ONEMeg (1 Mohm) and FIFTy (50ohm).
         # this line's purpose is if we want to add another device. 
 
           
-          impedance_channel = self.transaction('CHAN'+self.channel+':IMP '+self.impedance)   
-
-          print "the impedance is "+impedance_channel[2]    # For debug reasons. #not sure what this returns
+          impedance_channel = self.write('CHAN'+self.channel+':IMP '+self.impedance)   
 
           if impedance_channel[0] == 0:             #check if it times out.
 

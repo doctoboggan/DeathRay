@@ -174,9 +174,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
         # this line's purpose is if we want to add another device. 
 
           
-          horizontal = self.transaction('TIM:SCAL '+self.horScale)   
-
-          print "the horizontal scale"+horizontal[2]    # For debug reasons. 
+          horizontal = self.write('TIM:SCAL '+self.horScale)   
 
           if horizontal[0] == 0:             #check if it times out.
 
@@ -185,10 +183,8 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
           
             
-            vertical = self.transaction('CHAN'+self.Channel+':SCAL '+self.verScale+'['+self.verUnit+']')    # to Nadiah: should we put the SCPI command here?
+            vertical = self.write('CHAN'+self.Channel+':SCAL '+self.verScale+'['+self.verUnit+']')    # to Nadiah: should we put the SCPI command here?
             
-            print "the vertical scale"+vertical[2]    # For debug reasons. 
-
             if vertical[0] == 0:             #check if it times out.
 
               print "It works !!"               # For debug reasons. 
