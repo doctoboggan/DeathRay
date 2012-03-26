@@ -1,38 +1,38 @@
-from setScale import setScale
-from saveFileWaveform import saveFileWaveform
 from getAcqType import getAcqType
+from getcommand import getcommand
+from getcurrentAC import getcurrentAC
 from getcurrentDC import getcurrentDC
+from getIDN import getIDN
+from getImpedanceChannel import getImpedanceChannel
+from getTrigMode import getTrigMode
+from getvoltageAC import getvoltageAC
+from getvoltageDC import getvoltageDC
+from saveFileWaveform import saveFileWaveform
+from setAcqType import setAcqType
+from setcommand import setcommand
 from setcurrentDC import setcurrentDC
 from setdisplayscreen import setdisplayscreen
 from setImpedanceChannel import setImpedanceChannel
-from getTrigMode import getTrigMode
-from getIDN import getIDN
-from setAcqType import setAcqType
-from setvoltageDC import setvoltageDC
-from getcommand import getcommand
-from getImpedanceChannel import getImpedanceChannel
-from setcommand import setcommand
+from setScale import setScale
 from setTrigMode import setTrigMode
-from getcurrentAC import getcurrentAC
-from getvoltageDC import getvoltageDC
-from getvoltageAC import getvoltageAC
+from setvoltageDC import setvoltageDC
 command = {
-  'setScale': setScale,
-  'saveFileWaveform': saveFileWaveform,
   'getAcqType': getAcqType,
+  'getcommand': getcommand,
+  'getcurrentAC': getcurrentAC,
   'getcurrentDC': getcurrentDC,
+  'getIDN': getIDN,
+  'getImpedanceChannel': getImpedanceChannel,
+  'getTrigMode': getTrigMode,
+  'getvoltageAC': getvoltageAC,
+  'getvoltageDC': getvoltageDC,
+  'saveFileWaveform': saveFileWaveform,
+  'setAcqType': setAcqType,
+  'setcommand': setcommand,
   'setcurrentDC': setcurrentDC,
   'setdisplayscreen': setdisplayscreen,
   'setImpedanceChannel': setImpedanceChannel,
-  'getTrigMode': getTrigMode,
-  'getIDN': getIDN,
-  'setAcqType': setAcqType,
-  'setvoltageDC': setvoltageDC,
-  'getcommand': getcommand,
-  'getImpedanceChannel': getImpedanceChannel,
-  'setcommand': setcommand,
+  'setScale': setScale,
   'setTrigMode': setTrigMode,
-  'getcurrentAC': getcurrentAC,
-  'getvoltageDC': getvoltageDC,
-  'getvoltageAC': getvoltageAC,
+  'setvoltageDC': setvoltageDC,
 }

@@ -29,6 +29,7 @@ class DeviceControl(QtGui.QMainWindow):
     #instance variables
     self.argDict = {}
     self.savedCommands = []
+    self.usedCommands = []
     self.commands = {'set':{}, 'get':{}}
     self.setOrGet = 'set'
 
@@ -140,8 +141,12 @@ class DeviceControl(QtGui.QMainWindow):
     '''
     command, args, kwargs = self.returnCurrentCommand()
     commandObject = gpib_commands.command[command](*args, **kwargs)
+    if commandObject not in self.usedCommands:
+      self.usedCommands.append(commandObject)
+      result = str(self.usedCommands[-1].do())
+    else:
+      result = str(self.usedCommands[self.usedCommands.index(commandObject)].do())
 
-    result = str(commandObject.do())
     self.ui.lineEditResult.setText(result)
 
 
