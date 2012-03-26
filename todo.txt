@@ -44,6 +44,7 @@
 --> the changable perimeters have to be with the configuration of the device (ex: channel can be number for one device but a string for another device) see "setcurrentDC" as an example.
 --> Considre all the inputs for a moudle for all accpeted devices in the configuration section (check sction) regadless of the usability of that input (see "getvoltageDC" line#89 as an example).
 --> "getIDN" is a special case module. It does not have configuration section (check) because it used under "Deviceattache" file. (ask anas for more infomation). (we can not the name of devices before using it)
+--> The data_acq... library has __init__ file. Make sure that the file import "vx_11" and "gpib.." files when update the the library.
 29) increase the time out for all modules to 2 seconds after Jack finish the referance method. 
 30) refrences are:   add them ihe developer and user manaul.
 # Note:   ---> 'o' means time-out is too short.
