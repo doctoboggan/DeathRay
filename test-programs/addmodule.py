@@ -7,7 +7,7 @@ import datetime
 
 class add():
 
-  def __init__(self, nameofnewmdoule, module_name = '', module_person = '', module_goal = '', module_device_one = '', module_device_two = '', module_device_three = '', module_device_four = '', module_device_five = '', module_device_one_scpi = '', module_device_two_scpi = '', module_device_three_scpi = '', module_device_four_scpi = '', module_device_five_scpi == '', module_result = '', class_info = '', init_info = '', check_info = '', do_info = ''):
+  def __init__(self, checkk = True , nameofnewmdoule, module_name = '', module_person = '', module_goal = '', module_device_one = '', module_device_two = '', module_device_three = '', module_device_four = '', module_device_five = '', module_device_one_scpi = '', module_device_two_scpi = '', module_device_three_scpi = '', module_device_four_scpi = '', module_device_five_scpi == '', module_result = '', class_info = '', init_info = '', check_info = '', do_info = ''):
 
     self.name = nameofnewmdoule
     self.replace_dic = {}
@@ -16,6 +16,7 @@ class add():
     self.reading = None
     self.listing_scpi_inputs = ['0','0','0','0','0']  # Assume all scpi commands doe not required any extra stuff (0 - not required, 1 - does required)
     self.inputs = []
+    self.getset = checkk    # here, we are going to know if it is "set" or "get"
     self.a = module_name
     self.b = module_person
     self.c = module_goal
@@ -54,6 +55,7 @@ class add():
     self.listing_scpi_inputs[0] = '1'
     self.inputs[0] = self.i.split()[1]
   except IndexError:
+    pass
 
   
   try:

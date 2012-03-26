@@ -184,11 +184,11 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
         # we can add a new check for making sure the psoitive nad negative values. 
 
-          set_channel = self.transaction('INST:SEL '+self.channel)      #First step
+          set_channel = self.write('INST:SEL '+self.channel)      #First step
           interger_value = str(self.value)      #convert to string
-          set_voltageDC = self.transaction('volt:lev:imm:ampl '+interger_value)   #second step
+          set_voltageDC = self.write('volt:lev:imm:ampl '+interger_value)   #second step
 
-          print "DC voltage is "+set_voltageDC[2]    # For debug reasons.
+          print "DC voltage is "+str(set_voltageDC)    # For debug reasons.
 
           if set_voltageDC[0] == 0:             #check if it times out.
 

@@ -113,9 +113,9 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
       if self.name_of_device == 'dso6032a':
 
-          trig_mode = self.transaction('TRIG:MODE '+self.trigmode)
+          trig_mode = self.write('TRIG:MODE '+self.trigmode)
 
-          print "the trigger mode selected is "+trig_mode[2]    # For debug reasons.#######Nadiah: not really sure what this will return since this is not a query?
+          print "the trigger mode selected is "+str(trig_mode)    # For debug reasons.#######Nadiah: not really sure what this will return since this is not a query?
 
           if trig_mode[0] == 0:             #check if it times out.
 

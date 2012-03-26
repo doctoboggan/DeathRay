@@ -28,7 +28,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input 
-    self.rightDevice = [module_device_one, module_device_two, module_device_three, module_device_four, module_device_five]
+    self.rightDevice = [ module_device_one , module_device_two , module_device_three , module_device_four, module_device_five ]
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
 
@@ -156,7 +156,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
         if result[0] == 0:             #check if it times out.
 
-          return float(result[2])
+          return result[2]
 
         else:
 
@@ -170,7 +170,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
         if result[0] == 0:             #check if it times out.
 
-          return float(result[2])
+          return result[2]
 
         else:
 
