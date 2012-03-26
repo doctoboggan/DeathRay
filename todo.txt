@@ -63,4 +63,5 @@
 32) bug with setcurrentDC, if the current input value is out of range, the module run its self twice and freezing with out returning any thing.
 33) ask the guys if they want to control the current ?
 34) change the "false,15". Also, think about something else (100%)
-35) fic setscale
+35) fix setscale
+36) git ride of doc of (def __init__..)
