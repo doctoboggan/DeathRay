@@ -147,7 +147,8 @@ class DeviceControl(QtGui.QMainWindow):
 
   def saveClicked(self):
     command, args, kwargs = self.returnCurrentCommand()
-    self.savedCommands.append((command, args, kwargs))
+    if (command, args, kwargs) not in self.savedCommands:
+      self.savedCommands.append((command, args, kwargs))
 
     self.updateSavedCommands()
 
