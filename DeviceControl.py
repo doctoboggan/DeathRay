@@ -147,6 +147,7 @@ class DeviceControl(QtGui.QMainWindow):
     else:
       result = str(self.usedCommands[self.usedCommands.index(commandObject)].do())
 
+    print len(self.usedCommands)
     self.ui.lineEditResult.setText(result)
 
 
@@ -245,6 +246,8 @@ class DeviceControl(QtGui.QMainWindow):
           #argDict is a dict of dicts keyed on command with value of an arg:default-value dict
           self.argDict[commandName] = {}
           for arg in line[line.find('(')+7:line.find(')')].split(',')[3:-1]:
+            if commandName == 'setScale':
+              bp()
             a,v = arg.split('=')
             a,v = a.strip(), v.strip()[1:-1]
             self.argDict[commandName][a] = v

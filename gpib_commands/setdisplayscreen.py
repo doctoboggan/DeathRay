@@ -108,7 +108,7 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
 
       print "PASS check test"
       
-      m = self.transaction('disp:text "'+self.text+'"')
+      m = self.write('disp:text "'+self.text+'"')
       
       if m[0] == 0:             #check if it times out.
 

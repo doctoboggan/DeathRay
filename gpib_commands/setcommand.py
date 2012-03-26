@@ -33,9 +33,9 @@ class setcommand(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     '''
     --> Here is the SCPI command. 
     '''
-    result = self.transaction(self.cmdd)
+    result = self.write(self.cmdd)
 
     if result[0] == 0:             
-      return result[2]
+      return True
     else:
-      return False, result[0]   
+      return False, result[0]

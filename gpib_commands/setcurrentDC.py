@@ -193,8 +193,8 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       if self.name_of_device == 'e3631a':
 
-        set_channel = self.transaction('INST:SEL '+self.channel)      #First step
-        set_currentDC = self.transaction('curr:lev:imm:ampl '+self.value)   #second step. I have to convert 
+        set_channel = self.write('INST:SEL '+self.channel)      #First step
+        set_currentDC = self.write('curr:lev:imm:ampl '+self.value)   #second step. I have to convert 
 
         if set_currentDC[0] == 0:             #check if it times out.
 

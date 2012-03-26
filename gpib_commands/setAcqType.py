@@ -114,9 +114,7 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
       if self.name_of_device == 'dso6032a':
 
-          set_mode = self.transaction('ACQ:TYPE '+self.setmode)
-
-          print "the mode selected is "+set_mode[2]    # For debug reasons. #######Nadiah: not really sure what this will return since this is not a query?
+          set_mode = self.write('ACQ:TYPE '+self.setmode)
 
           if set_mode[0] == 0:             #check if it times out.
 
