@@ -23,7 +23,7 @@ class setcommand(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input 
-    self.command = command.lower()          #lower case the input
+    self.cmdd = command.lower()          #lower case the input
     self.rightDevice = ['34401a', 'e3631a','dso6032a']
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
@@ -33,7 +33,7 @@ class setcommand(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     '''
     --> Here is the SCPI command. 
     '''
-    result = self.transaction(self.command)
+    result = self.transaction(self.cmdd)
 
     if result[0] == 0:             
       return result[2]
