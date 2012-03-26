@@ -9,7 +9,9 @@ from getTrigMode import getTrigMode
 from getIDN import getIDN
 from setAcqType import setAcqType
 from setvoltageDC import setvoltageDC
+from getcommand import getcommand
 from getImpedanceChannel import getImpedanceChannel
+from setcommand import setcommand
 from setTrigMode import setTrigMode
 from getcurrentAC import getcurrentAC
 from getvoltageDC import getvoltageDC
@@ -26,7 +28,9 @@ command = {
   'getIDN': getIDN,
   'setAcqType': setAcqType,
   'setvoltageDC': setvoltageDC,
+  'getcommand': getcommand,
   'getImpedanceChannel': getImpedanceChannel,
+  'setcommand': setcommand,
   'setTrigMode': setTrigMode,
   'getcurrentAC': getcurrentAC,
   'getvoltageDC': getvoltageDC,
