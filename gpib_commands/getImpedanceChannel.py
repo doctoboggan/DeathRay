@@ -23,7 +23,12 @@ NOTE The analog channel input impedance of the 100 MHz bandwidth oscilloscope mo
 fixed at ONEMeg (1 M).
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', timeout = 500):
+  def __init__(self, IPad = '127.0.0.1', Gpibad = "inst0", namdev = "Network Device", channel = '1', timeout = 2000):
+    '''
+    Requirement: (ip address, Gpib address, name of device, channel, timeout)
+    Ex: ('129.59.93.179','gpib0,10', 'dso6032a', '1', 1000)
+    '''
+
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()
