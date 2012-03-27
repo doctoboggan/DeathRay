@@ -1,7 +1,7 @@
 # This file for checking __init__ file
 # not done yet.
 
-from DRscripts import goodlist
+from utils import goodlist
 
 class checkinit(goodlist.goodlist):   #do not forget, if you are going to change name of class, change it too in the getcommand.py file. !!
 

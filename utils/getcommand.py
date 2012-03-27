@@ -1,7 +1,7 @@
 # Here, we should be able to get the right commands for given device
 
-from DRscripts import checkinit
-import DRmodules 
+from utils import checkinit
+import gpib_commands
 
 class getcommand(checkinit.checkinit):
 

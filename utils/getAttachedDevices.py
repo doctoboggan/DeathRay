@@ -4,7 +4,7 @@
 # Goal: Return all devices attached to gpib gateway specified by IP
 # Result: Two lists (attached device name list, attached device gpibID list)
  
-from DRmodules import getIDN
+from gpib_commands import getIDN
 
 from pdb import set_trace as bp #DEBUGING
 
