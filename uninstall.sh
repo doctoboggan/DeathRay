@@ -40,8 +40,8 @@ then
   rm build_lib_pythonlabtools.txt
 else
   echo -e "\e[00;31mWarning: \e[00;33mbuild_lib_pythonlabtools file is missing. The uninstallation is not totally complete. \nTo get this file, you should make a fresh install by running setup.sh with permission.\e[00m"
-
 fi  
+rm -r build/
 echo -e "\e[00;32mUninstallation is done. Take care of warning signs if any. \e[00m"
 
 
