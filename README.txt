@@ -5,7 +5,8 @@ Python
 PyQt
 PyQwt
 Numpy
-data_acquisition
+data_acquisition  (installed with program)
+
 
 Authors are:
 Nadiah Husseini Zainol Abidin
@@ -13,6 +14,4 @@ Anas Alfuntukh
 Jack Minardi
 
 Installation: 
- --> install setup1.py and setup2.py files as following:    (in the future, we may put them in one file).
-"sudo python setup1.py install"
-"sudo python setup2.py install"
+ --> just install "setup.sh"

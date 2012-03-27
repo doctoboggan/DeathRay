@@ -8,4 +8,5 @@
 *.txt~
 *.swp~
 build_*
+*.sh~
 build/
