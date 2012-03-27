@@ -7,7 +7,7 @@ Created on Mar 12, 2012
 from distutils.core import setup
 
 setup(name='DeathRay',
-      version='0.20',
+      version='0.25',
       description='interface library',
       author='Jack Minardi, Nadiah Husseini Zainol Abidin and Anas Khalid Alfuntukh',
       author_email='jack@minardi.org, nadiah.husseini.zainol.abidin@vanderbilt.edu and anas.alfuntukh@vanderbilt.edu',

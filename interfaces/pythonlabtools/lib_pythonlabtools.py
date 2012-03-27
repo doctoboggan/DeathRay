@@ -12,8 +12,8 @@ setup(name='pythonlabtools',
       description='Wrapper classes for control of laboratory equipment via GPIB and VXI-11',
       author='Marcus Mendenhall',
       author_email='marcus.h.mendenhall@Vanderbilt.Edu',
-      packages=['analysis','data_acquisition'],
-      package_dir={'analysis': './interfaces/pythonlabtools/analysis', 'data_acquisition': './interfaces/pythonlabtools/data_acquisition'},
+      packages=['data_acquisition'],
+      package_dir={ 'data_acquisition': './interfaces/pythonlabtools/data_acquisition'},
       requires=['numeric'],
-      provides=['analysis','data_acquisition']
+      provides=['data_acquisition']
      )
