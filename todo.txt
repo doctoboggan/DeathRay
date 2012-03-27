@@ -21,7 +21,7 @@
 20) gix the issue with lib_m path (not a bug) (optional).
 21) build a setup and uninstall files for the whole program (Also make libraries of the program).  (100%)
 22) build a gui for setup and uninstall files (wizard.Also, include have shortcut and some other stuff). (optional) 
-23) make sure that uninstall do not crash when the required files do not exsit.   (50%)
+23) make sure that uninstall do not crash when the required files do not exsit.   (100%)
 24) delete the generated files from setup afer uninstalling.  (100%) 
 25) There is bug in data_acq...
 26) adding layer to not show time out to the user by changing the time out when it happens. (try twice before changing) (in low level) (anas task)  (fixed without it)  (100?%)
