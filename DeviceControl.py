@@ -32,6 +32,7 @@ class DeviceControl(QtGui.QMainWindow):
     self.usedCommands = []
     self.commands = {'set':{}, 'get':{}}
     self.setOrGet = 'set'
+    self.plotLabels = [self.ui.labelPlot1, self.ui.labelPlot2, self.ui.labelPlot3, self.ui.labelPlot4]
 
   def initUI(self):
     #Connect the signals and slots
@@ -44,11 +45,15 @@ class DeviceControl(QtGui.QMainWindow):
     #buttons
     self.connect(self.ui.pushButtonExecute, QtCore.SIGNAL('clicked()'), self.getClicked)
     self.connect(self.ui.pushButtonFindDevices, QtCore.SIGNAL('clicked()'), self.findDevicesClicked)
-    self.connect(self.ui.radioButtonSet, QtCore.SIGNAL('clicked()'), self.radioToggled)
-    self.connect(self.ui.radioButtonGet, QtCore.SIGNAL('clicked()'), self.radioToggled)
     self.connect(self.ui.pushButtonSave, QtCore.SIGNAL('clicked()'), self.saveClicked)
     self.connect(self.ui.pushButtonDelete, QtCore.SIGNAL('clicked()'), self.deleteClicked)
     self.connect(self.ui.pushButtonClear, QtCore.SIGNAL('clicked()'), self.clearClicked)
+    self.connect(self.ui.pushButtonPlot1, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(0))
+    self.connect(self.ui.pushButtonPlot2, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(1))
+    self.connect(self.ui.pushButtonPlot3, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(2))
+    self.connect(self.ui.pushButtonPlot4, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(3))
+
+    self.connect(self.ui.tabWidget, QtCore.SIGNAL('currentChanged(int)'), self.tabChanged)
     
     #set the argument boxes invisible at first
     self.ui.labelArg1.setVisible(False)
@@ -66,7 +71,6 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui.verticalLayoutArguments.setAlignment(Qt.Qt.AlignTop)
     self.ui.splitter.setSizes([200,200,200])
     self.ui.splitter_vert.setSizes([200,100])
-    self.ui.radioButtonSet.setChecked(True)
 
 
 
@@ -141,13 +145,9 @@ class DeviceControl(QtGui.QMainWindow):
     '''
     command, args, kwargs = self.returnCurrentCommand()
     commandObject = gpib_commands.command[command](*args, **kwargs)
-    if commandObject not in self.usedCommands:
-      self.usedCommands.append(commandObject)
-      result = str(self.usedCommands[-1].do())
-    else:
-      result = str(self.usedCommands[self.usedCommands.index(commandObject)].do())
+    self.usedCommands.append(commandObject)
+    result = str(self.usedCommands[-1].do())
 
-    print len(self.usedCommands)
     self.ui.lineEditResult.setText(result)
 
 
@@ -170,12 +170,9 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui.listWidgetSavedCommands.clear()
 
 
-  def radioToggled(self):
-    if self.ui.radioButtonSet.isChecked():
-      self.setOrGet = 'set'
-    else:
-      self.setOrGet = 'get'
-
+  def plotClicked(self, plotNumber):
+    command, args, kwargs = self.returnCurrentCommand()
+    self.plotLabels[plotNumber].setText(args[2]+'->'+command)
 
 
 ########################
@@ -222,6 +219,16 @@ class DeviceControl(QtGui.QMainWindow):
 
   def savedCommandSelected(self):
     self.ui.pushButtonDelete.setEnabled(True)
+
+
+  def tabChanged(self, index):
+    if index is 0:
+      self.setOrGet = 'set'
+      self.ui.listWidgetCommands.clear()
+    if index is 1:
+      self.setOrGet = 'get'
+      self.ui.listWidgetCommands.clear()
+    self.deviceSelected()
 
 
 
