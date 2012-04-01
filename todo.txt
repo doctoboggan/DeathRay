@@ -66,3 +66,7 @@
 35) fix setscale
 36) git ride of doc of (def __init__..)   (100%)
 37) clean the code ...!
+38) make sure every module returns a tuple (and the first item is a boolean true/false signaling if it worked
+39) we should try to imagine all the times where things could go wrong.
+40) have only one setup script that accepts arguments like 'install', 'uninstall', 'reload'
+41) write a script that builds the __init__.py file in fpga_scripts (make sure to count # of plots)

@@ -1,15 +1,14 @@
 #!/usr/bin/python -d
  
-import sys, os, glob
+import sys, os, glob, cPickle
 
 from PyQt4 import QtCore, QtGui, Qt
 from GUIfiles import DeviceControlInterface
+from PlotWindow import PlotWindow
 
 import utils, gpib_commands
 
-
 from pdb import set_trace as bp #DEBUGING
-
 
  
 class DeviceControl(QtGui.QMainWindow):
@@ -29,21 +28,27 @@ class DeviceControl(QtGui.QMainWindow):
     #instance variables
     self.argDict = {}
     self.savedCommands = []
+    self.savedPlotCommands = [None, None, None, None]
     self.usedCommands = []
+    self.failedCommands = []
     self.commands = {'set':{}, 'get':{}}
     self.setOrGet = 'set'
-    self.plotLabels = [self.ui.labelPlot1, self.ui.labelPlot2, self.ui.labelPlot3, self.ui.labelPlot4]
+    self.plotLabels = [self.ui.labelPlot1, self.ui.labelPlot2, 
+                       self.ui.labelPlot3, self.ui.labelPlot4]
+    self.plotSpinBoxes = [self.ui.doubleSpinBoxPlot1, self.ui.doubleSpinBoxPlot2, 
+                          self.ui.doubleSpinBoxPlot3, self.ui.doubleSpinBoxPlot4]
 
   def initUI(self):
+    '''Initialize the user interface
+    '''
     #Connect the signals and slots
-
     #list widgets selected
     self.connect(self.ui.listWidgetDevices, QtCore.SIGNAL('itemSelectionChanged()'), self.deviceSelected)
     self.connect(self.ui.listWidgetCommands, QtCore.SIGNAL('itemSelectionChanged()'), self.commandSelected)
     self.connect(self.ui.listWidgetSavedCommands, QtCore.SIGNAL('itemSelectionChanged()'),
         self.savedCommandSelected)
     #buttons
-    self.connect(self.ui.pushButtonExecute, QtCore.SIGNAL('clicked()'), self.getClicked)
+    self.connect(self.ui.pushButtonExecute, QtCore.SIGNAL('clicked()'), self.testClicked)
     self.connect(self.ui.pushButtonFindDevices, QtCore.SIGNAL('clicked()'), self.findDevicesClicked)
     self.connect(self.ui.pushButtonSave, QtCore.SIGNAL('clicked()'), self.saveClicked)
     self.connect(self.ui.pushButtonDelete, QtCore.SIGNAL('clicked()'), self.deleteClicked)
@@ -52,6 +57,10 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.pushButtonPlot2, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(1))
     self.connect(self.ui.pushButtonPlot3, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(2))
     self.connect(self.ui.pushButtonPlot4, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(3))
+    self.connect(self.ui.pushButtonPlot4, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(3))
+    self.connect(self.ui.pushButtonSaveExperiment, QtCore.SIGNAL('clicked()'), self.saveExperimentClicked)
+    self.connect(self.ui.pushButtonLoadExperiment, QtCore.SIGNAL('clicked()'), self.loadExperimentClicked)
+    self.connect(self.ui.pushButtonDone, QtCore.SIGNAL('clicked()'), self.doneClicked)
 
     self.connect(self.ui.tabWidget, QtCore.SIGNAL('currentChanged(int)'), self.tabChanged)
     
@@ -70,6 +79,8 @@ class DeviceControl(QtGui.QMainWindow):
     #Set sizes, alignments, and initial checked states
     self.ui.verticalLayoutArguments.setAlignment(Qt.Qt.AlignTop)
     self.ui.splitter.setSizes([200,200,200])
+    self.ui.splitter_vert.setVisible(False)
+    self.ui.splitter_top.setVisible(False)
     self.ui.splitter_vert.setSizes([200,100])
 
 
@@ -99,15 +110,18 @@ class DeviceControl(QtGui.QMainWindow):
   def updateSavedCommands(self):
     '''Draw the saved commands to the saved commands list widget
     '''
+    self.ui.pushButtonSaveExperiment.setEnabled(True)
     self.ui.listWidgetSavedCommands.clear()
+    index = 0
     for command, args, kwargs in self.savedCommands:
+      index += 1
       listItem = QtGui.QListWidgetItem(self.ui.listWidgetSavedCommands)
-      text = str(args[2])+' -> '+str(command) + str(kwargs)
+      text = str(str(index)+') '+args[2])+' -> '+str(command) + str(kwargs)
       listItem.setText(text)
 
 
   def showArgBoxes(self, numOfArgs):
-    '''sets the correct amount of text boxes visible
+    '''sets the correct amount of argument text boxes visible
     '''
     self.ui.labelArg1.setVisible(numOfArgs>0)
     self.ui.lineEditArg1.setVisible(numOfArgs>0)
@@ -136,11 +150,12 @@ class DeviceControl(QtGui.QMainWindow):
 
     self.findArguments()
     self.updateDeviceList()
+    self.ui.splitter_vert.setVisible(True)
+    self.ui.splitter_top.setVisible(True)
 
 
-  def getClicked(self):
-    '''
-    this method is called whenever the get button is clicked. It makes the call to
+  def testClicked(self):
+    '''This method is called whenever the check command button is clicked. It makes the call to
     the correct command script and feeds it the arguments it needs
     '''
     command, args, kwargs = self.returnCurrentCommand()
@@ -152,6 +167,7 @@ class DeviceControl(QtGui.QMainWindow):
 
 
   def saveClicked(self):
+    self.ui.pushButtonSaveExperiment.setEnabled(True)
     command, args, kwargs = self.returnCurrentCommand()
     if (command, args, kwargs) not in self.savedCommands:
       self.savedCommands.append((command, args, kwargs))
@@ -171,8 +187,59 @@ class DeviceControl(QtGui.QMainWindow):
 
 
   def plotClicked(self, plotNumber):
+    '''
+    '''
     command, args, kwargs = self.returnCurrentCommand()
     self.plotLabels[plotNumber].setText(args[2]+'->'+command)
+    self.savedPlotCommands[plotNumber] = ([command, args, kwargs])
+  
+
+  def saveExperimentClicked(self):
+    '''Writes self.savedCommands and self.savedPlotCommands to a pickle file
+    '''
+    self.storeTimeIntervals()
+    fname = QtGui.QFileDialog.getSaveFileName(self, 'Select location to save experiment',
+        '/Users/jack/Documents')        
+    f = open(fname, 'w')
+    cPickle.dump((self.savedCommands, self.savedPlotCommands), f)
+    f.close()
+
+
+  def loadExperimentClicked(self):
+    '''Loads in self.savedCommands and self.savedPlotCommands from a pickled file
+    This method also draws the new information to the lists and labels
+    '''
+    fileName = QtGui.QFileDialog.getOpenFileNames(self, 'Select save file',
+        '/Users/jack/Documents')
+    f = open(str(fileName[0]), 'r')
+    self.savedCommands, self.savedPlotCommands = cPickle.load(f)
+    f.close()
+    self.ui.splitter_vert.setVisible(True)
+    self.updateSavedCommands()
+    index = 0
+    for plotInfo in self.savedPlotCommands:
+      if plotInfo:
+        command, args, kwargs, timeInterval = plotInfo
+        self.plotLabels[index].setText(args[2]+'->'+command)
+        self.plotSpinBoxes[index].setValue(timeInterval)
+      index += 1
+
+  def doneClicked(self):
+    '''Stores the current time intervals and then runs all the commands in self.savedCommands
+    If all commands return True, the currrent window is closed and PlotWindow is open and fed
+    the savedPlotCommands. If a saved command fails it is noted in the status bar and the user
+    is told to fix/delete it before continuing.
+    '''
+    self.storeTimeIntervals()
+    self.executeSavedCommands()
+    if self.failedCommands:
+      message = 'Command number ['+', '.join(self.failedCommands)+'] has failed. Please fix or delete it.'
+      self.ui.statusbar.showMessage(message)
+      self.failedCommands = []
+    else:
+      self.close()
+      self.plotWindowApp = PlotWindow(self.savedPlotCommands)
+      self.plotWindowApp.show()
 
 
 ########################
@@ -237,8 +304,7 @@ class DeviceControl(QtGui.QMainWindow):
 ##########################
 
   def findArguments(self):
-    '''
-    This method searches through the commands folder and finds all the def __init__ lines
+    '''This method searches through the commands folder and finds all the def __init__ lines
     so it can extract the arguments for each command. It also checks the rightDevice
     variable to see which device each command should work with. 
     '''
@@ -275,8 +341,7 @@ class DeviceControl(QtGui.QMainWindow):
 
 
   def returnCurrentCommand(self):
-    '''
-    this method returns a tuple consisting of (command-name, args, kwargs) all of which are needed
+    '''This method returns a tuple consisting of (command-name, args, kwargs) all of which are needed
     to instantiate a command object. To create a new command object with the return value of this
     method, do the following:
 
@@ -320,11 +385,33 @@ class DeviceControl(QtGui.QMainWindow):
 
     return command, [IP, GPIB, device], kwargs
 
+
+  def executeSavedCommands(self):
+    for command, args, kwargs in self.savedCommands:
+      commandObject = gpib_commands.command[command](*args, **kwargs)
+      self.usedCommands.append(commandObject)
+      result = self.usedCommands[-1].do()
+      if not result[0]:
+        self.failedCommands.append(str(self.savedCommands.index((command, args, kwargs))+1))
+
+
+  def storeTimeIntervals(self):
+    '''This method grabs the currently entered time intervals for each plot and saves them.
+    '''
+    for index in range(len(self.savedPlotCommands)):
+      if self.savedPlotCommands[index]:
+        timeInterval = self.plotSpinBoxes[index].value()
+        if len(self.savedPlotCommands[index]) is 3:
+          self.savedPlotCommands[index].append(timeInterval)
+        else:
+          self.savedPlotCommands[index][3] = timeInterval
   
 
 if __name__ == "__main__":
   app = QtGui.QApplication(sys.argv)
   myapp = DeviceControl()
+  myapp.resize(250, 150)  
+  myapp.move(300, 50)
   myapp.show()
   sys.exit(app.exec_())
 
