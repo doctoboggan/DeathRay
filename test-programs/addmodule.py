@@ -18,7 +18,7 @@ class add():
     self.replace_dic_sthree = {}
     self.replace_dic_sfour = {}
     self.replace_dic_sfive = {}
-    self.timenow = datetime.datetime.now()    # to now the time of creating the new module
+    self.timenow = str(datetime.datetime.now())    # to now the time of creating the new module
     self.nowfile = None
     self.reading = None
     self.listing_scpi_inputs = ['0','0','0','0','0']  # Assume all scpi commands doe not required any extra stuff (0 - not required, 1 - does required)
@@ -115,6 +115,7 @@ class add():
     self.replace_dic = {
     'module_name': self.a,
     'module_person': self.b,
+    'module_date' : self.timenow,
     'module_goal': self.c,
     'module_device_one': "'"+self.d+"'",
     'module_device_two': "'"+self.e+"'",

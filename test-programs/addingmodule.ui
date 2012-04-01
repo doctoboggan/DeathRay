@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Wizard</class>
+ <widget class="QWizard" name="Wizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>743</width>
+    <height>251</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Wizard</string>
+  </property>
+  <widget class="QWizardPage" name="wizardPage1">
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>110</y>
+      <width>351</width>
+      <height>258</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>This wizard will help you to generate a module
+ (plugin) for DeathRay software. Please, follow
+ the step carefully.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Before we start, you have to know the SCPI
+ command for this module.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Notes:
+1) the wizard can not build a complex module
+ (for example, use more than one SCPI command
+ to be achive the goal for one device).
+2) After the module generated, It is going to
+ in the gpib_command folder inside DeathRay folder.
+3) Please, review the generated module. Maybe, 
+there are some errors. </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>When you are ready, Please, click Next.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_3</zorder>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage2">
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>General Inofrmation:</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>741</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>50</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Name of module file:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>50</y>
+      <width>241</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ex: voltageDC (from getvoltageDC)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>80</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Module name:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>80</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>80</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ex: DC voltage Reader (from getvoltageDC)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>110</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Your name: </string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_3">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>110</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>110</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ex: Bob Michael</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>140</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Module's goal: </string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_4">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>140</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>140</y>
+      <width>421</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ex:This moduel returns the DC voltage (from getvoltageDC)</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage3"/>
+  <widget class="QWizardPage" name="wizardPage10"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
