@@ -28,6 +28,9 @@ class PlotWindow(QtGui.QMainWindow):
     self.Experiment = fpga_scripts.experiment[self.fpgaScriptName][0].FileProcessor()
     self.plottingThreads = []
     self.keepPlotting = True
+    self.deviceValues = [[],[],[],[]]
+    self.deviceTimes = [[],[],[],[]]
+    self.plots = [self.ui.qwtPlot_1, self.ui.qwtPlot_2, self.ui.qwtPlot_3, self.ui.qwtPlot_4]
     
     #start the file watcher
     self.startFileWatcher()
@@ -99,6 +102,22 @@ class PlotWindow(QtGui.QMainWindow):
 
 
   def newDataDetected(self, data, index):
+    #get time since the epoch
+    currentTime = time.time()
+    try:
+      floatValue = float(data)
+    except ValueError:
+      floatValue = 0
+    self.deviceTimes[index].append(currentTime)
+    self.deviceValues[index].append(floatValue)
+    plotData = [{
+        'x-vector': self.deviceTimes[index],
+        'y-vector': self.deviceValues[index],
+        'plotType': 'spline',
+        'x-axis': 'Time (s)',
+        'y-axis': self.savedPlotCommands[index][0]
+        }]
+    self.plotLine(self.plots[index], plotData, 0)
     print 'detected: ', data, index
  
   
@@ -135,13 +154,13 @@ class PlotWindow(QtGui.QMainWindow):
       self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData, index)
       self.setPlotNumber(1)
     if hasattr(self.Experiment, 'processedData2'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData2, index)
+      self.plotLine(self.ui.qwtPlot_2, self.Experiment.processedData2, index)
       self.setPlotNumber(2)
     if hasattr(self.Experiment, 'processedData3'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData3, index)
+      self.plotLine(self.ui.qwtPlot_3, self.Experiment.processedData3, index)
       self.setPlotNumber(3)
     if hasattr(self.Experiment, 'processedData4'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData4, index)
+      self.plotLine(self.ui.qwtPlot_4, self.Experiment.processedData4, index)
       self.setPlotNumber(4)
 
 

@@ -63,7 +63,10 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.pushButtonPlot2, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(1))
     self.connect(self.ui.pushButtonPlot3, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(2))
     self.connect(self.ui.pushButtonPlot4, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(3))
-    self.connect(self.ui.pushButtonPlot4, QtCore.SIGNAL('clicked()'), lambda: self.plotClicked(3))
+    self.connect(self.ui.pushButtonClearPlot1, QtCore.SIGNAL('clicked()'), lambda: self.clearPlotClicked(0))
+    self.connect(self.ui.pushButtonClearPlot2, QtCore.SIGNAL('clicked()'), lambda: self.clearPlotClicked(1))
+    self.connect(self.ui.pushButtonClearPlot3, QtCore.SIGNAL('clicked()'), lambda: self.clearPlotClicked(2))
+    self.connect(self.ui.pushButtonClearPlot4, QtCore.SIGNAL('clicked()'), lambda: self.clearPlotClicked(3))
     self.connect(self.ui.pushButtonSaveExperiment, QtCore.SIGNAL('clicked()'), self.saveExperimentClicked)
     self.connect(self.ui.pushButtonLoadExperiment, QtCore.SIGNAL('clicked()'), self.loadExperimentClicked)
     self.connect(self.ui.pushButtonDone, QtCore.SIGNAL('clicked()'), self.doneClicked)
@@ -208,11 +211,18 @@ class DeviceControl(QtGui.QMainWindow):
 
 
   def plotClicked(self, plotNumber):
-    '''
+    '''Saves the plot command and draws to the label
     '''
     command, args, kwargs = self.returnCurrentCommand()
     self.plotLabels[plotNumber].setText(args[2]+'->'+command)
     self.savedPlotCommands[plotNumber] = ([command, args, kwargs])
+
+
+  def clearPlotClicked(self, plotNumber):
+    '''
+    '''
+    self.plotLabels[plotNumber].setText('')
+    self.savedPlotCommands[plotNumber] = None
   
 
   def saveExperimentClicked(self):
