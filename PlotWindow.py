@@ -1,14 +1,14 @@
 #!/usr/bin/python -d
  
-import sys
+import sys, os, glob, time
 
 from PyQt4 import QtCore, QtGui, Qt
 from GUIfiles import interface
 import PyQt4.Qwt5 as Qwt
 import numpy as np
 
-import fpga_scripts
-
+import fpga_scripts, gpib_commands
+from utils import Thread
 
 from pdb import set_trace as bp #DEBUGING
 
@@ -17,22 +17,40 @@ class PlotWindow(QtGui.QMainWindow):
   '''Main application class that contains the GUI control and helper methods.
   '''
 
-  def __init__(self, devicePlotCommands=None, parent=None):
+  def __init__(self, inputData=None, parent=None):
     QtGui.QWidget.__init__(self)
-    self.devicePlotCommands = devicePlotCommands
-    print 'input: ', devicePlotCommands
+    (self.savedPlotCommands, self.fpgaOutput, self.fpgaScriptName, self.logFile) = inputData
     self.ui = interface.Ui_MainWindow()
     self.ui.setupUi(self)
-    self.initUI()
     
+    #instance variables
+    self.fileWatcher = QtCore.QFileSystemWatcher(self)
+    self.Experiment = fpga_scripts.experiment[self.fpgaScriptName][0].FileProcessor()
+    self.plottingThreads = []
+    self.keepPlotting = True
+    
+    #start the file watcher
+    self.startFileWatcher()
+
+    self.spawnThreads()
+
+    self.initUI()
+
+    #run this immediately to see if the directory already has some files in it
+    self.directoryChanged()
+
   def initUI(self):
     #Connect the signals and slots
-    self.connect(self.ui.actionOpen, QtCore.SIGNAL('triggered()'), self.openFiles)
     self.connect(self.ui.actionOne_Plot, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(1))
     self.connect(self.ui.actionTwo_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(2)) 
     self.connect(self.ui.actionThree_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(3)) 
     self.connect(self.ui.actionFour_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(4))
     self.connect(self.ui.treeRun, QtCore.SIGNAL('itemSelectionChanged()'), self.runClicked)
+    self.connect(self.fileWatcher, QtCore.SIGNAL('directoryChanged(QString)'), self.directoryChanged)
+    self.connect(self, QtCore.SIGNAL('newData0(QString)'), lambda x: self.newDataDetected(x, 0))
+    self.connect(self, QtCore.SIGNAL('newData1(QString)'), lambda x: self.newDataDetected(x, 1))
+    self.connect(self, QtCore.SIGNAL('newData2(QString)'), lambda x: self.newDataDetected(x, 2))
+    self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
 
     #Set initial sizes
     self.ui.splitter.setSizes([150, 500, 150])
@@ -41,24 +59,162 @@ class PlotWindow(QtGui.QMainWindow):
     self.setPlotNumber(0)
 
 
-    #jump to this method while developing
-    self.openFiles()
+  #############
+  #Slot Methods
+  #############
 
-  def openFiles(self):
-    '''This displays the open file dialog, feeds the selected files to the processor, and
-    then plots the results
+  def runClicked(self):
+    '''This method is called whenever an item is clicked on the tree widget
     '''
-    fname = QtGui.QFileDialog.getOpenFileNames(self, 'Select FPGA Output File(s)',
-        '/Users/jack/Documents/Senior Year/Senior Design/data/raw')
-    self.filesList = [str(x) for x in list(fname)]
-    self.Experiment = fpga_scripts.experiment['register_error'].FileProcessor(self.filesList)
-    self.updateRunDisplay()
-
-    #Plot the first element in self.processedData
-    self.updatePlots(0)
+    self.updatePlots()
+    self.updateDataTable()
 
 
+  def directoryChanged(self):
+    '''Called when the fileWatcher detects a change in the directory.
+    It is responsible for calling self.Experiment's .reload() method with the required files
+    '''
+    try:#if there is a currently selected item, try to save it
+      currentItem = self.ui.treeRun.selectedItems()[0]
+      currentItemText = currentItem.text(0)
+    except:
+      pass
+    if type(self.fpgaOutput) is list: #user selected one or more files directly
+      self.Experiment.reload(self.fpgaOutput)
+      self.updateRunDisplay()
+      self.updatePlots()
+      self.updateDataTable()
+    else:
+      if len(glob.glob(os.path.join(self.fpgaOutput, '*'))) > 0: #if there are files in the folder selected
+        filesList = glob.glob(os.path.join(self.fpgaOutput, '*'))
+        self.Experiment.reload(filesList)
+        self.updateRunDisplay()
+        self.updatePlots()
+        self.updateDataTable()
+    try:#try to reselect the currently selected item from above
+      foundItem = self.ui.treeRun.findItems(currentItemText,QtCore.Qt.MatchExactly)[0]
+      self.ui.treeRun.setCurrentItem(foundItem)
+    except:
+      pass
+
+
+  def newDataDetected(self, data, index):
+    print 'detected: ', data, index
  
+  
+
+  ####################
+  #GUI Control Methods
+  ####################
+
+  def updateRunDisplay(self):
+    '''This method updates the display widget to show a list of all the runs of the
+    current experiment.
+    
+    The data in Experiment.displayData is used for the treeWidget
+    '''
+    self.ui.treeRun.clear()
+    for run in self.Experiment.displayData:
+      treeItem = QtGui.QTreeWidgetItem(self.ui.treeRun)
+      treeItem.setText(0, run[0])
+      for subItemIndex in range(len(run)-1):
+        child = QtGui.QTreeWidgetItem(treeItem)
+        child.setText(0, run[subItemIndex+1])
+        treeItem.insertChild(0, child)
+        child.setDisabled(True)
+    #Set the first element as the selected item
+    firstItem = self.ui.treeRun.findItems(self.Experiment.displayData[0][0],QtCore.Qt.MatchExactly)[0]
+    self.ui.treeRun.setItemSelected(firstItem, True)
+
+
+  def updatePlots(self):
+    '''Draws the data stored in processedData using the plotLine method
+    '''
+    index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
+    if hasattr(self.Experiment, 'processedData'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData, index)
+      self.setPlotNumber(1)
+    if hasattr(self.Experiment, 'processedData2'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData2, index)
+      self.setPlotNumber(2)
+    if hasattr(self.Experiment, 'processedData3'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData3, index)
+      self.setPlotNumber(3)
+    if hasattr(self.Experiment, 'processedData4'):
+      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData4, index)
+      self.setPlotNumber(4)
+
+
+  def updateDataTable(self):
+    '''This method updates the table widget with the data stored in Experiment.tableData
+    '''
+    index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
+    currentTableData = self.Experiment.tableData[index]
+    self.ui.tableWidgetData.clear()
+    self.ui.tableWidgetData.setRowCount(max(len(x) for x in currentTableData))
+    self.ui.tableWidgetData.setColumnCount(len(currentTableData[0]))
+    self.ui.tableWidgetData.setHorizontalHeaderLabels(currentTableData[0])
+    for c in range(len(currentTableData)-1):
+      for r in range(len(currentTableData[c+1])):
+        tableItem = QtGui.QTableWidgetItem(str(currentTableData[c+1][r]))
+        tableItem.setTextAlignment(2)
+        self.ui.tableWidgetData.setItem(r, c, tableItem)
+      self.ui.tableWidgetData.resizeColumnToContents(c)
+    #Sorting is buggy, enable with caution.
+    #self.ui.tableWidgetData.setSortingEnabled(True)
+
+
+  def setPlotNumber(self, number):
+    '''This function sets the number of plots visible
+    '''
+
+    self.ui.qwtPlot_1.setVisible(False)
+    self.ui.qwtPlot_2.setVisible(False)
+    self.ui.qwtPlot_3.setVisible(False)
+    self.ui.qwtPlot_4.setVisible(False)
+
+    self.ui.qwtPlot_1.setVisible(number > 0)
+    self.ui.qwtPlot_2.setVisible(number > 1)
+    self.ui.qwtPlot_3.setVisible(number > 2)
+    self.ui.qwtPlot_4.setVisible(number > 3)
+
+
+  ###############
+  #Helper Methods
+  ###############
+
+  def startFileWatcher(self):
+    '''Starts the QFileWatcher on either the directory selected or the parent directory of
+    the files selected.
+    '''
+    if type(self.fpgaOutput) is list: #This means the user selected one or more files
+      self.fileWatcher.addPath(os.path.dirname(self.fpgaOutput[-1]))
+      self.updateRunDisplay()
+      #Plot the first element in self.processedData
+      self.updatePlots()
+      self.updateDataTable()
+    else: #this means the user selected a directory
+      self.fileWatcher.addPath(self.fpgaOutput)
+
+
+  def spawnThreads(self):
+    for index in range(len(self.savedPlotCommands)):
+      if self.savedPlotCommands[index]:
+        thread = Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
+        thread.start()
+        self.plottingThreads.append(thread)
+        time.sleep(.5)
+
+
+  def deviceHandler(self, plotCommand, plotNumber):
+    command, args, kwargs, timeInterval = plotCommand
+    commandObject = gpib_commands.command[command](*args, **kwargs)
+    while self.keepPlotting:
+      result = commandObject.do()
+      self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
+      time.sleep(timeInterval)
+
+
   def plotLine(self, plot, processedData, index):
     '''This method is used to plot and replot all the data.
     It has the ability to allow the caller to select which plot to draw to.
@@ -126,85 +282,7 @@ class PlotWindow(QtGui.QMainWindow):
     plot.replot()
 
 
-  ####################
-  #GUI Control Methods
-  ####################
-
-  def updateRunDisplay(self):
-    '''This method updates the display widget to show a list of all the runs of the
-    current experiment.
-    
-    The data in Experiment.displayData is used for the treeWidget
-    '''
-    self.ui.treeRun.clear()
-    for run in self.Experiment.displayData:
-      treeItem = QtGui.QTreeWidgetItem(self.ui.treeRun)
-      treeItem.setText(0, run[0])
-      for subItemIndex in range(len(run)-1):
-        child = QtGui.QTreeWidgetItem(treeItem)
-        child.setText(0, run[subItemIndex+1])
-        treeItem.insertChild(0, child)
-        child.setDisabled(True)
-    #Set the first element as the selected item
-    firstItem = self.ui.treeRun.findItems(self.Experiment.displayData[0][0],QtCore.Qt.MatchExactly)[0]
-    self.ui.treeRun.setItemSelected(firstItem, True)
-
-
-  def updatePlots(self, index):
-    if hasattr(self.Experiment, 'processedData'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData, index)
-      self.setPlotNumber(1)
-    if hasattr(self.Experiment, 'processedData2'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData2, index)
-      self.setPlotNumber(2)
-    if hasattr(self.Experiment, 'processedData3'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData3, index)
-      self.setPlotNumber(3)
-    if hasattr(self.Experiment, 'processedData4'):
-      self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData4, index)
-      self.setPlotNumber(4)
-
-
-  def updateDataTable(self, index):
-    '''This method updates the table widget with the data stored in Experiment.tableData
-    '''
-    currentTableData = self.Experiment.tableData[index]
-    self.ui.tableWidgetData.clear()
-    self.ui.tableWidgetData.setRowCount(max(len(x) for x in currentTableData))
-    self.ui.tableWidgetData.setColumnCount(len(currentTableData[0]))
-    self.ui.tableWidgetData.setHorizontalHeaderLabels(currentTableData[0])
-    for c in range(len(currentTableData)-1):
-      for r in range(len(currentTableData[c+1])):
-        tableItem = QtGui.QTableWidgetItem(str(currentTableData[c+1][r]))
-        tableItem.setTextAlignment(2)
-        self.ui.tableWidgetData.setItem(r, c, tableItem)
-      self.ui.tableWidgetData.resizeColumnToContents(c)
-    #Sorting is buggy, enable with caution.
-    #self.ui.tableWidgetData.setSortingEnabled(True)
-
-
-  def runClicked(self):
-    '''This method is called whenever an item is clicked on the tree widget
-    '''
-    index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
-    self.updatePlots(index)
-    self.updateDataTable(index)
-
-  def setPlotNumber(self, number):
-    '''This function sets the number of plots visible
-    '''
-
-    self.ui.qwtPlot_1.setVisible(False)
-    self.ui.qwtPlot_2.setVisible(False)
-    self.ui.qwtPlot_3.setVisible(False)
-    self.ui.qwtPlot_4.setVisible(False)
-
-    self.ui.qwtPlot_1.setVisible(number > 0)
-    self.ui.qwtPlot_2.setVisible(number > 1)
-    self.ui.qwtPlot_3.setVisible(number > 2)
-    self.ui.qwtPlot_4.setVisible(number > 3)
-
-
+#This is here so the file can be run on its own. The file should not be run on its own
 if __name__ == "__main__":
   app = QtGui.QApplication(sys.argv)
   myapp = PlotWindow()

@@ -6,7 +6,7 @@ from PyQt4 import QtCore, QtGui, Qt
 from GUIfiles import DeviceControlInterface
 from PlotWindow import PlotWindow
 
-import utils, gpib_commands
+import utils, gpib_commands, fpga_scripts
 
 from pdb import set_trace as bp #DEBUGING
 
@@ -22,10 +22,11 @@ class DeviceControl(QtGui.QMainWindow):
 
     self.ui.lineEditIP.setText('129.59.93.179') #fill in this IP for now
 
-    #Initialize the UI
-    self.initUI()
-    
     #instance variables
+    self.fpgaInfo = []
+    self.fpgaScriptName = None
+    self.fpgaOutputLocation = ''
+    self.logFile = ''
     self.argDict = {}
     self.savedCommands = []
     self.savedPlotCommands = [None, None, None, None]
@@ -37,17 +38,22 @@ class DeviceControl(QtGui.QMainWindow):
                        self.ui.labelPlot3, self.ui.labelPlot4]
     self.plotSpinBoxes = [self.ui.doubleSpinBoxPlot1, self.ui.doubleSpinBoxPlot2, 
                           self.ui.doubleSpinBoxPlot3, self.ui.doubleSpinBoxPlot4]
+    self.plotButtons = [self.ui.pushButtonPlot1, self.ui.pushButtonPlot2,
+                        self.ui.pushButtonPlot3, self.ui.pushButtonPlot4]
+
+    #Initialize the UI
+    self.initUI()
 
   def initUI(self):
     '''Initialize the user interface
     '''
     #Connect the signals and slots
-    #list widgets selected
+      #list widgets selected
     self.connect(self.ui.listWidgetDevices, QtCore.SIGNAL('itemSelectionChanged()'), self.deviceSelected)
     self.connect(self.ui.listWidgetCommands, QtCore.SIGNAL('itemSelectionChanged()'), self.commandSelected)
     self.connect(self.ui.listWidgetSavedCommands, QtCore.SIGNAL('itemSelectionChanged()'),
         self.savedCommandSelected)
-    #buttons
+      #buttons
     self.connect(self.ui.pushButtonExecute, QtCore.SIGNAL('clicked()'), self.testClicked)
     self.connect(self.ui.pushButtonFindDevices, QtCore.SIGNAL('clicked()'), self.findDevicesClicked)
     self.connect(self.ui.pushButtonSave, QtCore.SIGNAL('clicked()'), self.saveClicked)
@@ -61,8 +67,13 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.pushButtonSaveExperiment, QtCore.SIGNAL('clicked()'), self.saveExperimentClicked)
     self.connect(self.ui.pushButtonLoadExperiment, QtCore.SIGNAL('clicked()'), self.loadExperimentClicked)
     self.connect(self.ui.pushButtonDone, QtCore.SIGNAL('clicked()'), self.doneClicked)
-
-    self.connect(self.ui.tabWidget, QtCore.SIGNAL('currentChanged(int)'), self.tabChanged)
+    self.connect(self.ui.pushButtonSelectFile, QtCore.SIGNAL('clicked()'), self.selectFileClicked)
+    self.connect(self.ui.pushButtonSelectFolder, QtCore.SIGNAL('clicked()'), self.selectFolderClicked)
+    self.connect(self.ui.pushButtonLogLocation, QtCore.SIGNAL('clicked()'), self.logClicked)
+      #misc slots
+    self.connect(self.ui.tabWidgetDevices, QtCore.SIGNAL('currentChanged(int)'), self.tabChanged)
+    self.connect(self.ui.comboBoxFPGA, QtCore.SIGNAL('currentIndexChanged(int)'), self.fpgaComboChanged)
+    self.connect(self.ui.checkBoxLogData, QtCore.SIGNAL('clicked()'), self.logDataClicked)
     
     #set the argument boxes invisible at first
     self.ui.labelArg1.setVisible(False)
@@ -82,6 +93,9 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui.splitter_vert.setVisible(False)
     self.ui.splitter_top.setVisible(False)
     self.ui.splitter_vert.setSizes([200,100])
+
+    #populate the fpga_scripts combo box
+    self.updateFPGAComboBox()
 
 
 
@@ -133,6 +147,13 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui.lineEditArg4.setVisible(numOfArgs>3)
     self.ui.labelArg5.setVisible(numOfArgs>4)
     self.ui.lineEditArg5.setVisible(numOfArgs>4)
+
+
+  def updateFPGAComboBox(self):
+    for scriptName in sorted(fpga_scripts.experiment):
+      self.ui.comboBoxFPGA.addItem(scriptName)
+      self.fpgaInfo.append(fpga_scripts.experiment[scriptName])
+
 
 
 
@@ -201,7 +222,8 @@ class DeviceControl(QtGui.QMainWindow):
     fname = QtGui.QFileDialog.getSaveFileName(self, 'Select location to save experiment',
         '/Users/jack/Documents')        
     f = open(fname, 'w')
-    cPickle.dump((self.savedCommands, self.savedPlotCommands), f)
+    cPickle.dump((self.savedCommands, self.savedPlotCommands, self.fpgaOutputLocation,
+      self.fpgaScriptName, self.logFile), f)
     f.close()
 
 
@@ -212,18 +234,31 @@ class DeviceControl(QtGui.QMainWindow):
     fileName = QtGui.QFileDialog.getOpenFileNames(self, 'Select save file',
         '/Users/jack/Documents')
     f = open(str(fileName[0]), 'r')
-    self.savedCommands, self.savedPlotCommands = cPickle.load(f)
+    (self.savedCommands, self.savedPlotCommands, self.fpgaOutputLocation,
+      self.fpgaScriptName, self.logFile) = cPickle.load(f)
     f.close()
     self.ui.splitter_vert.setVisible(True)
     self.updateSavedCommands()
     index = 0
+    #fill in the plot information
     for plotInfo in self.savedPlotCommands:
       if plotInfo:
         command, args, kwargs, timeInterval = plotInfo
         self.plotLabels[index].setText(args[2]+'->'+command)
         self.plotSpinBoxes[index].setValue(timeInterval)
       index += 1
+    #select the correct fpga experiment
+    self.ui.comboBoxFPGA.setCurrentIndex(sorted(fpga_scripts.experiment.keys()).index(self.fpgaScriptName)+1)
+    #fill in the selected output files/folders
+    if type(self.fpgaOutputLocation) is list:
+      self.ui.labelFPGALocation.setText('\n'.join(self.fpgaOutputLocation))
+    else:
+      self.ui.labelFPGALocation.setText(self.fpgaOutputLocation)
+    #adjust the checkbox state and fill in the label
+    self.ui.checkBoxLogData.setChecked(len(self.logFile) > 0)
+    self.ui.labelLocationSelected.setText(self.logFile)
 
+      
   def doneClicked(self):
     '''Stores the current time intervals and then runs all the commands in self.savedCommands
     If all commands return True, the currrent window is closed and PlotWindow is open and fed
@@ -238,8 +273,31 @@ class DeviceControl(QtGui.QMainWindow):
       self.failedCommands = []
     else:
       self.close()
-      self.plotWindowApp = PlotWindow(self.savedPlotCommands)
+      self.plotWindowApp = PlotWindow((self.savedPlotCommands, self.fpgaOutputLocation,
+        self.fpgaScriptName, self.logFile))
       self.plotWindowApp.show()
+
+
+  def selectFileClicked(self):
+    fname = QtGui.QFileDialog.getOpenFileNames(self, 'Select FPGA Output File(s)',
+        '/Users/jack/Documents/Senior Year/Senior Design/')
+    self.fpgaOutputLocation = [str(x) for x in list(fname)]
+    self.ui.labelFPGALocation.setText('\n'.join(self.fpgaOutputLocation))
+
+
+  def selectFolderClicked(self):
+    dirname = QtGui.QFileDialog.getExistingDirectory(self, 'Select FPGA Output Folder',
+        '~/Documents')
+    self.fpgaOutputLocation = str(dirname)
+    self.ui.labelFPGALocation.setText(self.fpgaOutputLocation)
+
+
+  def logClicked(self):
+    fname = QtGui.QFileDialog.getSaveFileName(self, 'Select location to log experiment',
+        '~/Documents/experiment.log') 
+    self.logFile = str(fname)
+    self.ui.labelLocationSelected.setText(self.logFile)
+  
 
 
 ########################
@@ -296,6 +354,34 @@ class DeviceControl(QtGui.QMainWindow):
       self.setOrGet = 'get'
       self.ui.listWidgetCommands.clear()
     self.deviceSelected()
+
+
+  def fpgaComboChanged(self, index):
+    self.ui.pushButtonSaveExperiment.setEnabled(True)
+    for plotIndex in range(len(self.plotButtons)):
+      self.plotButtons[plotIndex].setEnabled(True)
+      if self.plotLabels[plotIndex].text() == 'FPGA Plot':
+        self.plotLabels[plotIndex].setText('')
+      self.plotSpinBoxes[plotIndex].setEnabled(True)
+
+    if index is 0:
+      self.fpgaScriptName = None
+    else:
+      self.fpgaScriptName = sorted(fpga_scripts.experiment.keys())[index-1]
+      for plotIndex in fpga_scripts.experiment[self.fpgaScriptName][1]:
+        self.plotButtons[plotIndex-1].setEnabled(False)
+        self.plotLabels[plotIndex-1].setText('FPGA Plot')
+        self.plotSpinBoxes[plotIndex-1].setEnabled(False)
+
+
+  def logDataClicked(self):
+    self.ui.pushButtonSaveExperiment.setEnabled(True)
+    if self.ui.checkBoxLogData.isChecked():
+      self.ui.pushButtonLogLocation.setEnabled(True)
+    else:
+      self.ui.pushButtonLogLocation.setEnabled(False)
+      self.ui.labelLocationSelected.setText('')
+      self.logFile = ''
 
 
 
