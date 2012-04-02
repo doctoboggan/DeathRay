@@ -19,7 +19,7 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
   '''
   class_info
   '''
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", timeout=2000): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", firstinput secondinput thirdinput forthinput fifthinput timeout=2000): 
 
     '''
     init_info
@@ -29,6 +29,11 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input 
     self.rightDevice = [ module_device_one , module_device_two , module_device_three , module_device_four, module_device_five ]
+    #selfone
+    #selftwo
+    #selfthree
+    #selffour
+    #self.five
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
 
@@ -46,7 +51,11 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
             # start configure module_device_one .     [START]
 
-            return True
+            #first_check_start
+
+              return True
+
+            #first_check_end
 
             # End of characteristics of module_device_one . [END]
 
@@ -54,7 +63,11 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
             # start configure module_device_two .     [START]
 
-            return True
+            #second_check_start
+
+              return True
+
+            #second_check_end
 
             # End of characteristics of module_device_two . [END]
 
@@ -62,7 +75,11 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
             # start configure module_device_three .     [START]
 
-            return True
+            #third_check_start
+
+              return True
+
+            #third_check_end
 
             # End of characteristics of module_device_three . [END]
 
@@ -70,7 +87,11 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
             # start configure module_device_four .     [START]
 
-            return True
+            #forth_check_start
+
+              return True
+
+            #forth_check_end
 
             # End of characteristics of module_device_four . [END]
 
@@ -78,7 +99,11 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
             # start configure module_device_five .     [START]
 
-            return True
+            #fifth_check_start
+
+              return True
+
+            #fifth_check_end
 
             # End of characteristics of module_device_five . [END]
 
@@ -101,7 +126,9 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
   def do(self):		
     """
-    do_info
+    To check if the given device will work with setvoltageDC function (to avoid module from crashing).
+    We take care of time-out minimum duration (to aviod run out of time).
+    Note: Some devices have its own characteristics. (deeloper must enter them manually)
     """  
     if self.check() is True:
 
@@ -109,7 +136,7 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
       if self.name_of_device == module_device_one :
 
-        result = self.transaction( main_scpi_one input_one )                
+        result = self.transaction( module_device_one_scpi_input )                
 
         if result[0] == 0:             #check if it times out.
 
@@ -124,7 +151,7 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
  
       elif self.name_of_device == module_device_two :
 
-        result = self.transaction( main_scpi_two input_two )                
+        result = self.transaction( module_device_two_scpi_input )                
 
         if result[0] == 0:             #check if it times out.
 
@@ -138,7 +165,7 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
       elif self.name_of_device == module_device_three :
 
-        result = self.transaction( main_scpi_three input_three )                
+        result = self.transaction( module_device_three_scpi_input )                
 
         if result[0] == 0:             #check if it times out.
 
@@ -152,7 +179,7 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
       if self.name_of_device == module_device_four :
 
-        result = self.transaction( main_scpi_four input_four )                
+        result = self.transaction( module_device_four_scpi_input )                
 
         if result[0] == 0:             #check if it times out.
 
@@ -166,7 +193,7 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
       if self.name_of_device == module_device_five :
 
-        result = self.transaction( main_scpi_five input_five )                
+        result = self.transaction( module_device_one_scpi_input )                
 
         if result[0] == 0:             #check if it times out.
 

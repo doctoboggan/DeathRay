@@ -1,38 +1,38 @@
-from getAcqType import getAcqType
-from getcommand import getcommand
-from getcurrentAC import getcurrentAC
-from getcurrentDC import getcurrentDC
-from getIDN import getIDN
-from getImpedanceChannel import getImpedanceChannel
-from getTrigMode import getTrigMode
-from getvoltageAC import getvoltageAC
-from getvoltageDC import getvoltageDC
+from setScale import setScale
 from saveFileWaveform import saveFileWaveform
-from setAcqType import setAcqType
-from setcommand import setcommand
+from getAcqType import getAcqType
+from getcurrentDC import getcurrentDC
 from setcurrentDC import setcurrentDC
 from setdisplayscreen import setdisplayscreen
 from setImpedanceChannel import setImpedanceChannel
-from setScale import setScale
-from setTrigMode import setTrigMode
+from getTrigMode import getTrigMode
+from getIDN import getIDN
+from setAcqType import setAcqType
 from setvoltageDC import setvoltageDC
+from getcommand import getcommand
+from getImpedanceChannel import getImpedanceChannel
+from setcommand import setcommand
+from setTrigMode import setTrigMode
+from getcurrentAC import getcurrentAC
+from getvoltageDC import getvoltageDC
+from getvoltageAC import getvoltageAC
 command = {
-  'getAcqType': getAcqType,
-  'getcommand': getcommand,
-  'getcurrentAC': getcurrentAC,
-  'getcurrentDC': getcurrentDC,
-  'getIDN': getIDN,
-  'getImpedanceChannel': getImpedanceChannel,
-  'getTrigMode': getTrigMode,
-  'getvoltageAC': getvoltageAC,
-  'getvoltageDC': getvoltageDC,
+  'setScale': setScale,
   'saveFileWaveform': saveFileWaveform,
-  'setAcqType': setAcqType,
-  'setcommand': setcommand,
+  'getAcqType': getAcqType,
+  'getcurrentDC': getcurrentDC,
   'setcurrentDC': setcurrentDC,
   'setdisplayscreen': setdisplayscreen,
   'setImpedanceChannel': setImpedanceChannel,
-  'setScale': setScale,
-  'setTrigMode': setTrigMode,
+  'getTrigMode': getTrigMode,
+  'getIDN': getIDN,
+  'setAcqType': setAcqType,
   'setvoltageDC': setvoltageDC,
+  'getcommand': getcommand,
+  'getImpedanceChannel': getImpedanceChannel,
+  'setcommand': setcommand,
+  'setTrigMode': setTrigMode,
+  'getcurrentAC': getcurrentAC,
+  'getvoltageDC': getvoltageDC,
+  'getvoltageAC': getvoltageAC,
 }

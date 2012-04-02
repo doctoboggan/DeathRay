@@ -61,7 +61,7 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
   def check(self):
     """
-    To check if the given device will work with CvoltageDC function (to avoid module from crashing).
+    To check if the given device will work with setvoltageDC function (to avoid module from crashing).
     Also, it check if the specified channel of certain device matchs the data base of the names of channels in that device.
     For ex: hpe3631a has only these channels: P25V, N25V, and P6V. If the user inputs anything unlike these names, the function will not work. to aviod that, we have a check method for that.   
     To check if the given device will work with CvoltagetDC function (avoiding issues).
