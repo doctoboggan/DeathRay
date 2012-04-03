@@ -25,7 +25,7 @@ The variables you **MUST** build are:
     It is a list of dictionaries, each dictionary corresponding to an item in the
     treeWidget (List on the left side of the window)
     Each dictionary must have the following keys (all of them are strings):
-      'plotType'   : 'spline', 'steps', 'sticks', or 'scatter' (str)
+      'plotType'   : 'line', 'spline', 'steps', 'sticks', or 'scatter' (str)
       'x-axis'     : label for the x axis (str)
       'y-axis'     : label for the y axis (str)
       'x-vector'   : vector representing the x-values (list or np-array)
@@ -97,5 +97,5 @@ Optional variables
       Should be a list of plot indexes used, eg: [1,2] means plots 1 and 2 should be reserved.
       This is used to let the Device Control window disable plots. If it is not specified the variables
       above will take precedence over any device commands selected through the GUI. This variable must
-      all be specified on one line
+      be specified on one line
 

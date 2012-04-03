@@ -19,13 +19,24 @@ class PlotWindow(QtGui.QMainWindow):
 
   def __init__(self, inputData=None, parent=None):
     QtGui.QWidget.__init__(self)
-    (self.savedPlotCommands, self.fpgaOutput, self.fpgaScriptName, self.logFile) = inputData
+    (self.savedPlotCommands, self.fpgaOutput, self.fpgaScriptName, self.logFilePath) = inputData
     self.ui = interface.Ui_MainWindow()
     self.ui.setupUi(self)
     
+    #If a script is selected, initialize the experiment and resize windows
+    if self.fpgaScriptName:
+      self.Experiment = fpga_scripts.experiment[self.fpgaScriptName][0].FileProcessor()
+      self.ui.splitter.setSizes([150, 500, 150])
+    else:
+      self.ui.splitter.setSizes([0, 500, 0])
+
+    #if a logfile is specified, open it for writing
+    if self.logFilePath:
+      self.logFile = open(self.logFilePath, 'w')
+      self.logFile.write('Unix Time, Measurement, Command, Device, GPIB-ID\n')
+
     #instance variables
     self.fileWatcher = QtCore.QFileSystemWatcher(self)
-    self.Experiment = fpga_scripts.experiment[self.fpgaScriptName][0].FileProcessor()
     self.plottingThreads = []
     self.keepPlotting = True
     self.deviceValues = [[],[],[],[]]
@@ -40,7 +51,8 @@ class PlotWindow(QtGui.QMainWindow):
     self.initUI()
 
     #run this immediately to see if the directory already has some files in it
-    self.directoryChanged()
+    if self.fpgaScriptName:
+      self.directoryChanged()
 
   def initUI(self):
     #Connect the signals and slots
@@ -56,10 +68,18 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
 
     #Set initial sizes
-    self.ui.splitter.setSizes([150, 500, 150])
     
-    #start off with no plots visible
-    self.setPlotNumber(0)
+    #set the correct number of plots visible
+    self.plotsUsed=0
+    if self.savedPlotCommands[0]:
+      self.plotsUsed=1
+    if self.savedPlotCommands[1]:
+      self.plotsUsed=2
+    if self.savedPlotCommands[2]:
+      self.plotsUsed=3
+    if self.savedPlotCommands[3]:
+      self.plotsUsed=4
+    self.setPlotNumber(self.plotsUsed)
 
 
   #############
@@ -88,7 +108,7 @@ class PlotWindow(QtGui.QMainWindow):
       self.updatePlots()
       self.updateDataTable()
     else:
-      if len(glob.glob(os.path.join(self.fpgaOutput, '*'))) > 0: #if there are files in the folder selected
+      if len(glob.glob(os.path.join(self.fpgaOutput, '*'))) > 0: #if there are files in the folder
         filesList = glob.glob(os.path.join(self.fpgaOutput, '*'))
         self.Experiment.reload(filesList)
         self.updateRunDisplay()
@@ -102,23 +122,31 @@ class PlotWindow(QtGui.QMainWindow):
 
 
   def newDataDetected(self, data, index):
-    #get time since the epoch
+    #get time since the epoch. use time.gmtime() to get this in a human readable format
     currentTime = time.time()
-    try:
+    try:#if the data converts to a float, we append it to our vector for plotting
       floatValue = float(data)
+      self.deviceTimes[index].append(currentTime)
+      self.deviceValues[index].append(floatValue)
     except ValueError:
-      floatValue = 0
-    self.deviceTimes[index].append(currentTime)
-    self.deviceValues[index].append(floatValue)
+      pass
+    xVector = np.array(self.deviceTimes[index][-50:])
+    yVector = np.array(self.deviceValues[index][-50:])
     plotData = [{
-        'x-vector': self.deviceTimes[index],
-        'y-vector': self.deviceValues[index],
-        'plotType': 'spline',
+        'x-vector': xVector - xVector[0],
+        'y-vector': yVector,
+        'plotType': 'lines',
         'x-axis': 'Time (s)',
-        'y-axis': self.savedPlotCommands[index][0]
+        'y-axis': self.savedPlotCommands[index][0]+' - '+self.savedPlotCommands[index][1][2]
         }]
-    self.plotLine(self.plots[index], plotData, 0)
+    self.plotLine(self.plots[index], plotData, 0, autoScale=False)
     print 'detected: ', data, index
+
+    #if a logfile is selected, we write a logline
+    if self.logFilePath:
+      command, args, kwargs, timeInterval = self.savedPlotCommands[index]
+      line = ', '.join([str(currentTime), str(data), str(command), str(args[2]), str(args[1])])
+      self.logFile.write(line+'\n')
  
   
 
@@ -152,16 +180,17 @@ class PlotWindow(QtGui.QMainWindow):
     index = self.ui.treeRun.indexFromItem(self.ui.treeRun.selectedItems()[0]).row()
     if hasattr(self.Experiment, 'processedData'):
       self.plotLine(self.ui.qwtPlot_1, self.Experiment.processedData, index)
-      self.setPlotNumber(1)
+      plotsUsed = 1
     if hasattr(self.Experiment, 'processedData2'):
       self.plotLine(self.ui.qwtPlot_2, self.Experiment.processedData2, index)
-      self.setPlotNumber(2)
+      plotsUsed = 1
     if hasattr(self.Experiment, 'processedData3'):
       self.plotLine(self.ui.qwtPlot_3, self.Experiment.processedData3, index)
-      self.setPlotNumber(3)
+      plotsUsed = 1
     if hasattr(self.Experiment, 'processedData4'):
       self.plotLine(self.ui.qwtPlot_4, self.Experiment.processedData4, index)
-      self.setPlotNumber(4)
+      plotsUsed = 1
+    self.setPlotNumber(max(plotsUsed, self.plotsUsed))
 
 
   def updateDataTable(self):
@@ -212,20 +241,27 @@ class PlotWindow(QtGui.QMainWindow):
       #Plot the first element in self.processedData
       self.updatePlots()
       self.updateDataTable()
-    else: #this means the user selected a directory
+    elif type(self.fpgaOutput) is str: #this means the user selected a directory
       self.fileWatcher.addPath(self.fpgaOutput)
 
 
   def spawnThreads(self):
+    '''Spawns a new thread for each plotting command selected by the user.
+    '''
     for index in range(len(self.savedPlotCommands)):
       if self.savedPlotCommands[index]:
         thread = Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
+        #store a reference so the thread isn't garbage collected.
         self.plottingThreads.append(thread)
+        #sleep between spawning threads or else the device will be overloaded with requests
         time.sleep(.5)
 
 
   def deviceHandler(self, plotCommand, plotNumber):
+    '''This method is spawned inside a thread. It polls the device according to the
+    time interval
+    '''
     command, args, kwargs, timeInterval = plotCommand
     commandObject = gpib_commands.command[command](*args, **kwargs)
     while self.keepPlotting:
@@ -234,7 +270,7 @@ class PlotWindow(QtGui.QMainWindow):
       time.sleep(timeInterval)
 
 
-  def plotLine(self, plot, processedData, index):
+  def plotLine(self, plot, processedData, index, autoScale=True):
     '''This method is used to plot and replot all the data.
     It has the ability to allow the caller to select which plot to draw to.
     The index is used to index into processedData. It is supplied by the runClicked method
@@ -268,6 +304,13 @@ class PlotWindow(QtGui.QMainWindow):
     if curveType == 'step':
       curve.setStyle(Qwt.QwtPlotCurve.Steps)
 
+    if curveType == 'lines':
+      curve.setStyle(Qwt.QwtPlotCurve.Lines)      
+      curve.setSymbol(Qwt.QwtSymbol(Qwt.QwtSymbol.Ellipse,
+                                  Qt.QBrush(),
+                                  Qt.QPen(Qt.Qt.black),
+                                  Qt.QSize(5, 5)))
+
     if curveType == 'sticks':
       curve.setPen(Qt.QPen(Qt.Qt.darkGreen, 6))    
       curve.setStyle(Qwt.QwtPlotCurve.Sticks)
@@ -297,6 +340,10 @@ class PlotWindow(QtGui.QMainWindow):
 
     plot.setAxisTitle(Qwt.QwtPlot.xBottom, processedData[index]['x-axis'])
     plot.setAxisTitle(Qwt.QwtPlot.yLeft, processedData[index]['y-axis'])
+    if not autoScale:
+      plot.setAxisScale(Qwt.QwtPlot.yLeft, 0, max(y)+.1*max(y),)
+    else:
+      plot.setAxisAutoScale(Qwt.QwtPlot.yLeft)
 
     plot.replot()
 

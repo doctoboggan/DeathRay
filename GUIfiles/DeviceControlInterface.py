@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'DeviceControlInterface.ui'
 #
-# Created: Mon Apr  2 03:29:26 2012
+# Created: Mon Apr  2 20:46:36 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 657, 79))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 657, 458))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.verticalLayout_14 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_14.setObjectName(_fromUtf8("verticalLayout_14"))
@@ -93,8 +93,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.addWidget(self.labelFPGALocation)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_16.addWidget(self.scrollArea)
-        spacerItem = QtGui.QSpacerItem(20, 369, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_16.addItem(spacerItem)
         self.tabWidgetMain.addTab(self.tab_7, _fromUtf8(""))
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
@@ -291,8 +289,8 @@ class Ui_MainWindow(object):
         self.pushButtonDelete.setText(QtGui.QApplication.translate("MainWindow", "Delete Command", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonDelete.setObjectName(_fromUtf8("pushButtonDelete"))
         self.verticalLayoutCommandButtons.addWidget(self.pushButtonDelete)
-        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayoutCommandButtons.addItem(spacerItem1)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayoutCommandButtons.addItem(spacerItem)
         self.pushButtonClear = QtGui.QPushButton(self.tab_5)
         self.pushButtonClear.setMaximumSize(QtCore.QSize(140, 16777215))
         self.pushButtonClear.setText(QtGui.QApplication.translate("MainWindow", "Clear All", None, QtGui.QApplication.UnicodeUTF8))
@@ -506,15 +504,15 @@ class Ui_MainWindow(object):
         self.pushButtonLogLocation.setText(QtGui.QApplication.translate("MainWindow", "Select Location", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonLogLocation.setObjectName(_fromUtf8("pushButtonLogLocation"))
         self.horizontalLayout_16.addWidget(self.pushButtonLogLocation)
-        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_16.addItem(spacerItem2)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_16.addItem(spacerItem1)
         self.verticalLayout_15.addLayout(self.horizontalLayout_16)
         self.labelLocationSelected = QtGui.QLabel(self.tab_4)
         self.labelLocationSelected.setText(QtGui.QApplication.translate("MainWindow", "No File Selected", None, QtGui.QApplication.UnicodeUTF8))
         self.labelLocationSelected.setObjectName(_fromUtf8("labelLocationSelected"))
         self.verticalLayout_15.addWidget(self.labelLocationSelected)
-        spacerItem3 = QtGui.QSpacerItem(20, 513, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_15.addItem(spacerItem3)
+        spacerItem2 = QtGui.QSpacerItem(20, 513, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout_15.addItem(spacerItem2)
         self.tabWidgetMain.addTab(self.tab_4, _fromUtf8(""))
         self.verticalLayout_12.addWidget(self.tabWidgetMain)
         self.horizontalLayout_14 = QtGui.QHBoxLayout()
@@ -528,8 +526,8 @@ class Ui_MainWindow(object):
         self.pushButtonLoadExperiment.setText(QtGui.QApplication.translate("MainWindow", "Load Experiment Setup", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonLoadExperiment.setObjectName(_fromUtf8("pushButtonLoadExperiment"))
         self.horizontalLayout_14.addWidget(self.pushButtonLoadExperiment)
-        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem4)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_14.addItem(spacerItem3)
         self.pushButtonDone = QtGui.QPushButton(self.centralwidget)
         self.pushButtonDone.setEnabled(True)
         self.pushButtonDone.setText(QtGui.QApplication.translate("MainWindow", "Start Experiment", None, QtGui.QApplication.UnicodeUTF8))
