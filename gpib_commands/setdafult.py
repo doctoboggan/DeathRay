@@ -1,25 +1,25 @@
-# Name: module_name
-# Made by: module_person by Using add module tool.
-# Date: module_date  (MM/DD/YY)
-# Goal: module_goal
-# Devcies:  1) module_device_one 2) module_device_two 3) module_device_three 4) module_device_four 5) module_device_five    #if they are more than five, creat with five. Than use edit module to add more devices. mention that in GUI.Also, do not forget '""'
+# Name: 
+# Made by:  by Using add module tool.
+# Date: 2012-04-03 04:50:17.046331  (MM/DD/YY)
+# Goal: 
+# Devcies:  1) '' 2) '' 3) '' 4) '' 5) ''    #if they are more than five, creat with five. Than use edit module to add more devices. mention that in GUI.Also, do not forget '""'
 # Modifiers:  None (for now) 
 # Dependancy: 1) QT GUI 
-# SCPI command: 1) module_device_one : ----> scpi_goal ===>  mdone_scpi
-#               2) module_device_two : ----> scpi_goal ===> mdtwo_scpi
-#               3) module_device_three: ----> scpi_goal ===> mdthree_scpi
-#               4) module_device_four: ----> scpi_goal ===> mdfour_scpi
-#               5) module_device_five: ----> scpi_goal ===> mdfive_scpi
+# SCPI command: 1) '' : ----> scpi_goal ===>  
+#               2) '' : ----> scpi_goal ===> 
+#               3) '': ----> scpi_goal ===> 
+#               4) '': ----> scpi_goal ===> 
+#               5) '': ----> scpi_goal ===> 
 # Result: module_result
 
 import data_acquisition
 
-class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):
+class setdafult(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):
 
   '''
   class_info
   '''
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device", firstinput secondinput thirdinput forthinput fifthinput timeout=2000): 
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device",   = "",    timeout=2000): 
 
     '''
     init_info
@@ -28,12 +28,12 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
     self.ip_id = IPad
     self.gpib_id = Gpibad
     self.name_of_device = namdev.lower()    #lower case the input 
-    self.rightDevice = [ module_device_one , module_device_two , module_device_three , module_device_four, module_device_five ]
-    #selfone
-    #selftwo
-    #selfthree
-    #selffour
-    #selffive
+    self.rightDevice = [ '' , '' , '' , '', '' ]
+    
+    
+    
+    
+    
     rise_on_error = 0
     data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
 
@@ -47,65 +47,65 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
         if self.timeout >= 300:      # hardcoded. Also, the number was choosen after several testing.
 
-          if self.name_of_device == module_device_one :
+          if self.name_of_device == '' :
 
-            # start configure module_device_one .     [START]
+            # start configure '' .     [START]
 
-            #first_check_start
-
-              return True
-
-            #first_check_end
-
-            # End of characteristics of module_device_one . [END]
-
-          elif self.name_of_device ==  module_device_two :
-
-            # start configure module_device_two .     [START]
-
-            #second_check_start
+            
 
               return True
 
-            #second_check_end
+            
 
-            # End of characteristics of module_device_two . [END]
+            # End of characteristics of '' . [END]
 
-          elif self.name_of_device ==  module_device_three :
+          elif self.name_of_device ==  '' :
 
-            # start configure module_device_three .     [START]
+            # start configure '' .     [START]
 
-            #third_check_start
-
-              return True
-
-            #third_check_end
-
-            # End of characteristics of module_device_three . [END]
-
-          elif self.name_of_device ==  module_device_four :
-
-            # start configure module_device_four .     [START]
-
-            #forth_check_start
+            
 
               return True
 
-            #forth_check_end
+            
 
-            # End of characteristics of module_device_four . [END]
+            # End of characteristics of '' . [END]
 
-          elif self.name_of_device ==  module_device_five :
+          elif self.name_of_device ==  '' :
 
-            # start configure module_device_five .     [START]
+            # start configure '' .     [START]
 
-            #fifth_check_start
+            
 
               return True
 
-            #fifth_check_end
+            
 
-            # End of characteristics of module_device_five . [END]
+            # End of characteristics of '' . [END]
+
+          elif self.name_of_device ==  '' :
+
+            # start configure '' .     [START]
+
+            
+
+              return True
+
+            
+
+            # End of characteristics of '' . [END]
+
+          elif self.name_of_device ==  '' :
+
+            # start configure '' .     [START]
+
+            
+
+              return True
+
+            
+
+            # End of characteristics of '' . [END]
 
 
           else:    #if we have another device, add elif argument here
@@ -134,9 +134,9 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
       print "PASS check test"         # For debug purpose
 
-      if self.name_of_device == module_device_one :
+      if self.name_of_device == '' :
 
-        result = self.transaction( mdone_scpi_input )                
+        result = self.write( _input )                
 
         if result[0] == 0:             #check if it times out.
 
@@ -149,23 +149,9 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
 
  
-      elif self.name_of_device == module_device_two :
+      elif self.name_of_device == '' :
 
-        result = self.transaction( mdtwo_scpi_input )                
-
-        if result[0] == 0:             #check if it times out.
-
-          return float(result[2])
-
-        else:
-
-          print  self.identify_vxi_11_error(result[0])      #print the error information.
-          return False, result[0]   # return the error number. 
-
-
-      elif self.name_of_device == module_device_three :
-
-        result = self.transaction( mdthree_scpi_input )                
+        result = self.write( '' )                
 
         if result[0] == 0:             #check if it times out.
 
@@ -177,13 +163,13 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
           return False, result[0]   # return the error number. 
 
 
-      if self.name_of_device == module_device_four :
+      elif self.name_of_device == '' :
 
-        result = self.transaction( mdfour_scpi_input )                
+        result = self.write( _input )                
 
         if result[0] == 0:             #check if it times out.
 
-          return result[2]
+          return float(result[2])
 
         else:
 
@@ -191,13 +177,29 @@ class nameofclass(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
           return False, result[0]   # return the error number. 
 
 
-      if self.name_of_device == module_device_five :
+      if self.name_of_device == '' :
 
-        result = self.transaction( mdfive_scpi_input )                
+        result = self.write( '' )                
 
         if result[0] == 0:             #check if it times out.
 
-          return result[2]
+          print "It works !!"
+           return True
+
+        else:
+
+          print  self.identify_vxi_11_error(result[0])      #print the error information.
+          return False, result[0]   # return the error number. 
+
+
+      if self.name_of_device == '' :
+
+        result = self.write( '' )                
+
+        if result[0] == 0:             #check if it times out.
+
+          print "It works !!"
+           return True
 
         else:
 

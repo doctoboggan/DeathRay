@@ -4,6 +4,7 @@
 import shutil 
 import datetime
 import re
+import sys
 
 # delete "result"
 # delete all "info"s
@@ -12,7 +13,7 @@ import re
 
 class add():
 
-  def __init__(self, checkk = True , nameofnewmdoule = 'dafult', module_name = '', module_person = '', module_goal = '', module_device_one = '', module_device_two = '', module_device_three = '', module_device_four = '', module_device_five = '', module_device_one_scpi = '', module_device_two_scpi = '', module_device_three_scpi = '', module_device_four_scpi = '', module_device_five_scpi = '', module_device_one_scpi_input = '', module_device_two_scpi_input = '', module_device_three_scpi_input = '', module_device_four_scpi_input = '', module_device_five_scpi_input = '', firstint = False, secondint = False, thirdint = False, fourthint = False, fifthint = False, firstf = False, secondf = False, thirdf = False, fourthf = False, fifthf = False, firststr = True, secondstr = True, thirdstr = True, forthstr = True, fifthstr = True, oneex = '', secondex = ''. threeex = '', fourex = '', fiveex = ''):
+  def __init__(self, checkk = True , nameofnewmdoule = 'dafult', module_name = '', module_person = '', module_goal = '', module_device_one = '', module_device_two = '', module_device_three = '', module_device_four = '', module_device_five = '', module_device_one_scpi = '', module_device_two_scpi = '', module_device_three_scpi = '', module_device_four_scpi = '', module_device_five_scpi = '', module_device_one_scpi_input = '', module_device_two_scpi_input = '', module_device_three_scpi_input = '', module_device_four_scpi_input = '', module_device_five_scpi_input = '', firstint = False, secondint = False, thirdint = False, fourthint = False, fifthint = False, firstf = False, secondf = False, thirdf = False, fourthf = False, fifthf = False, firststr = True, secondstr = True, thirdstr = True, forthstr = True, fifthstr = True, oneex = '', twoex = '', threeex = '', fourex = '', fiveex = ''):
 
     self.name = nameofnewmdoule
     self.replace_dic = {}
@@ -36,17 +37,17 @@ class add():
     self.f = module_device_three
     self.g = module_device_four
     self.h = module_device_five
-    self.i = module_device_one_scpi   # here, we have to divide it if it contains extra info (channels,...)
+    self.i = module_device_one_scpi   # here, the first part of SCPI command
     self.j = module_device_two_scpi
     self.k = module_device_three_scpi
     self.l = module_device_four_scpi
     self.m = module_device_five_scpi
-    self.ii = module_device_one_scpi_input
+    self.ii = module_device_one_scpi_input    # a name of the input  (second part of second command)
     self.jj = module_device_two_scpi_input
     self.kk = module_device_three_scpi_input
     self.ll = module_device_four_scpi_input
     self.mm = module_device_five_scpi_input
-    self.iii = oneex
+    self.iii = oneex  # a dafult example forunputs
     self.jjj = twoex
     self.kkk = threeex
     self.lll = fourex
@@ -71,15 +72,25 @@ class add():
     self.ek = ''
     self.el = ''
     self.em = ''
+    self.ci = ''  # these are for saving the final shape of 
+    self.cj = ''
+    self.ck = ''
+    self.cl = ''
+    self.cm = ''
+    self.ai = ''    # these are for saving the final output comment
+    self.aj = ''
+    self.ak = ''
+    self.al = ''
+    self.am = ''
     self.n = firstint
     self.nn = secondint
     self.nnn = thirdint
-    self.nnnn = forthint
+    self.nnnn = fourthint
     self.nnnnn = fifthint
     self.o = firstf
     self.oo = secondf
     self.ooo = thirdf
-    self.oooo = forthf
+    self.oooo = self
     self.ooooo = fifthf
     self.p = firststr
     self.pp = secondstr
@@ -161,7 +172,7 @@ class add():
       self.iiii = self.ii+' = "'+self.iii+'",'
     else:
       self.iiii = ''
-    if self.jj = '':
+    if self.jj == '':
       self.jjjj = self.jj+' = "'+self.jjj+'",'
     else:
       self.jjjj = ''
@@ -212,11 +223,11 @@ class add():
       elif self.o == True:
         self.bi = "if type("+self.si+") is float:\n  (one tap) try:\n     "+self.si+" = float("+self.si+")"
       elif self.p == True: 
-        self.bi = "if type("+self.si+") is str:
+        self.bi = "if type("+self.si+") is str:"
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
-    else
+        
+    else:
       self.bi = ''
 
 
@@ -230,16 +241,16 @@ class add():
       elif self.oo == True:
         self.bi = "if type("+self.si+") is float:\n  (one tap) try:\n     "+self.sj+" = float("+self.sj+")"
       elif self.pp == True: 
-        self.bj = "if type("+self.sj+") is str:
+        self.bj = "if type("+self.sj+") is str:"
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.bj = ''
 
 
 
-    if self.kk != ''
+    if self.kk != '':
       if self.nnn == True:
         if self.ooo == True:
           self.bk = "if type("+self.sk+") is int or type("+self.sk+") is float:\n  (one tap) try:\n     "+self.sk+" = float("+self.sk+")"
@@ -248,10 +259,10 @@ class add():
       elif self.ooo == True:
         self.bk = "if type("+self.sk+") is float:\n  (one tap) try:\n     "+self.sk+" = float("+self.sk+")"
       elif self.ppp == True: 
-        self.bk = "if type("+self.sk+") is str:
+        self.bk = "if type("+self.sk+") is str:"
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.bk = ''
 
@@ -261,15 +272,15 @@ class add():
       if self.nnnn == True:
         if self.oooo == True:
           self.bl = "if type("+self.sl+") is int or type("+self.sl+") is float:\n  (one tap) try:\n     "+self.sl+" = float("+self.sl+")"
-        else:
+        else: 
           self.bl = "if type("+self.sl+") is int:\n  (one tap) try:\n     "+self.sj+" = int("+self.sl+")"
       elif self.oooo == True:
         self.bl = "if type("+self.sl+") is float:\n  (one tap) try:\n     "+self.sl+" = float("+self.sl+")"
       elif self.pppp == True: 
-        self.bl = "if type("+self.sl+") is str:
+        self.bl = "if type("+self.sl+") is str:"
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.bl = ''
 
@@ -284,10 +295,10 @@ class add():
       elif self.ooooo == True:
         self.bl = "if type("+self.sm+") is float:\n  (one tap) try:\n     "+self.sm+" = float("+self.sm+")"
       elif self.ppppp == True: 
-        self.bm = "if type("+self.sm+") is str:
+        self.bm = "if type("+self.sm+") is str:"
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.bm = ''
 
@@ -323,8 +334,8 @@ class add():
             return False, 's'"""
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
-    else
+        sys.exit()
+    else:
       self.ei = ''
 
 
@@ -354,13 +365,13 @@ class add():
             return False, 's'"""
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.ej = ''
 
 
 
-    if self.kk != ''
+    if self.kk != '':
       if self.nnn == True:
         if self.ooo == True:
           self.ek ="""            except ValueError:
@@ -385,7 +396,7 @@ class add():
             return False, 's'"""
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.ek = ''
 
@@ -416,7 +427,7 @@ class add():
             return False, 's'"""
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.el = ''
 
@@ -447,17 +458,73 @@ class add():
             return False, 's'"""
       else:
         print "WHY YOU CHOOSE AN INPUT WHILE YOU DO NOT TELL ME THE TYPE!! I AM NOT SMART... BECAUSE OF THAT I AM GOING TO CRY BY STOPING THE TOOL AND CRASH"
-        break
+        sys.exit()
     else:
       self.el = ''
 
+  def finalscpi(self):    # to adjust the final scpi output (in case of an innput or not)
 
+    if self.ii != '':
+      self.ci = "'"+self.i+' "+'+self.si
+    else:
+      self.ci = "'"+self.i+"'"
+    
+    if self.jj != '':
+      self.cj = "'"+self.j+' "+'+self.sj
+    else:
+      self.cj = "'"+self.j+"'"
+
+    if self.kk != '':
+      self.ck = "'"+self.k+' "+'+self.sk
+    else:
+      self.ck = "'"+self.k+"'"
+
+    if self.ll != '':
+      self.cl = "'"+self.l+' "+'+self.sl
+    else:
+      self.cl = "'"+self.l+"'"
+
+    if self.mm != '':
+      self.cm = "'"+self.m+' "+'+self.sm
+    else:
+      self.cm = "'"+self.m+"'"
+
+  def scpicomment(self):
+
+    if self.ii != '':
+      self.ai = "'"+self.i+"' <"+self.ii+">"
+    else:
+      self.ai = ''
+
+    if self.jj != '':
+      self.aj = "'"+self.j+"' <"+self.jj+">"
+    else:
+      self.aj = ''
+
+    if self.kk != '':
+      self.ak = "'"+self.k+"' <"+self.kk+">"
+    else:
+      self.ak = ''
+
+    if self.ll != '':
+      self.al = "'"+self.l+"' <"+self.ll+">"
+    else:
+      self.al = ''
+
+    if self.mm != '':
+      self.am = "'"+self.m+"' <"+self.mm+">"
+    else:
+      self.am = ''
+
+  
 
   def repl(self):
 
     self.dafultinput()
     self.selfness()
     self.basicinputcheck()
+    self.finalscpi()
+    self.scpicomment()
 
     self.replace_dic = {
     'module_name': self.a,
@@ -469,11 +536,11 @@ class add():
     'module_device_three': "'"+self.f+"'",
     'module_device_four': "'"+self.g+"'",
     'module_device_five': "'"+self.h+"'",
-    'module_device_one_scpi': "'"+self.i+"'",
-    'module_device_two_scpi': "'"+self.j+"'",
-    'module_device_three_scpi': "'"+self.k+"'",
-    'module_device_four_scpi': "'"+self.l+"'",
-    'module_device_five_scpi': "'"+self.m+"'",
+    'mdone_scpi': self.ai,
+    'mdtwo_scpi': self.aj,
+    'mdthree_scpi': self.ak,
+    'mdfour_scpi': self.al,
+    'mdfive_scpi': self.am,
     'firstinput' : self.iiii,
     'secondinput' : self.jjjj,
     'thirdinput' : self.kkkk,
@@ -484,11 +551,11 @@ class add():
     '#selfthree' : self.sk,
     '#selffour' : self.sl,
     '#selffive' : self.sm,
-    'module_device_one_scpi_input' : "'"+self.ii+' "+'+self.si,
-    'module_device_two_scpi_input' : "'"+self.jj+' "+'+self.sj,
-    'module_device_three_scpi_input' : "+"self.kk+' "'+self.sk,
-    'module_device_four_scpi_input' : "+"self.ll+' "'+self.sl,
-    'module_device_one_scpi_input' : "+"self.mm+' "'+self.sm,
+    'mdone_scpi_input' : self.ci,
+    'mdtwo_scpi_input' : self.cj,
+    'mdthree_scpi_input' : self.ck,
+    'mdfour_scpi_input' : self.cl,
+    'mdfive_scpi_input' : self.cm,
     '#first_check_start' : self.bi,
     '#second_check_start' : self.bj,
     '#third_check_start' : self.bk,
