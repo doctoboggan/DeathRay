@@ -14,4 +14,4 @@ Anas Alfuntukh
 Jack Minardi
 
 Installation: 
- --> just install "setup.sh"
+sudo ./setup.sh
