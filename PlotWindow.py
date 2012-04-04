@@ -128,18 +128,18 @@ class PlotWindow(QtGui.QMainWindow):
       floatValue = float(data)
       self.deviceTimes[index].append(currentTime)
       self.deviceValues[index].append(floatValue)
-    except ValueError:
+      xVector = np.array(self.deviceTimes[index][-50:])
+      yVector = np.array(self.deviceValues[index][-50:])
+      plotData = [{
+          'x-vector': xVector - xVector[0],
+          'y-vector': yVector,
+          'plotType': 'lines',
+          'x-axis': 'Time (s)',
+          'y-axis': self.savedPlotCommands[index][0]+' - '+self.savedPlotCommands[index][1][2]
+          }]
+      self.plotLine(self.plots[index], plotData, 0, autoScale=False)
+    except ValueError:#The returned value couldn't be converted to a float
       pass
-    xVector = np.array(self.deviceTimes[index][-50:])
-    yVector = np.array(self.deviceValues[index][-50:])
-    plotData = [{
-        'x-vector': xVector - xVector[0],
-        'y-vector': yVector,
-        'plotType': 'lines',
-        'x-axis': 'Time (s)',
-        'y-axis': self.savedPlotCommands[index][0]+' - '+self.savedPlotCommands[index][1][2]
-        }]
-    self.plotLine(self.plots[index], plotData, 0, autoScale=False)
     print 'detected: ', data, index
 
     #if a logfile is selected, we write a logline
