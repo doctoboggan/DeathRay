@@ -27,6 +27,10 @@ class PlotWindow(QtGui.QMainWindow):
     if self.fpgaScriptName:
       self.Experiment = fpga_scripts.experiment[self.fpgaScriptName][0].FileProcessor()
       self.ui.splitter.setSizes([150, 500, 150])
+      #start the file watcher
+      self.fileWatcher = QtCore.QFileSystemWatcher(self)
+      self.startFileWatcher()
+      self.connect(self.fileWatcher, QtCore.SIGNAL('directoryChanged(QString)'), self.directoryChanged)
     else:
       self.ui.splitter.setSizes([0, 500, 0])
 
@@ -36,15 +40,12 @@ class PlotWindow(QtGui.QMainWindow):
       self.logFile.write('Unix Time, Measurement, Command, Device, GPIB-ID\n')
 
     #instance variables
-    self.fileWatcher = QtCore.QFileSystemWatcher(self)
     self.plottingThreads = []
     self.keepPlotting = True
     self.deviceValues = [[],[],[],[]]
     self.deviceTimes = [[],[],[],[]]
     self.plots = [self.ui.qwtPlot_1, self.ui.qwtPlot_2, self.ui.qwtPlot_3, self.ui.qwtPlot_4]
     
-    #start the file watcher
-    self.startFileWatcher()
 
     self.spawnThreads()
 
@@ -61,7 +62,6 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self.ui.actionThree_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(3)) 
     self.connect(self.ui.actionFour_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(4))
     self.connect(self.ui.treeRun, QtCore.SIGNAL('itemSelectionChanged()'), self.runClicked)
-    self.connect(self.fileWatcher, QtCore.SIGNAL('directoryChanged(QString)'), self.directoryChanged)
     self.connect(self, QtCore.SIGNAL('newData0(QString)'), lambda x: self.newDataDetected(x, 0))
     self.connect(self, QtCore.SIGNAL('newData1(QString)'), lambda x: self.newDataDetected(x, 1))
     self.connect(self, QtCore.SIGNAL('newData2(QString)'), lambda x: self.newDataDetected(x, 2))
