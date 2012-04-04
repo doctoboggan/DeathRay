@@ -66,9 +66,8 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self, QtCore.SIGNAL('newData1(QString)'), lambda x: self.newDataDetected(x, 1))
     self.connect(self, QtCore.SIGNAL('newData2(QString)'), lambda x: self.newDataDetected(x, 2))
     self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
+    self.connect(self, QtCore.SIGNAL('threadCrashed(int)'), self.spawnThreads)
 
-    #Set initial sizes
-    
     #set the correct number of plots visible
     self.plotsUsed=0
     if self.savedPlotCommands[0]:
@@ -131,15 +130,16 @@ class PlotWindow(QtGui.QMainWindow):
       xVector = np.array(self.deviceTimes[index][-50:])
       yVector = np.array(self.deviceValues[index][-50:])
       plotData = [{
-          'x-vector': xVector - xVector[0],
+          'x-vector': xVector - self.deviceTimes[index][0],
           'y-vector': yVector,
           'plotType': 'lines',
           'x-axis': 'Time (s)',
           'y-axis': self.savedPlotCommands[index][0]+' - '+self.savedPlotCommands[index][1][2]
           }]
       self.plotLine(self.plots[index], plotData, 0, autoScale=False)
+      self.ui.statusbar.showMessage('')
     except ValueError:#The returned value couldn't be converted to a float
-      pass
+      self.ui.statusbar.showMessage('Failed to convert return falue to float: '+str(data)+' '+str(index))
     print 'detected: ', data, index
 
     #if a logfile is selected, we write a logline
@@ -245,10 +245,11 @@ class PlotWindow(QtGui.QMainWindow):
       self.fileWatcher.addPath(self.fpgaOutput)
 
 
-  def spawnThreads(self):
+  def spawnThreads(self, indexes=[0,1,2,3]):
     '''Spawns a new thread for each plotting command selected by the user.
     '''
-    for index in range(len(self.savedPlotCommands)):
+    for index in indexes:
+      print 'spawning thread ', index
       if self.savedPlotCommands[index]:
         thread = Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
@@ -265,8 +266,12 @@ class PlotWindow(QtGui.QMainWindow):
     command, args, kwargs, timeInterval = plotCommand
     commandObject = gpib_commands.command[command](*args, **kwargs)
     while self.keepPlotting:
-      result = commandObject.do()
-      self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
+      try:
+        result = commandObject.do()
+        self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
+      except:
+        print 'thread ', str(plotNumber), ' crashed'
+        self.emit(QtCore.SIGNAL('threadCrashed(int)'), [plotNumber])
       time.sleep(timeInterval)
 
 
@@ -331,17 +336,18 @@ class PlotWindow(QtGui.QMainWindow):
     curve.attach(plot)
 
     #allow the user to select and zoom in on sections (right-click to recenter)
-    self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
-                                        Qwt.QwtPlot.yLeft,
-                                        Qwt.QwtPicker.DragSelection,
-                                        Qwt.QwtPicker.AlwaysOff,
-                                        plot.canvas())
-    self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
+    #buggy - enable with care
+    #self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
+    #                                    Qwt.QwtPlot.yLeft,
+    #                                    Qwt.QwtPicker.DragSelection,
+    #                                    Qwt.QwtPicker.AlwaysOff,
+    #                                    plot.canvas())
+    #self.zoomer.setRubberBandPen(Qt.QPen(Qt.Qt.green))
 
     plot.setAxisTitle(Qwt.QwtPlot.xBottom, processedData[index]['x-axis'])
     plot.setAxisTitle(Qwt.QwtPlot.yLeft, processedData[index]['y-axis'])
     if not autoScale:
-      plot.setAxisScale(Qwt.QwtPlot.yLeft, 0, max(y)+.1*max(y),)
+      plot.setAxisScale(Qwt.QwtPlot.yLeft, min(0,max(y)+.1*max(y)), max(max(y)+.1*max(y), 0))
     else:
       plot.setAxisAutoScale(Qwt.QwtPlot.yLeft)
 
