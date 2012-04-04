@@ -40,7 +40,7 @@ class PlotWindow(QtGui.QMainWindow):
       self.logFile.write('Unix Time, Measurement, Command, Device, GPIB-ID\n')
 
     #instance variables
-    self.plottingThreads = []
+    self.plottingThreads = [None, None, None, None]
     self.keepPlotting = True
     self.deviceValues = [[],[],[],[]]
     self.deviceTimes = [[],[],[],[]]
@@ -254,7 +254,7 @@ class PlotWindow(QtGui.QMainWindow):
         thread = Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
         #store a reference so the thread isn't garbage collected.
-        self.plottingThreads.append(thread)
+        self.plottingThreads[index] = thread
         #sleep between spawning threads or else the device may be overloaded with requests
         time.sleep(.5)
 
@@ -341,7 +341,7 @@ class PlotWindow(QtGui.QMainWindow):
     curve.attach(plot)
 
     #allow the user to select and zoom in on sections (right-click to recenter)
-    #buggy - enable with care
+    #buggy - enable with caution
     #self.zoomer = Qwt.QwtPlotZoomer(Qwt.QwtPlot.xBottom,
     #                                    Qwt.QwtPlot.yLeft,
     #                                    Qwt.QwtPicker.DragSelection,
