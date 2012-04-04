@@ -66,7 +66,7 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self, QtCore.SIGNAL('newData1(QString)'), lambda x: self.newDataDetected(x, 1))
     self.connect(self, QtCore.SIGNAL('newData2(QString)'), lambda x: self.newDataDetected(x, 2))
     self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
-    self.connect(self, QtCore.SIGNAL('threadCrashed(int)'), self.spawnThreads)
+    self.connect(self, QtCore.SIGNAL('threadCrashed(int)'), lambda x: self.spawnThreads([x]))
 
     #set the correct number of plots visible
     self.plotsUsed=0
@@ -249,13 +249,13 @@ class PlotWindow(QtGui.QMainWindow):
     '''Spawns a new thread for each plotting command selected by the user.
     '''
     for index in indexes:
-      print 'spawning thread ', index
       if self.savedPlotCommands[index]:
+        print 'spawning thread ', index
         thread = Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
         #store a reference so the thread isn't garbage collected.
         self.plottingThreads.append(thread)
-        #sleep between spawning threads or else the device will be overloaded with requests
+        #sleep between spawning threads or else the device may be overloaded with requests
         time.sleep(.5)
 
 
@@ -264,14 +264,19 @@ class PlotWindow(QtGui.QMainWindow):
     time interval
     '''
     command, args, kwargs, timeInterval = plotCommand
-    commandObject = gpib_commands.command[command](*args, **kwargs)
+    try:
+      commandObject = gpib_commands.command[command](*args, **kwargs)
+    except:
+      self.emit(QtCore.SIGNAL('threadCrashed(int)'), plotNumber)
+      return
     while self.keepPlotting:
       try:
         result = commandObject.do()
         self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
       except:
         print 'thread ', str(plotNumber), ' crashed'
-        self.emit(QtCore.SIGNAL('threadCrashed(int)'), [plotNumber])
+        self.emit(QtCore.SIGNAL('threadCrashed(int)'), plotNumber)
+        return
       time.sleep(timeInterval)
 
 
