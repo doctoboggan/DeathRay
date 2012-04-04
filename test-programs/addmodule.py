@@ -189,7 +189,7 @@ class add():
     else:
       self.mmmm = ''
 
-  def selfness (self):
+  def selfness(self):
 
     if self.ii != '':
       self.si = "self."+self.ii

@@ -61,7 +61,7 @@ class getcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
       if type(self.timeout) is float or type(self.timeout) is int:
 
-        if self.timeout >= 2500:      # hardcoded. Also, the number was choosen after several testing.
+        if self.timeout >= 2000:      # hardcoded. Also, the number was choosen after several testing.
 
           if self.name_of_device == 'e3631a':
 
