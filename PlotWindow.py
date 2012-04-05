@@ -23,6 +23,18 @@ class PlotWindow(QtGui.QMainWindow):
     self.ui = interface.Ui_MainWindow()
     self.ui.setupUi(self)
     
+    #set the correct number of plots visible
+    self.plotsUsed=0
+    if self.savedPlotCommands[0]:
+      self.plotsUsed=1
+    if self.savedPlotCommands[1]:
+      self.plotsUsed=2
+    if self.savedPlotCommands[2]:
+      self.plotsUsed=3
+    if self.savedPlotCommands[3]:
+      self.plotsUsed=4
+    self.setPlotNumber(self.plotsUsed) 
+
     #If a script is selected, initialize the experiment and resize windows
     if self.fpgaScriptName:
       self.Experiment = fpga_scripts.experiment[self.fpgaScriptName][0].FileProcessor()
@@ -45,7 +57,6 @@ class PlotWindow(QtGui.QMainWindow):
     self.deviceValues = [[],[],[],[]]
     self.deviceTimes = [[],[],[],[]]
     self.plots = [self.ui.qwtPlot_1, self.ui.qwtPlot_2, self.ui.qwtPlot_3, self.ui.qwtPlot_4]
-    
 
     self.spawnThreads()
 
@@ -68,17 +79,7 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
     self.connect(self, QtCore.SIGNAL('threadCrashed(int)'), lambda x: self.spawnThreads([x]))
 
-    #set the correct number of plots visible
-    self.plotsUsed=0
-    if self.savedPlotCommands[0]:
-      self.plotsUsed=1
-    if self.savedPlotCommands[1]:
-      self.plotsUsed=2
-    if self.savedPlotCommands[2]:
-      self.plotsUsed=3
-    if self.savedPlotCommands[3]:
-      self.plotsUsed=4
-    self.setPlotNumber(self.plotsUsed)
+
 
 
   #############
@@ -237,6 +238,7 @@ class PlotWindow(QtGui.QMainWindow):
     '''
     if type(self.fpgaOutput) is list: #This means the user selected one or more files
       self.fileWatcher.addPath(os.path.dirname(self.fpgaOutput[-1]))
+      self.Experiment.reload(self.fpgaOutput)
       self.updateRunDisplay()
       #Plot the first element in self.processedData
       self.updatePlots()

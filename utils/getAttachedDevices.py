@@ -22,7 +22,7 @@ class getAttachedDevices():
   def do(self):
     for x in range(0,self.numberOfDevices-1):
       gpibID = 'gpib0,' + str(x).rjust(2,'0')
-      IDNResponse = getIDN(self.ip,gpibID).do()
+      IDNResponse = getIDN(self.ip,gpibID, timeout=500).do()
       if IDNResponse:
         self.attachedDevices.append(IDNResponse.split(',')[1].lower())
         self.attachedGPIB.append(gpibID)

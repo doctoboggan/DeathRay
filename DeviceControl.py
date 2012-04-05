@@ -40,6 +40,8 @@ class DeviceControl(QtGui.QMainWindow):
                           self.ui.doubleSpinBoxPlot3, self.ui.doubleSpinBoxPlot4]
     self.plotButtons = [self.ui.pushButtonPlot1, self.ui.pushButtonPlot2,
                         self.ui.pushButtonPlot3, self.ui.pushButtonPlot4]
+    self.clearPlotButtons = [self.ui.pushButtonClearPlot1, self.ui.pushButtonClearPlot2,
+                             self.ui.pushButtonClearPlot3, self.ui.pushButtonClearPlot4]
 
     #Initialize the UI
     self.initUI()
@@ -168,9 +170,9 @@ class DeviceControl(QtGui.QMainWindow):
     '''Find the attached devices, call findArguments, then update the device display widget
     '''
     self.IP = str(self.ui.lineEditIP.text())
-    #self.deviceList, self.GPIBlist = utils.getAttachedDevices(self.IP, 30).fix()
-    self.deviceList = ['DSO6032A', 'E3631A', '34401A']
-    self.GPIBlist = ['gpib0,07', 'gpib0,10', 'gpib0,22']
+    self.deviceList, self.GPIBlist = utils.getAttachedDevices(self.IP, 30).do()
+    #self.deviceList = ['DSO6032A', 'E3631A', '34401A']
+    #self.GPIBlist = ['gpib0,07', 'gpib0,10', 'gpib0,22']
 
     self.findArguments()
     self.updateDeviceList()
@@ -370,6 +372,7 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui.pushButtonSaveExperiment.setEnabled(True)
     for plotIndex in range(len(self.plotButtons)):
       self.plotButtons[plotIndex].setEnabled(True)
+      self.clearPlotButtons[plotIndex].setEnabled(True)
       if self.plotLabels[plotIndex].text() == 'FPGA Plot':
         self.plotLabels[plotIndex].setText('')
       self.plotSpinBoxes[plotIndex].setEnabled(True)
@@ -382,6 +385,7 @@ class DeviceControl(QtGui.QMainWindow):
         self.plotButtons[plotIndex-1].setEnabled(False)
         self.plotLabels[plotIndex-1].setText('FPGA Plot')
         self.plotSpinBoxes[plotIndex-1].setEnabled(False)
+        self.clearPlotButtons[plotIndex-1].setEnabled(False)
 
 
   def logDataClicked(self):
