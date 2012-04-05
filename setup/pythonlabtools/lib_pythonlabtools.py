@@ -13,7 +13,7 @@ setup(name='pythonlabtools',
       author='Marcus Mendenhall',
       author_email='marcus.h.mendenhall@Vanderbilt.Edu',
       packages=['data_acquisition'],
-      package_dir={ 'data_acquisition': './interfaces/pythonlabtools/data_acquisition'},
+      package_dir={ 'data_acquisition': './setup/pythonlabtools/data_acquisition'},
       requires=['numeric'],
       provides=['data_acquisition']
      )

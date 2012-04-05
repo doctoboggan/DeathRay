@@ -3,10 +3,12 @@
 import sys, os, glob, cPickle
 
 from PyQt4 import QtCore, QtGui, Qt
-from GUIfiles import DeviceControlInterface
+from interfaces import DeviceControlInterface
 from PlotWindow import PlotWindow
+from utils import Thread
+from utils import getAttachedDevices
 
-import utils, gpib_commands, fpga_scripts
+import gpib_commands, fpga_scripts
 
 from pdb import set_trace as bp #DEBUGING
 
@@ -75,6 +77,8 @@ class DeviceControl(QtGui.QMainWindow):
     self.connect(self.ui.pushButtonSelectFile, QtCore.SIGNAL('clicked()'), self.selectFileClicked)
     self.connect(self.ui.pushButtonSelectFolder, QtCore.SIGNAL('clicked()'), self.selectFolderClicked)
     self.connect(self.ui.pushButtonLogLocation, QtCore.SIGNAL('clicked()'), self.logClicked)
+      #thread slots
+    self.connect(self, QtCore.SIGNAL('foundDevices()'), self.devicesFound)
       #misc slots
     self.connect(self.ui.tabWidgetDevices, QtCore.SIGNAL('currentChanged(int)'), self.tabChanged)
     self.connect(self.ui.comboBoxFPGA, QtCore.SIGNAL('currentIndexChanged(int)'), self.fpgaComboChanged)
@@ -167,17 +171,15 @@ class DeviceControl(QtGui.QMainWindow):
 ##############################
  
   def findDevicesClicked(self):
-    '''Find the attached devices, call findArguments, then update the device display widget
+    '''Spawns a new thread to search for attached devices
     '''
     self.IP = str(self.ui.lineEditIP.text())
-    self.deviceList, self.GPIBlist = utils.getAttachedDevices(self.IP, 30).do()
-    #self.deviceList = ['DSO6032A', 'E3631A', '34401A']
-    #self.GPIBlist = ['gpib0,07', 'gpib0,10', 'gpib0,22']
-
-    self.findArguments()
-    self.updateDeviceList()
-    self.ui.splitter_vert.setVisible(True)
-    self.ui.splitter_top.setVisible(True)
+    self.ui.statusbar.showMessage('Searching for devices, this may take about 30 seconds')
+    self.ui.pushButtonFindDevices.setEnabled(False)
+    self.ui.pushButtonFindDevices.setText('Searching...')
+    thread = Thread.Thread(self.findDevices, self.IP)
+    thread.start()
+    self.thread = thread
 
 
   def testClicked(self):
@@ -188,7 +190,6 @@ class DeviceControl(QtGui.QMainWindow):
     commandObject = gpib_commands.command[command](*args, **kwargs)
     self.usedCommands.append(commandObject)
     result = str(self.usedCommands[-1].do())
-
     self.ui.lineEditResult.setText(result)
 
 
@@ -398,6 +399,18 @@ class DeviceControl(QtGui.QMainWindow):
       self.logFile = ''
 
 
+  def devicesFound(self):
+    '''Slot that is called when the thread indicates it has found the attached devices
+    '''
+    self.ui.statusbar.showMessage('')
+    self.ui.pushButtonFindDevices.setEnabled(True)
+    self.ui.pushButtonFindDevices.setText('Find Devices')
+    self.findArguments()
+    self.updateDeviceList()
+    self.ui.splitter_vert.setVisible(True)
+    self.ui.splitter_top.setVisible(True)
+
+
 
 ##########################
 #### HELPER METHODS
@@ -487,6 +500,8 @@ class DeviceControl(QtGui.QMainWindow):
 
 
   def executeSavedCommands(self):
+    '''Called when the user clicks Start Experiment. It attempts to execute all saved commands
+    '''
     for command, args, kwargs in self.savedCommands:
       commandObject = gpib_commands.command[command](*args, **kwargs)
       self.usedCommands.append(commandObject)
@@ -505,6 +520,16 @@ class DeviceControl(QtGui.QMainWindow):
           self.savedPlotCommands[index].append(timeInterval)
         else:
           self.savedPlotCommands[index][3] = timeInterval
+
+
+  def findDevices(self, IP):
+    '''Find the attached devices. This method is spawned in a thread
+    '''
+    self.deviceList, self.GPIBlist = getAttachedDevices.getAttachedDevices(IP, 30).do()
+    #self.deviceList = ['DSO6032A', 'E3631A', '34401A']
+    #self.GPIBlist = ['gpib0,07', 'gpib0,10', 'gpib0,22']
+    self.emit(QtCore.SIGNAL('foundDevices()'))
+
   
 
 if __name__ == "__main__":

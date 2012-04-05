@@ -3,7 +3,7 @@
 import sys, os, glob, time
 
 from PyQt4 import QtCore, QtGui, Qt
-from GUIfiles import interface
+from interfaces import interface
 import PyQt4.Qwt5 as Qwt
 import numpy as np
 
@@ -253,7 +253,7 @@ class PlotWindow(QtGui.QMainWindow):
     for index in indexes:
       if self.savedPlotCommands[index]:
         print 'spawning thread ', index
-        thread = Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
+        thread = Thread.Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
         #store a reference so the thread isn't garbage collected.
         self.plottingThreads[index] = thread

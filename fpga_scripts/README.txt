@@ -1,19 +1,24 @@
-This class takes as input a list of files to open.
-It is designed to be imported by the main GUI window and to expose a few variables and
-a method.
+To use the fpga API, you need to build a class called FileProcessor. There are two methods and
+three instance variables you must build, which are liste below. There are also some optional
+variables you can define, which are listed at the bottom of this file. See the two example files
+in this folder to see how this is implemented. Once you build your file, place it in this folder
+and run the following command from the main DeathRay folder:
+
+  ./deathray.py reload
+
 
 The methods you **MUST** build are:
 
-  1) __init__(self, fpgaOutputFile)
+  1) __init__(self)
     
-      The __init__ method of this class must accept as a string the path to the FPGA output
-      file. You must make sure all three of the variables listed below are initialized by
-      the time this method returns, as DeathRay expects them.
+      The __init__ method of this class must accept no arguments other than self.
+      If you are using the optional plotsUsed argument listed below, it needs to
+      be set here.
 
-  2) reloadData(self):
+  2) load(self, fpgaOutputFile(s)):
 
-      This method must take no additional arguments. It will be called whenever a change is
-      detected in the fpgaOutputFile. You should use this method to open the fpgaOutputFile,
+      This method must accept a list of output files. It will be called whenever a change is
+      detected in the fpgaOutputFile(s). You should use this method to open the fpgaOutputFile(s),
       find the changes and then update the three variables below.
 
 
@@ -57,7 +62,7 @@ The variables you **MUST** build are:
     
     Each list inside that outermost list also contains lists representing the columns in the
     table from left to right. However the first list is a list of the column headers. Maybe
-    an example will help
+    an example will help:
 
     [
       [
@@ -97,5 +102,5 @@ Optional variables
       Should be a list of plot indexes used, eg: [1,2] means plots 1 and 2 should be reserved.
       This is used to let the Device Control window disable plots. If it is not specified the variables
       above will take precedence over any device commands selected through the GUI. This variable must
-      be specified on one line
+      be specified on one line and in the __init__() method.
 
