@@ -52,7 +52,7 @@ class PlotWindow(QtGui.QMainWindow):
       self.logFile.write('Unix Time, Measurement, Command, Device, GPIB-ID\n')
 
     #instance variables
-    self.plottingThreads = [None, None, None, None]
+    self.plottingThreads = []
     self.keepPlotting = True
     self.deviceValues = [[],[],[],[]]
     self.deviceTimes = [[],[],[],[]]
@@ -252,13 +252,13 @@ class PlotWindow(QtGui.QMainWindow):
     '''
     for index in indexes:
       if self.savedPlotCommands[index]:
+        time.sleep(1)
         print 'spawning thread ', index
         thread = Thread.Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
         #store a reference so the thread isn't garbage collected.
-        self.plottingThreads[index] = thread
+        self.plottingThreads.append(thread)
         #sleep between spawning threads or else the device may be overloaded with requests
-        time.sleep(.5)
 
 
   def deviceHandler(self, plotCommand, plotNumber):
@@ -268,18 +268,14 @@ class PlotWindow(QtGui.QMainWindow):
     command, args, kwargs, timeInterval = plotCommand
     try:
       commandObject = gpib_commands.command[command](*args, **kwargs)
-    except:
-      self.emit(QtCore.SIGNAL('threadCrashed(int)'), plotNumber)
-      return
-    while self.keepPlotting:
-      try:
+      while self.keepPlotting:
         result = commandObject.do()
         self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
-      except:
-        print 'thread ', str(plotNumber), ' crashed'
-        self.emit(QtCore.SIGNAL('threadCrashed(int)'), plotNumber)
-        return
-      time.sleep(timeInterval)
+        time.sleep(timeInterval)
+    except:
+      print 'thread ', str(plotNumber), ' crashed'
+      self.emit(QtCore.SIGNAL('threadCrashed(int)'), plotNumber)
+      return
 
 
   def plotLine(self, plot, processedData, index, autoScale=True):
@@ -354,7 +350,9 @@ class PlotWindow(QtGui.QMainWindow):
     plot.setAxisTitle(Qwt.QwtPlot.xBottom, processedData[index]['x-axis'])
     plot.setAxisTitle(Qwt.QwtPlot.yLeft, processedData[index]['y-axis'])
     if not autoScale:
-      plot.setAxisScale(Qwt.QwtPlot.yLeft, min(0,max(y)+.1*max(y)), max(max(y)+.1*max(y), 0))
+      top = max(y)+0.1*max(y)
+      bottom = min(y) + 0.1*min(y)
+      plot.setAxisScale(Qwt.QwtPlot.yLeft, min(0, top, bottom), max(0, top, bottom))
     else:
       plot.setAxisAutoScale(Qwt.QwtPlot.yLeft)
 
