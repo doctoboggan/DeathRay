@@ -28,7 +28,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
   We are feeding the class with vxi_11.vxi_11_connection and gpib_utilities.gpib_device from data_acquisition library.
   """
 
-  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", current = '0.5', channel='p25v', timeout = 2000): 
+  def __init__(self, IPad ='127.0.0.1' , Gpibad ="inst0" , namdev = "Network Device", current = '0.5', channel='p25v', Duration = '5000',  timeout = 2000): 
 
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=2000)
@@ -59,8 +59,9 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     self.channel = channel.lower()    #lower case the input
     self.value = current
     self.timeout = timeout
+    self.duration = int(Duration)
     rise_on_error = 0
-    data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=timeout,device_name=namdev)  #here we are feeding the data_acquisition library
+    data_acquisition.vxi_11.vxi_11_connection.__init__(self,host=IPad,device=Gpibad,raise_on_err=rise_on_error,timeout=self.duration,device_name=namdev)  #here we are feeding the data_acquisition library
 
   def check(self):
     """
@@ -78,7 +79,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     
     if self.name_of_device in self.rightDevice:
 
-      if self.timeout >= 1000:      # hardcoded. Also, the number was choosen after several testing.
+      if self.timeout >= 10:      # hardcoded. Also, the number was choosen after several testing.
 
         if type(self.timeout) is int or type(self.timeout) is float:
 
@@ -95,49 +96,53 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
                 if type(self.channel) is str:
 
                   if self.channel not in self.channels_for_e3631a:      # cor channel checking. Wehave to do this with each and every channelly device!!
+
                     print "choosen channel does not exist for e3631a !!"     # For debug purpose
                     return False, 'c'
+
                   else:
                     
-                    if self.channel in ['p6v']:
 
-                      if self.value <= 5.15 and self.value >= 0:
-                        
-                        self.value = str(self.value)
-                        return True
-  
-                      else: 
+                        if self.channel in ['p6v']:
 
-                        print "The imput DC current is not right (out of range)"    #debug
-                        return False, 'z'
+                          if self.value <= 5.15 and self.value >= 0:
+                            
+                            self.value = str(self.value)
+                            return True
+      
+                          else: 
 
-                    elif self.channel in ['p25v']:
+                            print "The imput DC current is not right (out of range)"    #debug
+                            return False, 'z'
 
-                      if self.value <= 1.03 and self.value >= 0:
+                        elif self.channel in ['p25v']:
 
-                        self.value = str(self.value)
-                        return True
+                          if self.value <= 1.03 and self.value >= 0:
 
-                      else: 
-                        print "The imput DC current is not right (out of range)"    #debug
-                        return False, 'z'
+                            self.value = str(self.value)
+                            return True
 
-                    elif self.channel in ['n25v']:
+                          else: 
+                            print "The imput DC current is not right (out of range)"    #debug
+                            return False, 'z'
 
-                      if self.value <= 1.03 and self.value >= 0:
+                        elif self.channel in ['n25v']:
 
-                        self.value = str(self.value)
-                        return True
+                          if self.value <= 1.03 and self.value >= 0:
 
-                      else: 
+                            self.value = str(self.value)
+                            return True
 
-                        print "The imput DC current is not right (out of range)"    #debug
-                        return False, 'z'
+                          else: 
 
-                    else:   # the user can not be here because we considre all posiblities...!
+                            print "The imput DC current is not right (out of range)"    #debug
+                            return False, 'z'
 
-                      print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "    #debug
-                      return False, 'w'
+                        else:   # the user can not be here because we considre all posiblities...!
+
+                          print "you should NOT BE HERE. HOW DID you DO ThAt!!! ;/ "    #debug
+                          return False, 'w'
+
 
                 else:
 
@@ -198,7 +203,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
         if set_currentDC[0] == 0:             #check if it times out.
 
-          print "It works !!"               # For debug reasons. 
+          print "It works, the current has been set !!"               # For debug reasons. 
           return True               # I have to considre this test here because I need to know the result. 
 
         else:
