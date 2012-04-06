@@ -26,7 +26,6 @@ PyQt (http://www.riverbankcomputing.co.uk/software/pyqt/download)
 PyQwt (http://pyqwt.sourceforge.net/home.html)
 Numpy (http://numpy.scipy.org/)
 data_acquisition  (installed with this program)
-pyaudio (http://people.csail.mit.edu/hubert/pyaudio)
 
 
 Authors are:

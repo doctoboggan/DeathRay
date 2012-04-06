@@ -537,6 +537,7 @@ if __name__ == "__main__":
   myapp = DeviceControl()
   myapp.resize(250, 150)  
   myapp.move(300, 50)
+  myapp.setWindowTitle("DeathRay - Device Control")
   myapp.show()
   sys.exit(app.exec_())
 

@@ -5,10 +5,7 @@
 # Result: Two lists (attached device name list, attached device gpibID list)
  
 from gpib_commands import getIDN
-
-from pdb import set_trace as bp #DEBUGING
-
-from utils import DRsound
+from PyQt4 import QtGui
 
 class getAttachedDevices():
 
@@ -27,8 +24,8 @@ class getAttachedDevices():
       if IDNResponse:
         self.attachedDevices.append(IDNResponse.split(',')[1].lower())
         self.attachedGPIB.append(gpibID)
-        #try:    # to run the sound, Thesound is optional. 
-        DRsound.beep() 
-        #except:
-          #pass
+        try:
+          QtGui.QSound.play('utils/sounds/beep.wav')
+        except:
+          pass
     return self.attachedDevices, self.attachedGPIB
