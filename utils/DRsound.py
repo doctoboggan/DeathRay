@@ -6,7 +6,7 @@ import wave
 
 def beep():
 
-    wf = wave.open('./sounds/beep.wav', 'rb')
+    wf = wave.open('./utils/sounds/beep.wav', 'rb')
     p = pyaudio.PyAudio()
     stream = p.open(format =
                 p.get_format_from_width(wf.getsampwidth()),

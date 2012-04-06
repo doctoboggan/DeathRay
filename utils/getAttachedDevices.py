@@ -27,8 +27,8 @@ class getAttachedDevices():
       if IDNResponse:
         self.attachedDevices.append(IDNResponse.split(',')[1].lower())
         self.attachedGPIB.append(gpibID)
-        try:    # to run the sound, Thesound is optional. 
-          DRsound.beep() 
-        except:
-          pass
+        #try:    # to run the sound, Thesound is optional. 
+        DRsound.beep() 
+        #except:
+          #pass
     return self.attachedDevices, self.attachedGPIB
