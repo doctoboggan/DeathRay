@@ -19,7 +19,7 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
 
   """
 
-  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device" , text_here='text here', Ctimeout = '2000', timeout = 2000):  
+  def __init__(self, IPad = '127.0.0.1', Gpibad ="inst0" , namdev = "Network Device" , text_here='text here', Ctimeout = '2000', timeout = 2000):  #here, timeout value  is useless ... :)
     """
     Requiremnt: ( IPad, Gpibad, namdev, input, channel='', timeout=500)
     Ex of requirement: '129.59.93.179', 'gpib0,22', 'hpe3631a', 0.5 , channel='P25v', timeout=3000)
