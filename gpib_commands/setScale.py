@@ -165,7 +165,9 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
     division for the main window.
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -206,7 +208,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
 
 
     else:
-      return self.check()
+      return re
 
 
 '''

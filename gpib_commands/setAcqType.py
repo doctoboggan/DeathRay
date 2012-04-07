@@ -108,7 +108,9 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     <type> ::= {NORMal | AVERage | HRESolution | PEAK}
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -133,7 +135,7 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
 
     else:
-      return self.check()
+      return re
 
 
 #example: "INST:SEL P25V" Select the +25V output

@@ -89,7 +89,9 @@ class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     Note: we are checking before running the command.  
     """   
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -114,7 +116,7 @@ class getvoltageAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
 
     else:
-      return self.check()
+      return re
 
 # we have some series issues here:
 # 1) the timeout effect the result. If the timeout is too short, the reult will be empty string (which means time-out occurred). So depends on the operation, we have to make dafult time out is at right duration. In this case, timout = 1000 msec is not enough. I changed the dafult timeout to 2300 msec (after several testing).

@@ -103,7 +103,9 @@ ONEMeg (1 M) and FIFTy (50).
 ''''''  
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -133,7 +135,7 @@ ONEMeg (1 M) and FIFTy (50).
 
 
     else:
-      return self.check()
+      return re
 
 
 

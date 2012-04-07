@@ -106,7 +106,10 @@ class saveFileWaveform (data_acquisition.vxi_11.vxi_11_connection,data_acquisiti
     """
     this performs the commands and gives us result whether it works or not
     """
-    if self.check() is True:
+
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -136,7 +139,7 @@ class saveFileWaveform (data_acquisition.vxi_11.vxi_11_connection,data_acquisiti
 
 
     else:
-      return self.check()
+      return re
 
 
 

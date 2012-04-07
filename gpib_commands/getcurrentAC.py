@@ -80,7 +80,10 @@ class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     The main SCPI commands, where the AC current value is !!
     """
-    if self.check() is True:
+
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -106,7 +109,7 @@ class getcurrentAC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
 
     else:
-      return self.check()
+      return re
 
 # Note:   ---> 'o' means time-out is too short.
 #         ---> 'e' means empty string

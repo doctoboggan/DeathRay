@@ -122,7 +122,10 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     """
     The main SCPI commands, where the DC voltage value is !!
     """  
-    if self.check() is True:
+
+    re = self.check()  
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -171,7 +174,7 @@ class getvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
 
     else:
-      return self.check()
+      return re
 
 #print voltageDC.voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a').check()
 #print voltageDC.voltageDC('129.59.93.27', 'gpib0,10', 'hp34401a').get()

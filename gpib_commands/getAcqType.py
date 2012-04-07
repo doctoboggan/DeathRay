@@ -83,7 +83,9 @@ class getAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     Query Syntax: ACQ:TYPE?
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -108,7 +110,7 @@ class getAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
 
 
     else:
-      return self.check()
+      return re
 
 
 

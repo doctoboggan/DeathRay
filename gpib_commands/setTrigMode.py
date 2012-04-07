@@ -107,7 +107,9 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
     <mode> ::= {EDGE | GLITch | PATTern | CAN | DURation | I2S |IIC | EBURst | LIN | M1553| SEQuence | SPI | TV | UART| USB | FLEXray}
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -134,7 +136,7 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
 
 
     else:
-      return self.check()
+      return re
 
 # ------------ Information : -----------
 # page 485

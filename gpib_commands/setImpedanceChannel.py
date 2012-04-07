@@ -149,7 +149,9 @@ ONEMeg (1 Mohm) and FIFTy (50ohm).
 ''''''  
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -177,7 +179,7 @@ ONEMeg (1 Mohm) and FIFTy (50ohm).
 
 
     else:
-      return self.check()
+      return re
 
 
 

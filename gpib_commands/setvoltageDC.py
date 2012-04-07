@@ -18,6 +18,7 @@
 
 import data_acquisition
 
+
 class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_utilities.gpib_device,data_acquisition.vxi_11.VXI_11_Error):		
   """
   This class set DC voltage for given channels of the given device. 
@@ -176,7 +177,9 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
     feeded in the _init_
     """
 
-    if self.check() is True:
+    re = self.check()
+
+    if re is True:
 
       print "PASS check test"         # For debug purpose
 
@@ -206,7 +209,7 @@ class setvoltageDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
 
 
     else:
-      return self.check()
+      return re
 
 
 #example: "INST:SEL P25V" Select the +25V output
