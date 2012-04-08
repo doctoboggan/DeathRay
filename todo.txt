@@ -70,3 +70,5 @@
 39) we should try to imagine all the times where things could go wrong.
 40) have only one setup script that accepts arguments like 'install', 'uninstall', 'reload'
 41) write a script that builds the __init__.py file in fpga_scripts (make sure to count # of plots)
+42) ask: 1) is modules are writen in __init__ file by computer or user? 2) cleaness of the generated code ?
+43) connect the addmodule tool to GUI
