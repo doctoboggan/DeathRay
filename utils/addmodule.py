@@ -259,7 +259,7 @@ class add():
         if self.ooo == True:
           self.bk = "if type("+self.sk+") is int or type("+self.sk+") is float:\n\n              try:\n\n                  "+self.sk+" = float("+self.sk+")"
         else:
-          self.bj = "if type("+self.sk+") is int:\n\n              try:\n\n                  "+self.sk+" = int("+self.sk+")"
+          self.bk = "if type("+self.sk+") is int:\n\n              try:\n\n                  "+self.sk+" = int("+self.sk+")"
       elif self.ooo == True:
         self.bk = "if type("+self.sk+") is float:\n\n              try:\n\n                  "+self.sk+" = float("+self.sk+")"
       elif self.ppp == True: 
@@ -297,7 +297,7 @@ class add():
         else:
           self.bm = "if type("+self.sm+") is int:\n\n              try:\n\n                  "+self.sj+" = int("+self.sm+")"
       elif self.ooooo == True:
-        self.bl = "if type("+self.sm+") is float:\n\n              try:\n\n                  "+self.sm+" = float("+self.sm+")"
+        self.bm = "if type("+self.sm+") is float:\n\n              try:\n\n                  "+self.sm+" = float("+self.sm+")"
       elif self.ppppp == True: 
         self.bm = "if type("+self.sm+") is str:"
       else:
@@ -362,7 +362,7 @@ class add():
                 return False, 'n'"""
 
       elif self.oo == True:
-        self.ei ="""  except ValueError:
+        self.ej ="""  except ValueError:
 
                 print "the input is not real number (can not be converted to a numbder) !!"
                 return False, 'n'"""
@@ -391,7 +391,7 @@ class add():
 
 
         else:
-          self.ej ="""  except ValueError:
+          self.ek ="""  except ValueError:
 
                 print "the input is not real number (can not be converted to a numbder) !!"
                 return False, 'n'"""
@@ -468,7 +468,7 @@ class add():
 
 
       elif self.ooooo == True:
-        self.el ="""  except ValueError:
+        self.em ="""  except ValueError:
 
                 print "the input is not real number (can not be converted to a numbder) !!"
                 return False, 'n'"""

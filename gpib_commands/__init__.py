@@ -10,7 +10,6 @@ from getTrigMode import getTrigMode
 from getIDN import getIDN
 from setAcqType import setAcqType
 from setvoltageDC import setvoltageDC
-from gettesting import gettesting
 from getcommand import getcommand
 from getImpedanceChannel import getImpedanceChannel
 from setcommand import setcommand
@@ -30,7 +29,6 @@ command = {
   'getIDN': getIDN,
   'setAcqType': setAcqType,
   'setvoltageDC': setvoltageDC,
-  'gettesting': gettesting,
   'getcommand': getcommand,
   'getImpedanceChannel': getImpedanceChannel,
   'setcommand': setcommand,
