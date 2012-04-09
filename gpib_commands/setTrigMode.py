@@ -122,7 +122,7 @@ class setTrigMode(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpi
           if trig_mode[0] == 0:             #check if it times out.
 
             print "It works !!"               # For debug reasons. 
-            return True                # I have to consider this test here because I need to know the result. 
+            return [True]                # I have to consider this test here because I need to know the result. And, the list for standarization (take a look at the manaul)
 
           else:
             print self.identify_vxi_11_error(trig_mode[0])      #print the error information.
