@@ -216,6 +216,7 @@ class DeviceControl(QtGui.QMainWindow):
   def plotClicked(self, plotNumber):
     '''Saves the plot command and draws to the label
     '''
+    self.ui.pushButtonSaveExperiment.setEnabled(True)
     command, args, kwargs = self.returnCurrentCommand()
     self.plotLabels[plotNumber].setText(args[2]+'->'+command)
     self.savedPlotCommands[plotNumber] = ([command, args, kwargs])
@@ -506,6 +507,7 @@ class DeviceControl(QtGui.QMainWindow):
       commandObject = gpib_commands.command[command](*args, **kwargs)
       self.usedCommands.append(commandObject)
       result = self.usedCommands[-1].do()
+      bp()
       if not result[0]:
         self.failedCommands.append(str(self.savedCommands.index((command, args, kwargs))+1))
 

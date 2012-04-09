@@ -77,7 +77,6 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self, QtCore.SIGNAL('newData1(QString)'), lambda x: self.newDataDetected(x, 1))
     self.connect(self, QtCore.SIGNAL('newData2(QString)'), lambda x: self.newDataDetected(x, 2))
     self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
-    self.connect(self, QtCore.SIGNAL('threadCrashed(int)'), lambda x: self.spawnThreads([x]))
 
 
 
@@ -252,13 +251,13 @@ class PlotWindow(QtGui.QMainWindow):
     '''
     for index in indexes:
       if self.savedPlotCommands[index]:
-        time.sleep(1)
+        #sleep between spawning threads or else the device may be overloaded with requests
+        time.sleep(.5)
         print 'spawning thread ', index
         thread = Thread.Thread(self.deviceHandler, self.savedPlotCommands[index], index) 
         thread.start()
         #store a reference so the thread isn't garbage collected.
         self.plottingThreads.append(thread)
-        #sleep between spawning threads or else the device may be overloaded with requests
 
 
   def deviceHandler(self, plotCommand, plotNumber):
@@ -266,16 +265,16 @@ class PlotWindow(QtGui.QMainWindow):
     time interval
     '''
     command, args, kwargs, timeInterval = plotCommand
-    try:
-      commandObject = gpib_commands.command[command](*args, **kwargs)
-      while self.keepPlotting:
-        result = commandObject.do()
-        self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
-        time.sleep(timeInterval)
-    except:
-      print 'thread ', str(plotNumber), ' crashed'
-      self.emit(QtCore.SIGNAL('threadCrashed(int)'), plotNumber)
-      return
+    while self.keepPlotting:
+      try:
+        commandObject = gpib_commands.command[command](*args, **kwargs)
+        while self.keepPlotting:
+          result = commandObject.do()
+          self.emit(QtCore.SIGNAL('newData'+str(plotNumber)+'(QString)'), str(result))
+          time.sleep(timeInterval)
+      except:
+        print 'thread ', str(plotNumber), ' crashed'
+        time.sleep(1)
 
 
   def plotLine(self, plot, processedData, index, autoScale=True):
