@@ -121,7 +121,7 @@ class setAcqType(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
           if set_mode[0] == 0:             #check if it times out.
 
             print "It works !!"               # For debug reasons. 
-            return True                # I have to consider this test here because I need to know the result. 
+            return [True]                # I have to consider this test here because I need to know the result. 
 
           else:
             print self.identify_vxi_11_error(set_mode[0])      #print the error information.

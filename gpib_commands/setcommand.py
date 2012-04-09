@@ -36,6 +36,6 @@ class setcommand(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib
     result = self.write(self.cmdd)
 
     if result[0] == 0:             
-      return True
+      return [True]
     else:
       return False, result[0]

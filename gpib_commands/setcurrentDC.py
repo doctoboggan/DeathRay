@@ -204,7 +204,7 @@ class setcurrentDC(data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gp
         if set_currentDC[0] == 0:             #check if it times out.
 
           print "It works, the current has been set !!"               # For debug reasons. 
-          return True               # I have to considre this test here because I need to know the result. 
+          return [True]               # I have to considre this test here because I need to know the result. 
 
         else:
           print self.identify_vxi_11_error(set_currentDC[0])      #print the error information.

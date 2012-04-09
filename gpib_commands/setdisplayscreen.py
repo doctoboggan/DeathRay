@@ -113,7 +113,7 @@ class setdisplayscreen(data_acquisition.vxi_11.vxi_11_connection,data_acquisitio
       if m[0] == 0:             #check if it times out.
 
           print "The text has been sent"
-          return True
+          return [True]
 
       else:
 

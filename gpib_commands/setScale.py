@@ -181,7 +181,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
           if horizontal[0] == 0:             #check if it times out.
 
             print "It works !!"               # For debug reasons. 
-            return True                # I have to considre this test here because I need to know the result. 
+            return [True]                # I have to considre this test here because I need to know the result. 
 
           
             
@@ -190,7 +190,7 @@ class setScale (data_acquisition.vxi_11.vxi_11_connection,data_acquisition.gpib_
             if vertical[0] == 0:             #check if it times out.
 
               print "It works !!"               # For debug reasons. 
-              return True                # I have to considre this test here because I need to know the result. 
+              return [True]                # I have to considre this test here because I need to know the result. 
 
             else:
               print self.identify_vxi_11_error(vertical[0])      #print the error information.
