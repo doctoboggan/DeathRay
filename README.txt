@@ -7,9 +7,9 @@ The optional arguments are:
 
   install:
     Installs the gpib_commands and pythonlabtools modules on your system.
-    This needs to be run before you can run the program.
+    This needs to be run once before you can run the program.
   uninstall:
-    Removes the gpib_commands and pythonlabtoolds modules from your system.
+    Removes the gpib_commands and pythonlabtools modules from your system.
   reload:
     Searches the fpga_scripts folder for new files and refreshes the list
     of scripts.
