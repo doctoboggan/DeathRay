@@ -22,7 +22,7 @@ the documentation in the docs folder.
 
 What you need to run this application:
 OS X and Linux:
-Python (http://www.python.org/)
+Python (Most likely already installed on your system)
 Qt (http://qt.nokia.com/products/)
 PyQt (http://www.riverbankcomputing.co.uk/software/pyqt/download)
 PyQwt (http://pyqwt.sourceforge.net/home.html)
