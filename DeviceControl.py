@@ -279,8 +279,6 @@ class DeviceControl(QtGui.QMainWindow):
     the savedPlotCommands. If a saved command fails it is noted in the status bar and the user
     is told to fix/delete it before continuing.
     '''
-    print self.ui.checkBoxLogData.isChecked()
-    print self.ui.labelLocationSelected.text()
     self.storeTimeIntervals()
     self.executeSavedCommands()
     if self.failedCommands:
