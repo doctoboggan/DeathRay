@@ -279,15 +279,23 @@ class DeviceControl(QtGui.QMainWindow):
     the savedPlotCommands. If a saved command fails it is noted in the status bar and the user
     is told to fix/delete it before continuing.
     '''
+    print self.ui.checkBoxLogData.isChecked()
+    print self.ui.labelLocationSelected.text()
     self.storeTimeIntervals()
     self.executeSavedCommands()
     if self.failedCommands:
       message = 'Command number ['+', '.join(self.failedCommands)+'] has failed. Please fix or delete it.'
       self.ui.statusbar.showMessage(message)
       self.failedCommands = []
+    elif self.fpgaScriptName and not self.fpgaOutputLocation:
+      message = 'FPGA script selected but no output location provided'
+      self.ui.statusbar.showMessage(message)
+    elif self.ui.checkBoxLogData.isChecked() and not self.ui.labelLocationSelected.text():
+      message = 'Log Data selected but no output location provided.'
+      self.ui.statusbar.showMessage(message)
     else:
       self.close()
-      self.plotWindowApp = PlotWindow((self.savedPlotCommands, self.fpgaOutputLocation,
+      self.plotWindowApp = PlotWindow((self, self.savedPlotCommands, self.fpgaOutputLocation,
         self.fpgaScriptName, self.logFile))
       self.plotWindowApp.show()
 
@@ -507,7 +515,6 @@ class DeviceControl(QtGui.QMainWindow):
       commandObject = gpib_commands.command[command](*args, **kwargs)
       self.usedCommands.append(commandObject)
       result = self.usedCommands[-1].do()
-      bp()
       if not result[0]:
         self.failedCommands.append(str(self.savedCommands.index((command, args, kwargs))+1))
 

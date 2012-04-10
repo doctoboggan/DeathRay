@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'DeviceControlInterface.ui'
 #
-# Created: Mon Apr  2 20:46:36 2012
+# Created: Tue Apr 10 17:23:47 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setEnabled(True)
-        MainWindow.resize(729, 775)
+        MainWindow.resize(730, 827)
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 657, 458))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 658, 510))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.verticalLayout_14 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_14.setObjectName(_fromUtf8("verticalLayout_14"))
@@ -508,7 +508,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.addItem(spacerItem1)
         self.verticalLayout_15.addLayout(self.horizontalLayout_16)
         self.labelLocationSelected = QtGui.QLabel(self.tab_4)
-        self.labelLocationSelected.setText(QtGui.QApplication.translate("MainWindow", "No File Selected", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelLocationSelected.setText(_fromUtf8(""))
         self.labelLocationSelected.setObjectName(_fromUtf8("labelLocationSelected"))
         self.verticalLayout_15.addWidget(self.labelLocationSelected)
         spacerItem2 = QtGui.QSpacerItem(20, 513, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
@@ -536,7 +536,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_12.addLayout(self.horizontalLayout_14)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 729, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 730, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -544,7 +544,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidgetMain.setCurrentIndex(0)
+        self.tabWidgetMain.setCurrentIndex(1)
         self.tabWidgetDevices.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

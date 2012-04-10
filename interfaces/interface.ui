@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>655</height>
+    <width>826</width>
+    <height>645</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -20,9 +20,9 @@
    <string>DeathRay</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="splitter_4">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -41,85 +41,77 @@
        </property>
        <column>
         <property name="text">
-         <string>Select Run to View Plot</string>
+         <string>Select Data to View</string>
         </property>
        </column>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QwtPlot" name="qwtPlot_1"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QwtPlot" name="qwtPlot_2"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QwtPlot" name="qwtPlot_4"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QwtPlot" name="qwtPlot_3"/>
-        </item>
-       </layout>
+      <widget class="QSplitter" name="splitter_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QSplitter" name="splitter">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QwtPlot" name="qwtPlot_1"/>
+        <widget class="QwtPlot" name="qwtPlot_3"/>
+       </widget>
+       <widget class="QSplitter" name="splitter_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QwtPlot" name="qwtPlot_2"/>
+        <widget class="QwtPlot" name="qwtPlot_4"/>
+       </widget>
       </widget>
       <widget class="QTableWidget" name="tableWidgetData"/>
      </widget>
     </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButtonBack">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Back to Devices</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonLog">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Log Experiment</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonStopStart">
+        <property name="text">
+         <string>Stop Experiment</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>900</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionNew_Experiment"/>
-    <addaction name="actionOpen"/>
-    <addaction name="separator"/>
-    <addaction name="actionSave_Plot"/>
-    <addaction name="separator"/>
-    <addaction name="actionSave_Experiment_Setup"/>
-   </widget>
-   <widget class="QMenu" name="menuDeathRay">
-    <property name="title">
-     <string>DeathRay</string>
-    </property>
-    <addaction name="actionAbout_DeathRay"/>
-   </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionCopy_Plot"/>
-    <addaction name="separator"/>
-    <addaction name="actionCopy"/>
-    <addaction name="actionPaste"/>
-   </widget>
-   <widget class="QMenu" name="menuView">
-    <property name="title">
-     <string>View</string>
-    </property>
-    <widget class="QMenu" name="menuPlots">
-     <property name="title">
-      <string>Plots</string>
-     </property>
-     <addaction name="actionOne_Plot"/>
-     <addaction name="actionTwo_Plots"/>
-     <addaction name="actionThree_Plots"/>
-     <addaction name="actionFour_Plots"/>
-    </widget>
-    <addaction name="menuPlots"/>
-   </widget>
-   <addaction name="menuDeathRay"/>
-   <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
-   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAbout">

@@ -19,7 +19,8 @@ class PlotWindow(QtGui.QMainWindow):
 
   def __init__(self, inputData=None, parent=None):
     QtGui.QWidget.__init__(self)
-    (self.savedPlotCommands, self.fpgaOutput, self.fpgaScriptName, self.logFilePath) = inputData
+    (self.deviceControlWindow, self.savedPlotCommands, self.fpgaOutput, 
+        self.fpgaScriptName, self.logFilePath) = inputData
     self.ui = interface.Ui_MainWindow()
     self.ui.setupUi(self)
     
@@ -57,7 +58,10 @@ class PlotWindow(QtGui.QMainWindow):
     self.deviceValues = [[],[],[],[]]
     self.deviceTimes = [[],[],[],[]]
     self.plots = [self.ui.qwtPlot_1, self.ui.qwtPlot_2, self.ui.qwtPlot_3, self.ui.qwtPlot_4]
+    self.dataLogged = False
+    self.savedLogLines = []
 
+    #spawn the threads that communicate with devices.
     self.spawnThreads()
 
     self.initUI()
@@ -73,16 +77,17 @@ class PlotWindow(QtGui.QMainWindow):
     self.connect(self.ui.actionThree_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(3)) 
     self.connect(self.ui.actionFour_Plots, QtCore.SIGNAL('triggered()'), lambda: self.setPlotNumber(4))
     self.connect(self.ui.treeRun, QtCore.SIGNAL('itemSelectionChanged()'), self.runClicked)
+    self.connect(self.ui.pushButtonBack, QtCore.SIGNAL('clicked()'), self.backClicked)
+    self.connect(self.ui.pushButtonLog, QtCore.SIGNAL('clicked()'), self.logClicked)
+    self.connect(self.ui.pushButtonStopStart, QtCore.SIGNAL('clicked()'), self.stopStartClicked)
     self.connect(self, QtCore.SIGNAL('newData0(QString)'), lambda x: self.newDataDetected(x, 0))
     self.connect(self, QtCore.SIGNAL('newData1(QString)'), lambda x: self.newDataDetected(x, 1))
     self.connect(self, QtCore.SIGNAL('newData2(QString)'), lambda x: self.newDataDetected(x, 2))
     self.connect(self, QtCore.SIGNAL('newData3(QString)'), lambda x: self.newDataDetected(x, 3))
 
 
-
-
   #############
-  #Slot Methods
+  #Button Methods
   #############
 
   def runClicked(self):
@@ -91,6 +96,61 @@ class PlotWindow(QtGui.QMainWindow):
     self.updatePlots()
     self.updateDataTable()
 
+
+  def backClicked(self):
+    '''Closes PlotWindows and reopens DeviceControl. Only enabled when an experiment has been stopped.
+    Also warns users if data is not logged.
+    '''
+    goBack = True
+    if not self.dataLogged:
+      warning = QtGui.QMessageBox()
+      warning.setText('Warning, experiment has not be logged.')
+      warning.setInformativeText('Continue Anyway?')
+      warning.addButton('No, go back', warning.AcceptRole)
+      warning.addButton('Continue', warning.NoRole)
+      goBack = warning.exec_()
+    if goBack:
+      self.close()
+      self.deviceControlWindow.show()
+
+
+  def logClicked(self):
+    fname = QtGui.QFileDialog.getSaveFileName(self, 'Select location to log experiment',
+        '~/Documents/experiment.log') 
+    logFile = open(str(fname), 'w')
+    logFile.write('Unix Time, Measurement, Command, Device, GPIB-ID\n')
+    logFile.writelines(self.savedLogLines)
+    logFile.close()
+    self.dataLogged = True
+
+
+
+  def stopStartClicked(self):
+    stopOrStart = str(self.ui.pushButtonStopStart.text())
+    if 'Stop' in stopOrStart:
+      self.ui.pushButtonStopStart.setText('Start Experiment')
+      self.ui.pushButtonBack.setEnabled(True)
+      if not self.logFilePath:
+        self.ui.pushButtonLog.setEnabled(True)
+      self.keepPlotting = False
+      self.ui.statusbar.showMessage('')
+      if self.logFilePath:
+        self.logFile.close()
+    if 'Start' in stopOrStart:
+      if self.logFilePath:
+        self.logFile = open(self.logFilePath, 'a')
+      self.ui.pushButtonStopStart.setText('Stop Experiment')
+      self.ui.pushButtonBack.setEnabled(False)
+      self.ui.pushButtonLog.setEnabled(False)
+      self.keepPlotting = True
+      self.spawnThreads()
+      self.dataLogged = False
+
+
+
+  #############
+  #Slot Methods
+  #############
 
   def directoryChanged(self):
     '''Called when the fileWatcher detects a change in the directory.
@@ -121,6 +181,8 @@ class PlotWindow(QtGui.QMainWindow):
 
 
   def newDataDetected(self, data, index):
+    '''When new data is ready in any of the threads, this method is called
+    '''
     #get time since the epoch. use time.gmtime() to get this in a human readable format
     currentTime = time.time()
     try:#if the data converts to a float, we append it to our vector for plotting
@@ -142,11 +204,14 @@ class PlotWindow(QtGui.QMainWindow):
       self.ui.statusbar.showMessage('Failed to convert return falue to float: '+str(data)+' '+str(index))
     print 'detected: ', data, index
 
-    #if a logfile is selected, we write a logline
+    #if a logfile is selected, we write a logline, otherwise, save it so we may write it later
+    command, args, kwargs, timeInterval = self.savedPlotCommands[index]
+    line = ', '.join([str(currentTime), str(data).strip(), str(command), str(args[2]), str(args[1])])
     if self.logFilePath:
-      command, args, kwargs, timeInterval = self.savedPlotCommands[index]
-      line = ', '.join([str(currentTime), str(data), str(command), str(args[2]), str(args[1])])
       self.logFile.write(line+'\n')
+      self.logFile.flush()
+    else:
+      self.savedLogLines.append(line+'\n')
  
   
 
@@ -225,6 +290,7 @@ class PlotWindow(QtGui.QMainWindow):
     self.ui.qwtPlot_2.setVisible(number > 1)
     self.ui.qwtPlot_3.setVisible(number > 2)
     self.ui.qwtPlot_4.setVisible(number > 3)
+
 
 
   ###############

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
-    <height>775</height>
+    <width>730</width>
+    <height>827</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -128,8 +128,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>657</width>
-             <height>458</height>
+             <width>658</width>
+             <height>510</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -925,7 +925,7 @@
         <item>
          <widget class="QLabel" name="labelLocationSelected">
           <property name="text">
-           <string>No File Selected</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -997,7 +997,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>729</width>
+     <width>730</width>
      <height>22</height>
     </rect>
    </property>
