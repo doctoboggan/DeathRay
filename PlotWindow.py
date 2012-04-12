@@ -106,8 +106,8 @@ class PlotWindow(QtGui.QMainWindow):
       warning = QtGui.QMessageBox()
       warning.setText('Warning, experiment has not be logged.')
       warning.setInformativeText('Continue Anyway?')
-      warning.addButton('No, go back', warning.AcceptRole)
-      warning.addButton('Continue', warning.NoRole)
+      warning.addButton('No', warning.AcceptRole)
+      warning.addButton('Continue to Devices', warning.NoRole)
       goBack = warning.exec_()
     if goBack:
       self.close()
