@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-import sys, os
+import sys, os, glob, PyQt4, sip, interfaces, DeviceControl
+from PyQt4 import QtCore, QtGui, Qt
+from interfaces import DeviceControlInterface
+from PyQt4 import QtSvg
 
 helpmessage = '''DeathRay is an application to display and control
 radiation experiments in real time.
