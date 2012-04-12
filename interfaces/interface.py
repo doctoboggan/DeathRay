@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Tue Apr 10 17:23:46 2012
+# Created: Thu Apr 12 13:55:29 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,10 +25,10 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.splitter_4 = QtGui.QSplitter(self.centralwidget)
-        self.splitter_4.setOrientation(QtCore.Qt.Horizontal)
-        self.splitter_4.setObjectName(_fromUtf8("splitter_4"))
-        self.treeRun = QtGui.QTreeWidget(self.splitter_4)
+        self.splitter = QtGui.QSplitter(self.centralwidget)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setObjectName(_fromUtf8("splitter"))
+        self.treeRun = QtGui.QTreeWidget(self.splitter)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -37,15 +37,15 @@ class Ui_MainWindow(object):
         self.treeRun.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.treeRun.setObjectName(_fromUtf8("treeRun"))
         self.treeRun.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "Select Data to View", None, QtGui.QApplication.UnicodeUTF8))
-        self.splitter_3 = QtGui.QSplitter(self.splitter_4)
+        self.splitter_3 = QtGui.QSplitter(self.splitter)
         self.splitter_3.setOrientation(QtCore.Qt.Vertical)
         self.splitter_3.setObjectName(_fromUtf8("splitter_3"))
-        self.splitter = QtGui.QSplitter(self.splitter_3)
-        self.splitter.setOrientation(QtCore.Qt.Horizontal)
-        self.splitter.setObjectName(_fromUtf8("splitter"))
-        self.qwtPlot_1 = Qwt5.QwtPlot(self.splitter)
+        self.splitter_12 = QtGui.QSplitter(self.splitter_3)
+        self.splitter_12.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter_12.setObjectName(_fromUtf8("splitter_12"))
+        self.qwtPlot_1 = Qwt5.QwtPlot(self.splitter_12)
         self.qwtPlot_1.setObjectName(_fromUtf8("qwtPlot_1"))
-        self.qwtPlot_3 = Qwt5.QwtPlot(self.splitter)
+        self.qwtPlot_3 = Qwt5.QwtPlot(self.splitter_12)
         self.qwtPlot_3.setObjectName(_fromUtf8("qwtPlot_3"))
         self.splitter_2 = QtGui.QSplitter(self.splitter_3)
         self.splitter_2.setOrientation(QtCore.Qt.Horizontal)
@@ -54,11 +54,11 @@ class Ui_MainWindow(object):
         self.qwtPlot_2.setObjectName(_fromUtf8("qwtPlot_2"))
         self.qwtPlot_4 = Qwt5.QwtPlot(self.splitter_2)
         self.qwtPlot_4.setObjectName(_fromUtf8("qwtPlot_4"))
-        self.tableWidgetData = QtGui.QTableWidget(self.splitter_4)
+        self.tableWidgetData = QtGui.QTableWidget(self.splitter)
         self.tableWidgetData.setObjectName(_fromUtf8("tableWidgetData"))
         self.tableWidgetData.setColumnCount(0)
         self.tableWidgetData.setRowCount(0)
-        self.verticalLayout.addWidget(self.splitter_4)
+        self.verticalLayout.addWidget(self.splitter)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.pushButtonBack = QtGui.QPushButton(self.centralwidget)

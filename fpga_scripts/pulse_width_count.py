@@ -14,7 +14,7 @@ class FileProcessor:
     self.plotsUsed = [1] #let the GUI know to reserve this plot space
 
 
-  def reload(self, filesList):
+  def load(self, filesList):
     '''I am being lazy here and simply rereading all the files.
     If your files are large and this starts taking a long time you should make sure this method
     only reads in the new data and not all the data

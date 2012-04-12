@@ -36,7 +36,7 @@ later versions of all the software, but you may need to do some compiling on
 your own.
 
 ===> Installation (using the terminal or Windows command line):
-cd ~/DeathRay
+cd into DeathRay folder
 sudo ./deathray.py install
 
 ===> To launch:

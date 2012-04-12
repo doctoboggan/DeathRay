@@ -45,6 +45,7 @@ class PlotWindow(QtGui.QMainWindow):
       self.startFileWatcher()
       self.connect(self.fileWatcher, QtCore.SIGNAL('directoryChanged(QString)'), self.directoryChanged)
     else:
+      bp()
       self.ui.splitter.setSizes([0, 500, 0])
 
     #if a logfile is specified, open it for writing
@@ -154,7 +155,7 @@ class PlotWindow(QtGui.QMainWindow):
 
   def directoryChanged(self):
     '''Called when the fileWatcher detects a change in the directory.
-    It is responsible for calling self.Experiment's .reload() method with the required files
+    It is responsible for calling self.Experiment's .load() method with the required files
     '''
     try:#if there is a currently selected item, try to save it
       currentItem = self.ui.treeRun.selectedItems()[0]
@@ -162,14 +163,14 @@ class PlotWindow(QtGui.QMainWindow):
     except:
       pass
     if type(self.fpgaOutput) is list: #user selected one or more files directly
-      self.Experiment.reload(self.fpgaOutput)
+      self.Experiment.load(self.fpgaOutput)
       self.updateRunDisplay()
       self.updatePlots()
       self.updateDataTable()
     else:
       if len(glob.glob(os.path.join(self.fpgaOutput, '*'))) > 0: #if there are files in the folder
         filesList = glob.glob(os.path.join(self.fpgaOutput, '*'))
-        self.Experiment.reload(filesList)
+        self.Experiment.load(filesList)
         self.updateRunDisplay()
         self.updatePlots()
         self.updateDataTable()
@@ -303,7 +304,7 @@ class PlotWindow(QtGui.QMainWindow):
     '''
     if type(self.fpgaOutput) is list: #This means the user selected one or more files
       self.fileWatcher.addPath(os.path.dirname(self.fpgaOutput[-1]))
-      self.Experiment.reload(self.fpgaOutput)
+      self.Experiment.load(self.fpgaOutput)
       self.updateRunDisplay()
       #Plot the first element in self.processedData
       self.updatePlots()

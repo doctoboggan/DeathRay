@@ -1,5 +1,9 @@
-To use the fpga API, you need to build a class called FileProcessor. There are two methods and
-three instance variables you must build, which are liste below. There are also some optional
+To use the FPGA API, you will be building a class inside a file. This class will be instantiated
+by DeathRay, who will then call its load(filesList) method every time a file changes. You are
+responsible for writing this method and for creating a few instance variables.
+
+To implement the APU, you need to build a class called FileProcessor. There are two methods and
+three instance variables you must build, which are listed below. There are also some optional
 variables you can define, which are listed at the bottom of this file. See the two example files
 in this folder to see how this is implemented. Once you build your file, place it in this folder
 and run the following command from the main DeathRay folder:
@@ -18,7 +22,7 @@ The methods you **MUST** build are:
   2) load(self, fpgaOutputFile(s)):
 
       This method must accept a list of output files. It will be called whenever a change is
-      detected in the fpgaOutputFile(s). You should use this method to open the fpgaOutputFile(s),
+      detected in the selected file(s). You should use this method to open the file(s),
       find the changes and then update the three variables below.
 
 
