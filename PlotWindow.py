@@ -45,7 +45,6 @@ class PlotWindow(QtGui.QMainWindow):
       self.startFileWatcher()
       self.connect(self.fileWatcher, QtCore.SIGNAL('directoryChanged(QString)'), self.directoryChanged)
     else:
-      bp()
       self.ui.splitter.setSizes([0, 500, 0])
 
     #if a logfile is specified, open it for writing
