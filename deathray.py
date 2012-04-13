@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-import sys, os, glob, PyQt4, sip, interfaces, DeviceControl
+import sys, os, glob, PyQt4, sip, interfaces, PlotWindow, DeviceControl, gpib_commands
+from PlotWindow import PlotWindow
+from DeviceControl import DeviceControl
 from PyQt4 import QtCore, QtGui, Qt
 from interfaces import DeviceControlInterface
 from PyQt4 import QtSvg
@@ -31,7 +33,13 @@ if len(sys.argv) > 2:
   print 'usage: '+sys.argv[0]+' [install|uninstall|reload|help]'
 
 if len(sys.argv) is 1:
-  execfile('DeviceControl.py')
+  app = QtGui.QApplication(sys.argv)
+  myapp = DeviceControl()
+  myapp.resize(250, 150)  
+  myapp.move(300, 50)
+  myapp.setWindowTitle("DeathRay - Device Control")
+  myapp.show()
+  sys.exit(app.exec_())
 
 if len(sys.argv) is 2:
   arg = sys.argv[1]
