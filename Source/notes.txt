@@ -1,0 +1,222 @@
+General Questions:
+-Is it possible to get the FPGA to output only one file instead of several? This would make a few things easier
+-How will the files be updated in a real time situation?
+-What is decoder address and Target Name? (XLS Sheet 1)?
+-What info from the XLS should be included in the app?
+-Is it better to pass arguments through functions or to simply save the argument as an instance variable and then have the called function read the instance variable?
+-Why use getter methods instead of directly reading instance variables?
+
+
+
+
+
+ToDo:
+-talk to the guy who wrote the perl script DONE
+----what do the differnt names mean? - Nothing, ignore them
+-Make updateRunDisplay simply display everything in a given dictionary. Build this dictionary in FileProcessor so as to keep the experiment specific code in 1 file. --DONE--
+-ultimately:
+--Implement FileProcessor for a few different experiments, and then with this knowledge make an 'AbstractFileProcessor' that can be inherited by each of these implementations and future implementations
+--Figure out how to save a plot to an image file
+------ QPixmap.grabWidget(p).save('cli-plot-1.png', 'PNG')
+
+
+
+
+
+
+Possible division of labor:
+-someone get other sample data and start reimplementing FileProcessor to interpret it (Everyone)
+-someone work on the interface, fleshing it out and making it look nicer. (jack)
+-someone control hardware (GPIB) (Anas)
+-someone work on documentation (Nadiah)
+-someone becomea qwt expert and them implement a simpler/friendlier interface for future plugin authors (jack)
+
+
+
+
+
+
+
+
+plot types:
+histogram
+line graph
+  spline interpolation
+  linear interpolation
+  steps
+scatter plot
+heat map
+These plot types should be sufficent according to daniel.
+
+
+
+
+
+
+
+
+
+
+
+1/17 meeting
+-be able to sort by decoder type or automeasure value
+-if decoder is not specified, it is the same as the previous experiment --DONE-- (Same for automeasure??)
+-no pulse listed is the smallest pulse detected. --DONE-- (set as 15)
+-maybe include error bars (based on standard (counting) error)
+-use flux as an input parameter and then plot count vs fluence 
+    -(flux is the rate, fluence is the total number)
+    -divide the estimated value by the square root of the counts (number of errors)
+-include a table as a plot --DONE--
+    -some basic statics (avg, max, min, etc) and parameters of the experiment
+IP of gateway: 129.59.93.150
+
+we need to implement "measure" for the devices that dont have it.
+
+put together a state diagram of how the program operates --IN PROGRESS (Nadiah)--
+
+
+
+
+
+
+
+
+
+
+1/18 class
+Design day is Thursday, April 19th 2 to 4
+Go to presentation next wednesday 3-4 in the jacobs auditorium instead of class
+Talk to loveless about a special git account at ISDE
+
+
+
+
+
+
+
+
+
+1/23 class
+Weekly project reports due each friday.
+Midterm design review (completed by March 16 - week after spring break)
+  demonstrate real work
+  say what needs to be done
+  make fancy slides
+  do this with loveless
+For next week:
+  list a design problem we are stuck on and bring it to class. Email it to holman
+
+
+
+
+
+
+1/30 class
+Talk about our UI next monday (2/6)
+  be prepared to present the software so far.
+
+
+
+
+1/7 meeting
+plot error count vs time
+  be able to key in flux rate
+  first 2 bits are timestamp
+  every 30 bits is one IC
+  every two bits is a unique flip flop
+release device at the bottom of class
+
+supply:
+  set current limit on the supply  
+  set voltage   (it is not hard. However, we have to know how to specified a certain port to be modified)
+  be able to specify port (for reading, It is DONE. For writing, It is going to be asked)
+  read current coming out of power supply   (if you mean via multimeter, It is DONE. If you mean via the power supply, it is DONE too)
+multimeter:
+  current, voltage (AC/DC)    [DONE] (not yet fully tested)
+oscope:
+  change the trigger event (common: edge (do first), or width)
+    mode: normal vs auto
+      auto: forces a trigger even if one doesnt exist
+      norm: only triggers when it exists (generally used)
+  download each channel (1,2)
+  set timescale (axis) and voltage (window)
+  type of input impedence.
+
+
+
+
+Sunday 2/12 meeting:
+what is level
+how to set voltage of channel that is not on display
+time out issues
+ask nick about power supply coupling. 
+which command is better apply or inst coup
+
+
+20/2/2012 class
+documentation:
+user manual (will work on when modules are completed)
+schematics (none)
+code with comments (check)
+Test procedure:
+- bad user configuration
+- breaking the software/crash
+
+
+
+
+
+
+2/23 notes:
+board number and flip-flop number and everything
+very basic: everything, and then flipflop number
+
+plot count/time vs time (very important)
+  should be contsnt vs time, should converge to a value
+plot count vs time
+
+design review 3pm on friday for about an hour.
+  give an overview of the project
+  illustrate all the different components
+  what do we expect to be able to do
+  status updates on each component
+  challenges or hurdles
+    possible solutions
+  want to see API
+
+
+
+
+
+
+
+
+Design Review (Thurs 15)
+  Project overview
+    goals/status
+    percentage through
+    challenges we might be facing/how t overcome
+  anticipated way of completed todo tasks
+  grad students/faculty membors - ISDE team members.
+
+
+
+
+
+
+Show our current source tree structure and explain where to place everything
+Talk about how the DRmodules can be used independently of our application
+  they make it easier for you to write simple scripts to communicate with the devices
+  EX:
+    from DRmodules import getcurrentAC
+    samples = []
+    for i in range(10):
+      sample = getcurrentAC('129.59.93.179', 'gpib0,22',
+			                    'hp34401a', timeout=1500).do()
+      samples.append(sample)
+
+the response of getdevice is not the same as the srings we use
+  we use: hp34401a
+  response: 34401a
+we need to either drop the hp in our own code (cleaner but harder)
+or add hp into the response (hackish)
