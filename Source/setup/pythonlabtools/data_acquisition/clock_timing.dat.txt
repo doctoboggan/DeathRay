@@ -1,0 +1,25 @@
+13	 0999000	0	// 1 usec wide, negative
+13	 1000000	1	// should appear on ttltrg 2
+14	 0999000	0	// 1 usec wide, negative
+14	 1000000	1	// should appear on ttltrg 4
+15	 0999000	0	// 1 usec wide, negative
+15	 1000000	1	// should appear on ttltrg 6
+6	-0100000	1	// 100 us pretrigger
+6	-0099000	0	// 1 us wide
+4	  -2000	0	// beam start trigger (-2 usec)
+4	  2000	1	// 4 us wide, inverted
+7	 0000000	0	// standard kick bit, always at t=0, was -1us back to 0 (GH)
+7	 0001000	1	// 1000 ns wide
+0	-0002900	0	//thyratron trigger, negative BG was -4.2
+0	-0001900	1	// 1 us wide, BG was -3.2
+1	 -0000200	1	//rf clock MPU BG was -0.8us before RC filter, was -0.3, proper time -0.6 us(GH)
+1	 0010000	0	// BG was 8.0us, did not change (GH), BF was 9.2 us
+2	-0002000	1	// micon trig was -3000 for MICON, use -3000 for TWT
+2	 0010000	0	// 4 us wide was 1000 for MICON, use 9000 for TWT (rfclock plus some)
+31	-4000000	1	// long pulse for LED gated to kicker
+31	 4000000	0
+24	-4000000	1	// long pulse for LED gated to thyratron
+24	 4000000	0
+30	-5000000	1	// -5 ms pulse for phase trim
+30	-4900000	0	// end of phase trim
+**END**
