@@ -10,8 +10,6 @@ from utils import getAttachedDevices
 
 import gpib_commands, fpga_scripts
 
-from pdb import set_trace as bp #DEBUGING
-
  
 class DeviceControl(QtGui.QMainWindow):
   '''Main application class that contains the GUI control and helper methods.

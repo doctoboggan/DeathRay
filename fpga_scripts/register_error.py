@@ -2,8 +2,6 @@
 
 import numpy as np
 
-from pdb import set_trace as bp #DEBUGGIN
-
 class FileProcessor:
 
   def __init__(self):

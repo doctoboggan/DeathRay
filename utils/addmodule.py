@@ -6,8 +6,6 @@ import datetime
 import re
 import sys
 
-import pdb # for debuging 
-
 # delete "result"
 # delete all "info"s
 # add "input required" for each device.

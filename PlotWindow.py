@@ -10,8 +10,6 @@ import numpy as np
 import fpga_scripts, gpib_commands
 from utils import Thread
 
-from pdb import set_trace as bp #DEBUGING
-
  
 class PlotWindow(QtGui.QMainWindow):
   '''Main application class that contains the GUI control and helper methods.
