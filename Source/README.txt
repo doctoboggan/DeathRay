@@ -1,9 +1,34 @@
-===> Information:
+=========> Information:
 DeathRay is an application to display and control
 radiation experiments in real time. It was built for
 the 2012 Senior Design Project at Vanderbilt University.
 
 
+=========> For End users:
+To run the program, you only need to download the binry zip file for your system:
+----> Windows: 
+1) download DeathRaywin.zip from binries_files folder.
+2) unzip (extract) it anywhere you like.
+3) double click on deathray.exe
+4) that is it!!
+
+----> Macintosh:
+1) Download DeathRaymac.zip from binries_files folder.
+2) unzip (extract) to have a deathray.app application (folder).
+3) double click on it
+4) that is it!!
+
+
+
+----> Linux:
+1)
+
+
+
+----> other OS:
+Follow the developer method below.
+
+=========> For developers:
 ===> What you need to run this application (pre-requirements):
 ----OS X and Linux:
 Python (Most likely already installed on your system)
@@ -57,11 +82,11 @@ The optional arguments are:
 For more information, see the README in the fpga_scripts folder or
 the documentation in the docs folder.
 
-===> Authors are:
+===========> Authors are:
 Nadiah Husseini Zainol Abidin
 Anas Alfuntukh
 Jack Minardi
 
 
-===> Project Sponsor:
+============> Project Sponsor:
 ISDE (http://www.isde.vanderbilt.edu/)

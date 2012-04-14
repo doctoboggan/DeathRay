@@ -1,4 +1,4 @@
-# Name: Saves waveform to a source
+ # Name: Saves waveform to a source
 # Made by: Nadiah Zainol Abidin
 # Date: 02/20/12  (MM/DD/YY)
 # Goal: set a DC voltage to a specific channel.
