@@ -7,9 +7,14 @@ Usage:
 
 from setuptools import setup
 
-APP = ['deathray.py']
+APP = ['DeviceControl.py']
 DATA_FILES = []
-OPTIONS = {'argv_emulation': False}
+OPTIONS = {
+    'argv_emulation': False,
+    'iconfile': 'interfaces/death-ray-icon.icns',
+    'includes': ['sip', 'PyQt4'],
+  }
+
 
 setup(
     app=APP,

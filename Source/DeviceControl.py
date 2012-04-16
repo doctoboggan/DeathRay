@@ -1,6 +1,11 @@
 #!/usr/bin/python -d
  
-import sys, os, glob, cPickle
+
+#I have to include extra things in here to py2app knows what to build
+import sys, os, glob, PyQt4, sip, interfaces, PlotWindow, DeviceControl, gpib_commands, cPickle
+from DeviceControl import DeviceControl
+from PyQt4 import QtSvg
+
 
 from PyQt4 import QtCore, QtGui, Qt
 from interfaces import DeviceControlInterface
