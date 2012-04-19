@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'interface.ui'
 #
-# Created: Thu Apr 12 13:55:29 2012
+# Created: Thu Apr 19 13:32:25 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,19 +40,19 @@ class Ui_MainWindow(object):
         self.splitter_3 = QtGui.QSplitter(self.splitter)
         self.splitter_3.setOrientation(QtCore.Qt.Vertical)
         self.splitter_3.setObjectName(_fromUtf8("splitter_3"))
-        self.splitter_12 = QtGui.QSplitter(self.splitter_3)
-        self.splitter_12.setOrientation(QtCore.Qt.Horizontal)
-        self.splitter_12.setObjectName(_fromUtf8("splitter_12"))
-        self.qwtPlot_1 = Qwt5.QwtPlot(self.splitter_12)
+        self.splitter_top = QtGui.QSplitter(self.splitter_3)
+        self.splitter_top.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter_top.setObjectName(_fromUtf8("splitter_top"))
+        self.qwtPlot_1 = Qwt5.QwtPlot(self.splitter_top)
         self.qwtPlot_1.setObjectName(_fromUtf8("qwtPlot_1"))
-        self.qwtPlot_3 = Qwt5.QwtPlot(self.splitter_12)
+        self.qwtPlot_3 = Qwt5.QwtPlot(self.splitter_top)
         self.qwtPlot_3.setObjectName(_fromUtf8("qwtPlot_3"))
-        self.splitter_2 = QtGui.QSplitter(self.splitter_3)
-        self.splitter_2.setOrientation(QtCore.Qt.Horizontal)
-        self.splitter_2.setObjectName(_fromUtf8("splitter_2"))
-        self.qwtPlot_2 = Qwt5.QwtPlot(self.splitter_2)
+        self.splitter_bottom = QtGui.QSplitter(self.splitter_3)
+        self.splitter_bottom.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter_bottom.setObjectName(_fromUtf8("splitter_bottom"))
+        self.qwtPlot_2 = Qwt5.QwtPlot(self.splitter_bottom)
         self.qwtPlot_2.setObjectName(_fromUtf8("qwtPlot_2"))
-        self.qwtPlot_4 = Qwt5.QwtPlot(self.splitter_2)
+        self.qwtPlot_4 = Qwt5.QwtPlot(self.splitter_bottom)
         self.qwtPlot_4.setObjectName(_fromUtf8("qwtPlot_4"))
         self.tableWidgetData = QtGui.QTableWidget(self.splitter)
         self.tableWidgetData.setObjectName(_fromUtf8("tableWidgetData"))
@@ -62,8 +62,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.pushButtonBack = QtGui.QPushButton(self.centralwidget)
-        self.pushButtonBack.setEnabled(False)
-        self.pushButtonBack.setText(QtGui.QApplication.translate("MainWindow", "Back to Devices", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButtonBack.setEnabled(True)
+        self.pushButtonBack.setText(QtGui.QApplication.translate("MainWindow", "Device Control", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonBack.setObjectName(_fromUtf8("pushButtonBack"))
         self.horizontalLayout.addWidget(self.pushButtonBack)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)

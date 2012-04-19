@@ -49,14 +49,14 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QSplitter" name="splitter_12">
+       <widget class="QSplitter" name="splitter_top">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <widget class="QwtPlot" name="qwtPlot_1"/>
         <widget class="QwtPlot" name="qwtPlot_3"/>
        </widget>
-       <widget class="QSplitter" name="splitter_2">
+       <widget class="QSplitter" name="splitter_bottom">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -72,10 +72,10 @@
       <item>
        <widget class="QPushButton" name="pushButtonBack">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
-         <string>Back to Devices</string>
+         <string>Device Control</string>
         </property>
        </widget>
       </item>

@@ -12,7 +12,8 @@ from utils import Thread
 
  
 class PlotWindow(QtGui.QMainWindow):
-  '''Main application class that contains the GUI control and helper methods.
+  '''This class represents the plot window. It contains all the methods used to plot and
+  display all the data
   '''
 
   def __init__(self, inputData=None, parent=None):
@@ -41,6 +42,7 @@ class PlotWindow(QtGui.QMainWindow):
       #start the file watcher
       self.fileWatcher = QtCore.QFileSystemWatcher(self)
       self.startFileWatcher()
+      self.connect(self.fileWatcher, QtCore.SIGNAL('fileChanged(QString)'), self.fileChanged)
       self.connect(self.fileWatcher, QtCore.SIGNAL('directoryChanged(QString)'), self.directoryChanged)
     else:
       self.ui.splitter.setSizes([0, 500, 0])
@@ -58,6 +60,9 @@ class PlotWindow(QtGui.QMainWindow):
     self.plots = [self.ui.qwtPlot_1, self.ui.qwtPlot_2, self.ui.qwtPlot_3, self.ui.qwtPlot_4]
     self.dataLogged = False
     self.savedLogLines = []
+    self.displayLabels = [None, None, None, None]
+    self.scrollAreas = [None, None, None, None]
+    self.dataTables = [None, None, None, None]
 
     #spawn the threads that communicate with devices.
     self.spawnThreads()
@@ -66,7 +71,7 @@ class PlotWindow(QtGui.QMainWindow):
 
     #run this immediately to see if the directory already has some files in it
     if self.fpgaScriptName:
-      self.directoryChanged()
+      self.fileChanged()
 
   def initUI(self):
     #Connect the signals and slots
@@ -99,17 +104,7 @@ class PlotWindow(QtGui.QMainWindow):
     '''Closes PlotWindows and reopens DeviceControl. Only enabled when an experiment has been stopped.
     Also warns users if data is not logged.
     '''
-    goBack = True
-    if not self.dataLogged:
-      warning = QtGui.QMessageBox()
-      warning.setText('Warning, experiment has not be logged.')
-      warning.setInformativeText('Continue Anyway?')
-      warning.addButton('No', warning.AcceptRole)
-      warning.addButton('Continue to Devices', warning.NoRole)
-      goBack = warning.exec_()
-    if goBack:
-      self.close()
-      self.deviceControlWindow.show()
+    self.deviceControlWindow.show()
 
 
   def logClicked(self):
@@ -127,7 +122,6 @@ class PlotWindow(QtGui.QMainWindow):
     stopOrStart = str(self.ui.pushButtonStopStart.text())
     if 'Stop' in stopOrStart:
       self.ui.pushButtonStopStart.setText('Start Experiment')
-      self.ui.pushButtonBack.setEnabled(True)
       if not self.logFilePath:
         self.ui.pushButtonLog.setEnabled(True)
       self.keepPlotting = False
@@ -138,7 +132,6 @@ class PlotWindow(QtGui.QMainWindow):
       if self.logFilePath:
         self.logFile = open(self.logFilePath, 'a')
       self.ui.pushButtonStopStart.setText('Stop Experiment')
-      self.ui.pushButtonBack.setEnabled(False)
       self.ui.pushButtonLog.setEnabled(False)
       self.keepPlotting = True
       self.spawnThreads()
@@ -150,8 +143,8 @@ class PlotWindow(QtGui.QMainWindow):
   #Slot Methods
   #############
 
-  def directoryChanged(self):
-    '''Called when the fileWatcher detects a change in the directory.
+  def fileChanged(self):
+    '''Called when the fileWatcher detects a change in any file it is watching
     It is responsible for calling self.Experiment's .load() method with the required files
     '''
     try:#if there is a currently selected item, try to save it
@@ -164,7 +157,7 @@ class PlotWindow(QtGui.QMainWindow):
       self.updateRunDisplay()
       self.updatePlots()
       self.updateDataTable()
-    else:
+    else: #user selected a folder to watch
       if len(glob.glob(os.path.join(self.fpgaOutput, '*'))) > 0: #if there are files in the folder
         filesList = glob.glob(os.path.join(self.fpgaOutput, '*'))
         self.Experiment.load(filesList)
@@ -176,6 +169,22 @@ class PlotWindow(QtGui.QMainWindow):
       self.ui.treeRun.setCurrentItem(foundItem)
     except:
       pass
+    
+
+  def directoryChanged(self):
+    '''Whenever the file watcher notices a change in the parent dir this is called
+    It is responsible for adding any new files to the path of the filewatcher
+    '''
+    if type(self.fpgaOutput) is str:
+      filesList = glob.glob(os.path.join(self.fpgaOutput, '*'))
+      self.fileWatcher.addPaths(filesList)
+      self.Experiment.load(filesList)
+    else:
+      filesList = glob.glob(os.path.join(os.path.dirname(self.fpgaOutput[0]), '*'))
+      self.fileWatcher.addPaths(filesList)
+      self.Experiment.load(filesList)
+
+
 
 
   def newDataDetected(self, data, index):
@@ -199,7 +208,41 @@ class PlotWindow(QtGui.QMainWindow):
       self.plotLine(self.plots[index], plotData, 0, autoScale=False)
       self.ui.statusbar.showMessage('')
     except ValueError:#The returned value couldn't be converted to a float
+      if not self.deviceTimes[index]:
+        self.deviceValues[index].append(str(data))
+        if not self.dataTables[index]: #a table has not been created here yet
+
+          #Make the tables to hold the non-floatable data
+          self.dataTables[index] = QtGui.QTableWidget(1,4)
+          self.dataTables[index].setHorizontalHeaderLabels(['Unix Time','Device','Command','Data'])
+          if index is 0:
+            self.ui.qwtPlot_1.setVisible(False)
+            self.ui.splitter_top.insertWidget(0, self.dataTables[index])
+          if index is 1:
+            self.ui.qwtPlot_2.setVisible(False)
+            self.ui.splitter_top.insertWidget(1, self.dataTables[index])
+          if index is 2:
+            self.ui.qwtPlot_3.setVisible(False)
+            self.ui.splitter_bottom.insertWidget(0, self.dataTables[index])
+          if index is 3:
+            self.ui.qwtPlot_4.setVisible(False)
+            self.ui.splitter_bottom.insertWidget(1, self.dataTables[index])
+        #Make both the tables items (time and data)
+        tableItemTime = QtGui.QTableWidgetItem(str(currentTime))
+        tableItemCommand = QtGui.QTableWidgetItem(self.savedPlotCommands[index][0])
+        tableItemDevice = QtGui.QTableWidgetItem(self.savedPlotCommands[index][1][2])
+        tableItemData = QtGui.QTableWidgetItem(str(data))
+        rows = len(self.deviceValues[index])
+        self.dataTables[index].setRowCount(rows)
+        self.dataTables[index].setItem(rows-1, 0, tableItemTime)
+        self.dataTables[index].setItem(rows-1, 1, tableItemDevice)
+        self.dataTables[index].setItem(rows-1, 2, tableItemCommand)
+        self.dataTables[index].setItem(rows-1, 3, tableItemData)
+        self.dataTables[index].resizeColumnToContents(0)
+        self.dataTables[index].resizeColumnToContents(1)
+    else:
       self.ui.statusbar.showMessage('Failed to convert return falue to float: '+str(data)+' '+str(index))
+
     print 'detected: ', data, index
 
     #if a logfile is selected, we write a logline, otherwise, save it so we may write it later
@@ -296,18 +339,20 @@ class PlotWindow(QtGui.QMainWindow):
   ###############
 
   def startFileWatcher(self):
-    '''Starts the QFileWatcher on either the directory selected or the parent directory of
-    the files selected.
+    '''Starts the QFileWatcher on either the file or files selected.
     '''
     if type(self.fpgaOutput) is list: #This means the user selected one or more files
-      self.fileWatcher.addPath(os.path.dirname(self.fpgaOutput[-1]))
+      self.fileWatcher.addPaths(self.fpgaOutput)
+      self.fileWatcher.addPath(os.path.dirname(self.fpgaOutput[0]))
       self.Experiment.load(self.fpgaOutput)
       self.updateRunDisplay()
       #Plot the first element in self.processedData
       self.updatePlots()
       self.updateDataTable()
     elif type(self.fpgaOutput) is str: #this means the user selected a directory
-      self.fileWatcher.addPath(self.fpgaOutput)
+      self.fileWatcher.addPath(self.fpgaOutput)#add the dir
+      filesList = glob.glob(os.path.join(self.fpgaOutput, '*'))
+      self.fileWatcher.addPaths(filesList)
 
 
   def spawnThreads(self, indexes=[0,1,2,3]):

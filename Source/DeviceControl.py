@@ -1,7 +1,7 @@
 #!/usr/bin/python -d
  
 
-#I have to include extra things in here to py2app knows what to build
+#I have to include extra things in here so py2app knows what to build
 import sys, os, glob, PyQt4, sip, interfaces, PlotWindow, DeviceControl, gpib_commands, cPickle
 from DeviceControl import DeviceControl
 from PyQt4 import QtSvg
@@ -25,7 +25,7 @@ class DeviceControl(QtGui.QMainWindow):
     self.ui = DeviceControlInterface.Ui_MainWindow()
     self.ui.setupUi(self)
 
-    self.ui.lineEditIP.setText('129.59.93.179') #fill in this IP for now
+    self.ui.lineEditIP.setText('129.59.69.89') #fill in this IP for now
 
     #instance variables
     self.fpgaInfo = []
@@ -38,6 +38,8 @@ class DeviceControl(QtGui.QMainWindow):
     self.usedCommands = []
     self.failedCommands = []
     self.commands = {'set':{}, 'get':{}}
+    self.defaultCommands = {'set': {'default':['setcommand']},
+                            'get': {'default':['getcommand', 'getIDN']}}
     self.setOrGet = 'set'
     self.plotLabels = [self.ui.labelPlot1, self.ui.labelPlot2, 
                        self.ui.labelPlot3, self.ui.labelPlot4]
@@ -128,9 +130,14 @@ class DeviceControl(QtGui.QMainWindow):
     '''Draw the found commands to the commands list widget
     '''
     self.ui.listWidgetCommands.clear()
-    for command in self.commands[self.setOrGet][str(deviceName).lower()]:
-      listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
-      listItem.setText(command)
+    try:
+      for command in self.commands[self.setOrGet][str(deviceName).lower()]:
+        listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
+        listItem.setText(command)
+    except KeyError: #we found a device that has no commands written for it
+      for command in self.defaultCommands[self.setOrGet]['default']:
+        listItem = QtGui.QListWidgetItem(self.ui.listWidgetCommands)
+        listItem.setText(command)
 
   
   def updateSavedCommands(self):
