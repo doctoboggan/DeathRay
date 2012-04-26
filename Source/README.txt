@@ -3,9 +3,17 @@ DeathRay is an application to display and control
 radiation experiments in real time. It was built for
 the 2012 Senior Design Project at Vanderbilt University.
 
+There are pre-built packages intended for those who don't want to
+modify anything, and then there is the source code and package-scripts
+intended for those who need more control.
+
+To rebuild the packaged software after you have made modifications run
+either the wincompiler.bat or maccompiler.sh. The produced package
+should be able to be distributed to users with no complications.
+
 
 =========> For End users:
-To run the program, you only need to download the binry zip file for your system:
+To run the program, you only need to download the binary zip file for your system:
 ----> Windows: 
 1) download DeathRaywin.zip from binries_files folder.
 2) unzip (extract) it anywhere you like.
@@ -14,16 +22,13 @@ To run the program, you only need to download the binry zip file for your system
 
 ----> Macintosh:
 1) Download DeathRaymac.zip from binries_files folder.
-2) unzip (extract) to have a deathray.app application (folder).
+2) unzip (extract) to have a deathray.app application.
 3) double click on it
 4) that is it!!
 
-
-
 ----> Linux:
-1)
-
-
+1) There are no pre-packaged binaries for Linux.
+   You should acquire the required packages and run from source
 
 ----> other OS:
 Follow the developer method below.
@@ -46,7 +51,7 @@ Qt
 PyQt
 PyQwt
 Numpy
-in synaptic (for debain distribution and its children (Ubuntu, Linux Mint,...)) (or any package manager). 
+in your package manager
 Then, install them from there.
 
 ----Windows:
@@ -61,11 +66,13 @@ later versions of all the software, but you may need to do some compiling on
 your own.
 
 ===> Installation (using the terminal or Windows command line):
-cd into DeathRay folder
-sudo ./deathray.py install
+This must be done before DeathRay can run properly.
+cd into DeathRay/Source folder
+sudo ./DeathRay.py install
 
 ===> To launch:
-simply run deathray.py with no arguments via terminal (or just double click the file if you do not want to see the logs). 
+simply run DeathRay.py with no arguments via terminal 
+(or just double click the file if you do not want to see the logs). 
 The optional arguments are:
 
   install:
@@ -86,7 +93,6 @@ the documentation in the docs folder.
 Nadiah Husseini Zainol Abidin
 Anas Alfuntukh
 Jack Minardi
-
 
 ============> Project Sponsor:
 ISDE (http://www.isde.vanderbilt.edu/)

@@ -557,4 +557,3 @@ if __name__ == "__main__":
   myapp.setWindowTitle("DeathRay - Device Control")
   myapp.show()
   sys.exit(app.exec_())
-
